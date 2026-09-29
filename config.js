@@ -10,7 +10,7 @@ window.FORM_CONFIG = {
   // Cole aqui a URL do Web App gerada ao implantar apps-script/Code.gs
   // (ex.: https://script.google.com/macros/s/AKfy.../exec)
   // ---------------------------------------------------------------
-  endpoint: "",
+  endpoint: "https://script.google.com/macros/s/AKfycbzMHrKXmGGvpy9lyWZ1lX4zPdXGlXVnlSLD0htCobEDiTQkNy1vvPE4B_Lw2kmxeEnO/exec",
 
   // ---------------------------------------------------------------
   // 2. IDENTIDADE VISUAL

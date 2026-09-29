@@ -6,7 +6,9 @@ gravadas automaticamente numa **planilha Google Sheets**.
 
 - Um único arquivo de configuração (`config.js`) para logo, cores, fonte, textos e campos
 - Responsivo, acessível e com validação (e-mail, telefone com DDD, campos obrigatórios)
-- Perguntas numeradas, barra de progresso, múltipla escolha com limite, opção "Outro" com texto
+- Estilo Typeform: uma pergunta por tela, tela de boas-vindas, barra de progresso e setas ↑↓
+- Atalhos de teclado (Enter avança, letras A, B, C… escolhem opções) e avanço automático na escolha única
+- Múltipla escolha com limite, opção exclusiva e "Outro" com campo de texto
 - Máscara de WhatsApp brasileira
 - Captura automática de origem do lead (UTMs, gclid, fbclid, página e referência)
 - Anti-spam (honeypot) e proteção contra injeção de fórmulas na planilha
@@ -19,7 +21,8 @@ index.html            Página do formulário
 config.js             ← EDITE AQUI: marca, textos, campos e URL da planilha
 assets/style.css      Estilos (usam as cores definidas em config.js)
 assets/app.js         Renderização, validação e envio
-assets/logo.svg       Logo de exemplo (substitua pelo seu)
+assets/logo-mark.png  Símbolo da marca (branco, fundo transparente)
+assets/favicon.png    Ícone da aba do navegador
 apps-script/Code.gs   Script que grava os leads no Google Sheets
 .github/workflows/    Publicação automática no GitHub Pages
 ```
@@ -31,8 +34,8 @@ Abra `config.js` e ajuste:
 | Seção | O que muda |
 |---|---|
 | `brand.name`, `brand.logo`, `brand.favicon`, `brand.website` | Nome, logo e link da empresa |
-| `brand.colors` | Cores (hex). `primary` = botões/destaques, `background` = fundo da página |
-| `brand.font.family` | Qualquer fonte do [Google Fonts](https://fonts.google.com) (ex.: `"Poppins"`, `"Montserrat"`) |
+| `brand.colors` | Cores (hex): degradê do fundo (`background` → `backgroundEnd`), texto, botões e destaque |
+| `brand.font`, `brand.headingFont` | Fontes do [Google Fonts](https://fonts.google.com) para textos e títulos |
 | `brand.radius` | Arredondamento (`"4px"` = mais reto, `"20px"` = mais arredondado) |
 | `texts` | Título, subtítulo, botão, mensagens de sucesso/erro, rodapé, link de privacidade |
 | `fields` | Campos do formulário (adicione, remova ou reordene) |
@@ -54,9 +57,8 @@ opcionalmente, `required`, `placeholder`, `width: "half"` e `options`.
 | `group` | Várias perguntas curtas sob um título (ex.: "Seus dados") |
 | `checkbox` | Aceite único (ex.: LGPD, com `{privacy}` virando link) |
 
-Extras: `other: true` adiciona a opção "Outro" com campo de texto e `layout: "list"`
-empilha opções longas. No topo do arquivo, `numbered`, `showProgress` e
-`markRequired` controlam a numeração, a barra de progresso e os asteriscos.
+Extras: `other: true` adiciona a opção "Outro" com campo de texto e `hint` mostra um
+texto de ajuda abaixo da pergunta. `markRequired: true` exibe asteriscos nos obrigatórios.
 
 ```js
 { name: "cidade", label: "Cidade", type: "text", required: true },

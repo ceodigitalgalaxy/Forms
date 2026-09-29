@@ -4,65 +4,72 @@
   var cfg = window.FORM_CONFIG;
   var $ = function (id) { return document.getElementById(id); };
   var UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content", "gclid", "fbclid"];
+  var OTHER = "Outro";
+  var LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  var canHover = window.matchMedia("(hover: hover)").matches;
 
   // ---------------------------------------------------------------
   // Tema / identidade visual
   // ---------------------------------------------------------------
+  function loadFont(font) {
+    if (!font || !font.family) return;
+    var link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = "https://fonts.googleapis.com/css2?family=" +
+      encodeURIComponent(font.family).replace(/%20/g, "+") +
+      ":wght@" + (font.weights || "400;700") + "&display=swap";
+    document.head.appendChild(link);
+  }
+
   function applyBrand() {
     var b = cfg.brand, c = b.colors, root = document.documentElement.style;
-    root.setProperty("--primary", c.primary);
-    root.setProperty("--primary-contrast", c.primaryContrast);
-    root.setProperty("--accent", c.accent);
     root.setProperty("--bg", c.background);
-    root.setProperty("--surface", c.surface);
+    root.setProperty("--bg-end", c.backgroundEnd);
     root.setProperty("--text", c.text);
-    root.setProperty("--muted", c.muted);
+    root.setProperty("--button", c.button);
+    root.setProperty("--button-text", c.buttonText);
+    root.setProperty("--accent", c.accent);
     root.setProperty("--error", c.error);
     root.setProperty("--radius", b.radius);
 
-    if (b.font && b.font.family) {
-      var link = document.createElement("link");
-      link.rel = "stylesheet";
-      link.href = "https://fonts.googleapis.com/css2?family=" +
-        encodeURIComponent(b.font.family).replace(/%20/g, "+") +
-        ":wght@" + b.font.weights + "&display=swap";
-      document.head.appendChild(link);
-      root.setProperty("--font", '"' + b.font.family + '", system-ui, sans-serif');
-    }
+    loadFont(b.font);
+    loadFont(b.headingFont);
+    if (b.font) root.setProperty("--font", '"' + b.font.family + '", system-ui, sans-serif');
+    if (b.headingFont) root.setProperty("--font-heading", '"' + b.headingFont.family + '", var(--font)');
 
     var t = cfg.texts;
     document.title = t.pageTitle;
     document.querySelector('meta[name="description"]').content = t.subheadline;
+    document.querySelector('meta[name="theme-color"]').content = c.backgroundEnd;
     $("favicon").href = b.favicon;
+    $("apple-icon").href = b.favicon;
     $("brand-link").href = b.website;
     $("brand-logo").src = b.logo;
-    $("brand-logo").alt = b.name;
     $("brand-name").textContent = b.name;
+    $("welcome-logo").src = b.logo;
+    $("welcome-logo").alt = b.name;
     $("headline").textContent = t.headline;
     $("subheadline").textContent = t.subheadline;
-    $("submit").textContent = t.submit;
+    $("start-btn").textContent = t.start;
+    $("welcome-hint").textContent = t.duration;
+    $("welcome-hint").hidden = !t.duration;
     $("success-title").textContent = t.successTitle;
     $("success-message").textContent = t.successMessage;
-    $("footer").textContent = t.footer;
   }
 
   // ---------------------------------------------------------------
-  // Estrutura: "fields" pode conter campos soltos ou grupos
-  // ({ type: "group", label, fields: [...] }). Cada item de primeiro
-  // nível é uma pergunta (numerada quando cfg.numbered = true).
+  // Estrutura: cada item de "fields" é uma tela. Um item pode ser um
+  // campo ou um grupo ({ type: "group", label, fields: [...] }).
   // ---------------------------------------------------------------
-  var OTHER = "Outro";
-
   function allFields() {
-    return cfg.fields.reduce(function (acc, q) {
-      return acc.concat(q.type === "group" ? q.fields : [q]);
-    }, []);
+    return cfg.fields.reduce(function (acc, q) { return acc.concat(fieldsOf(q)); }, []);
   }
 
+  function fieldsOf(q) { return q.type === "group" ? q.fields : [q]; }
   function isChoice(f) { return f.type === "radio" || f.type === "checkboxes"; }
 
   // ---------------------------------------------------------------
-  // Renderização dos campos
+  // Renderização
   // ---------------------------------------------------------------
   function el(tag, attrs, children) {
     var node = document.createElement(tag);
@@ -76,12 +83,36 @@
     return node;
   }
 
+  function icon(path, size, className) {
+    var ns = "http://www.w3.org/2000/svg";
+    var s = document.createElementNS(ns, "svg");
+    s.setAttribute("viewBox", "0 0 24 24");
+    s.setAttribute("width", size);
+    s.setAttribute("height", size);
+    s.setAttribute("aria-hidden", "true");
+    if (className) s.setAttribute("class", className);
+    var p = document.createElementNS(ns, "path");
+    p.setAttribute("d", path);
+    p.setAttribute("fill", "none");
+    p.setAttribute("stroke", "currentColor");
+    p.setAttribute("stroke-width", "2.5");
+    p.setAttribute("stroke-linecap", "round");
+    p.setAttribute("stroke-linejoin", "round");
+    s.appendChild(p);
+    return s;
+  }
+  var CHECK = "M20 6 9 17l-5-5";
+  var ARROW = "M5 12h14m-6-6 6 6-6 6";
+
+  function numberTag(number) {
+    return number ? el("span", { className: "field__num" }, [document.createTextNode(number), icon(ARROW, 14)]) : null;
+  }
+
   function labelFor(f, number) {
     return el("label", { className: "field__label", for: "f-" + f.name }, [
-      number ? el("span", { className: "field__num", text: number + "." }) : null,
+      numberTag(number),
       document.createTextNode(f.label),
-      f.required && cfg.markRequired !== false
-        ? el("span", { className: "field__req", text: "*", "aria-hidden": "true" }) : null
+      f.required && cfg.markRequired ? el("span", { className: "field__req", text: "*", "aria-hidden": "true" }) : null
     ]);
   }
 
@@ -90,7 +121,7 @@
     if (!text && f.type === "checkboxes") {
       text = f.max ? "Escolha até " + f.max + " opções." : "Marque quantas quiser.";
     }
-    return text ? el("p", { className: "field__hint", id: "f-" + f.name + "-hint", text: text }) : null;
+    return text ? el("p", { className: "field__hint", text: text }) : null;
   }
 
   // Substitui {privacy} por um link para a política de privacidade
@@ -111,23 +142,28 @@
     var type = f.type === "radio" ? "radio" : "checkbox";
     var options = f.options.concat(f.other ? [OTHER] : []);
     var group = el("div", {
-      className: "choices" + (f.layout === "list" ? " choices--list" : ""),
+      className: "choices",
       role: type === "radio" ? "radiogroup" : "group",
       "aria-labelledby": id + "-lbl",
       "aria-describedby": id + "-err"
     }, options.map(function (o, i) {
-      return el("label", { className: "choice choice--" + type }, [
+      return el("label", { className: "choice" }, [
         el("input", { type: type, name: f.name, value: o, id: i === 0 ? id : undefined }),
-        el("span", { text: o })
+        el("span", { className: "choice__body" }, [
+          el("span", { className: "choice__key", text: LETTERS[i], "aria-hidden": "true" }),
+          el("span", { className: "choice__text", text: o }),
+          icon(CHECK, 18, "choice__check")
+        ])
       ]);
     }));
     var other = f.other ? el("input", {
       className: "input choice-other",
       type: "text",
       name: f.name + "__outro",
-      placeholder: f.otherPlaceholder || "Qual?",
+      placeholder: f.otherPlaceholder || "Digite aqui…",
       "aria-label": f.label + " – outro",
       maxlength: 200,
+      enterkeyhint: "next",
       hidden: true
     }) : null;
     return [group, other];
@@ -135,7 +171,7 @@
 
   function renderField(f, number) {
     var id = "f-" + f.name;
-    var common = { id: id, name: f.name, "aria-describedby": id + "-err" };
+    var common = { id: id, name: f.name, "aria-describedby": id + "-err", enterkeyhint: "next" };
     var wrap = el("div", { className: "field" + (f.width === "half" ? " field--half" : ""), "data-field": f.name });
     var control;
 
@@ -165,7 +201,9 @@
         break;
 
       case "textarea":
-        control = el("textarea", Object.assign({ className: "textarea", rows: f.rows || 4, placeholder: f.placeholder }, common));
+        control = el("textarea", Object.assign({
+          className: "textarea", rows: f.rows || 2, placeholder: f.placeholder || "Digite sua resposta aqui…"
+        }, common));
         wrap.append(labelFor(f, number), control);
         break;
 
@@ -173,7 +211,7 @@
         control = el("input", Object.assign({
           className: "input",
           type: f.type || "text",
-          placeholder: f.placeholder,
+          placeholder: f.placeholder || "Digite sua resposta aqui…",
           autocomplete: f.autocomplete,
           maxlength: f.maxlength,
           inputmode: f.type === "tel" ? "tel" : undefined
@@ -182,17 +220,32 @@
         wrap.append(labelFor(f, number), control);
     }
 
-    wrap.appendChild(el("span", { className: "field__error", id: id + "-err" }));
+    wrap.appendChild(el("span", { className: "field__error", id: id + "-err", role: "alert" }));
     return wrap;
   }
 
   function renderGroup(g, number) {
-    var legend = el("legend", { className: "field__label group__legend" }, [
-      number ? el("span", { className: "field__num", text: number + "." }) : null,
-      document.createTextNode(g.label)
+    var legend = el("legend", { className: "field__label group__legend" }, [numberTag(number), document.createTextNode(g.label)]);
+    var grid = el("div", { className: "group__grid" }, g.fields.map(function (f) { return renderField(f); }));
+    return el("fieldset", { className: "group" }, [legend, grid]);
+  }
+
+  function renderStep(q, i, total) {
+    var last = i === total - 1;
+    var btn = el("button", { type: "button", className: "btn", "data-action": "next" }, [
+      document.createTextNode(last ? cfg.texts.submit : cfg.texts.ok),
+      last ? null : icon(CHECK, 18)
     ]);
-    var grid = el("div", { className: "form__grid" }, g.fields.map(function (f) { return renderField(f); }));
-    return el("fieldset", { className: "field group" }, [legend, grid]);
+    var hint = el("span", { className: "step__hint" }, [
+      document.createTextNode("pressione "), el("strong", { text: "Enter ↵" })
+    ]);
+    return el("section", { className: "step", tabindex: "-1", "aria-label": "Pergunta " + (i + 1) + " de " + total }, [
+      el("div", { className: "step__inner" }, [
+        q.type === "group" ? renderGroup(q, i + 1) : renderField(q, i + 1),
+        el("div", { className: "step__actions" }, [btn, hint]),
+        last ? el("p", { className: "form__error", id: "form-error", role: "alert", hidden: true }) : null
+      ])
+    ]);
   }
 
   // Máscara de telefone brasileiro: (11) 91234-5678
@@ -233,9 +286,8 @@
     if (f.other) {
       var otherBox = boxes.filter(function (b) { return b.value === OTHER; })[0];
       var otherInput = form.elements[f.name + "__outro"];
-      var show = otherBox.checked;
-      otherInput.hidden = !show;
-      if (show && changed === otherBox) otherInput.focus();
+      otherInput.hidden = !otherBox.checked;
+      if (otherBox.checked && changed === otherBox) otherInput.focus();
     }
   }
 
@@ -274,9 +326,9 @@
       if (f.required && !form.elements[f.name].checked) msg = "É necessário aceitar para continuar.";
     } else {
       var v = form.elements[f.name].value.trim();
-      if (f.required && !v) msg = "Campo obrigatório.";
+      if (f.required && !v) msg = "Preencha este campo.";
       else if (v && f.type === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) msg = "Informe um e-mail válido.";
-      else if (v && f.type === "tel" && !/^\d{10,11}$/.test(v.replace(/\D/g, ""))) msg = "Informe um telefone com DDD.";
+      else if (v && f.type === "tel" && !/^\d{10,11}$/.test(v.replace(/\D/g, ""))) msg = "Informe o número com DDD.";
       form.elements[f.name].setAttribute("aria-invalid", msg ? "true" : "false");
     }
 
@@ -285,21 +337,9 @@
     return !msg;
   }
 
-  // ---------------------------------------------------------------
-  // Progresso (perguntas respondidas)
-  // ---------------------------------------------------------------
   function isAnswered(q, form) {
-    if (q.type !== "group") return fieldValue(q, form) !== "";
-    var needed = q.fields.filter(function (f) { return f.required; });
-    return (needed.length ? needed : q.fields).every(function (f) { return fieldValue(f, form) !== ""; });
-  }
-
-  function updateProgress(form) {
-    if (!cfg.showProgress) return;
-    var total = cfg.fields.length;
-    var done = cfg.fields.filter(function (q) { return isAnswered(q, form); }).length;
-    $("progress-fill").style.width = (100 * done / total) + "%";
-    $("progress-text").textContent = done + " de " + total + " respondidas";
+    var needed = fieldsOf(q).filter(function (f) { return f.required; });
+    return (needed.length ? needed : fieldsOf(q)).every(function (f) { return fieldValue(f, form) !== ""; });
   }
 
   // ---------------------------------------------------------------
@@ -331,60 +371,80 @@
     return data;
   }
 
-  function showSuccess() {
-    if (cfg.redirectUrl) { location.href = cfg.redirectUrl; return; }
-    $("form-view").hidden = true;
-    $("success-view").hidden = false;
-    $("success-view").scrollIntoView({ behavior: "smooth", block: "center" });
-  }
-
+  // ---------------------------------------------------------------
+  // Navegação entre telas (uma pergunta por vez)
+  // ---------------------------------------------------------------
   function init() {
     applyBrand();
     var utm = captureUtm();
     var form = $("lead-form");
-    var container = $("fields");
-    if (cfg.numbered) container.classList.add("form__grid--survey");
-    cfg.fields.forEach(function (q, i) {
-      var number = cfg.numbered ? i + 1 : null;
-      container.appendChild(q.type === "group" ? renderGroup(q, number) : renderField(q, number));
-    });
-    $("progress").hidden = !cfg.showProgress;
-    updateProgress(form);
+    var total = cfg.fields.length;
+    var stepsBox = $("steps");
+    cfg.fields.forEach(function (q, i) { stepsBox.appendChild(renderStep(q, i, total)); });
 
-    // Validação em tempo real: limpa o erro enquanto a pessoa corrige o campo.
-    // Erros de formato só aparecem ao sair de um campo preenchido, para não
-    // mover o layout (e "perder" cliques) ao sair de um campo vazio.
-    allFields().forEach(function (f) {
-      var wrap = form.querySelector('[data-field="' + f.name + '"]');
-      ["input", "change"].forEach(function (evt) {
-        wrap.addEventListener(evt, function (e) {
-          if (isChoice(f) && evt === "change") syncChoices(f, form, e.target);
-          var revalidate = wrap.classList.contains("field--invalid") ||
-            (evt === "change" && (f.type === "select" || (f.type === "radio" && !f.other)));
-          if (revalidate) validateField(f, form);
-          updateProgress(form);
-        });
-      });
-      wrap.addEventListener("focusout", function (e) {
-        if (e.target.value && e.target.type !== "radio" && e.target.type !== "checkbox") validateField(f, form);
-      });
-    });
+    // steps[0] = boas-vindas; steps[i] = pergunta i
+    var steps = [form.querySelector(".step--welcome")].concat(Array.prototype.slice.call(stepsBox.children));
+    var current = 0;
+    var sending = false;
 
-    form.addEventListener("submit", function (e) {
-      e.preventDefault();
-      var errBox = $("form-error");
-      errBox.hidden = true;
+    function updateProgress() {
+      var done = cfg.fields.filter(function (q) { return isAnswered(q, form); }).length;
+      $("progress-fill").style.width = (100 * done / total) + "%";
+    }
 
+    function focusStep(n) {
+      var target = steps[n].querySelector(".input:not([hidden]), .select, .textarea");
+      if (target && canHover) target.focus({ preventScroll: true });
+      else steps[n].focus({ preventScroll: true });
+    }
+
+    function show(n) {
+      if (n === current || n < 0 || n >= steps.length) return;
+      steps[current].classList.remove("is-active", "from-below", "from-above", "shake");
+      steps[n].classList.remove("from-below", "from-above", "shake");
+      steps[n].classList.add("is-active", n > current ? "from-below" : "from-above");
+      current = n;
+      window.scrollTo(0, 0);
+      $("nav").hidden = n === 0;
+      $("nav-prev").disabled = n <= 1;
+      $("nav-next").disabled = n === steps.length - 1;
+      focusStep(n);
+    }
+
+    function shake(step) {
+      step.classList.remove("shake", "from-below", "from-above");
+      void step.offsetWidth; // reinicia a animação
+      step.classList.add("shake");
+    }
+
+    function validateStep(n, focus) {
       var firstInvalid = null;
-      allFields().forEach(function (f) {
+      fieldsOf(cfg.fields[n - 1]).forEach(function (f) {
         if (!validateField(f, form) && !firstInvalid) firstInvalid = f;
       });
-      if (firstInvalid) {
+      if (firstInvalid && focus) {
+        shake(steps[n]);
         var sel = '[data-field="' + firstInvalid.name + '"] ';
-        var node = form.querySelector(sel + "input:not([disabled]):not([hidden]), " + sel + "select, " + sel + "textarea");
-        if (node) node.focus();
-        return;
+        var node = form.querySelector(sel + ".input:not([hidden]), " + sel + ".select, " + sel + ".textarea");
+        if (node) node.focus({ preventScroll: true });
       }
+      return !firstInvalid;
+    }
+
+    function next() {
+      if (sending) return;
+      if (current === 0) return show(1);
+      if (!validateStep(current, true)) return;
+      if (current < steps.length - 1) return show(current + 1);
+      submit();
+    }
+
+    function submit() {
+      for (var n = 1; n < steps.length; n++) {
+        if (!validateStep(n, false)) { show(n); validateStep(n, true); return; }
+      }
+      var errBox = $("form-error");
+      errBox.hidden = true;
 
       if (!cfg.endpoint) {
         errBox.textContent = "Configuração pendente: defina a URL do Google Apps Script em config.js (endpoint).";
@@ -392,7 +452,8 @@
         return;
       }
 
-      var btn = $("submit");
+      var btn = steps[steps.length - 1].querySelector('[data-action="next"]');
+      sending = true;
       btn.disabled = true;
       btn.textContent = cfg.texts.submitting;
 
@@ -401,15 +462,79 @@
         .then(function (r) { return r.json(); })
         .then(function (res) {
           if (!res || res.ok !== true) throw new Error((res && res.error) || "erro");
-          showSuccess();
+          if (cfg.redirectUrl) { location.href = cfg.redirectUrl; return; }
+          form.hidden = true;
+          $("nav").hidden = true;
+          $("progress-fill").style.width = "100%";
+          $("success-view").classList.add("is-active", "from-below");
+          $("success-view").focus({ preventScroll: true });
+          window.scrollTo(0, 0);
         })
         .catch(function () {
+          sending = false;
           errBox.textContent = cfg.texts.errorMessage;
           errBox.hidden = false;
           btn.disabled = false;
           btn.textContent = cfg.texts.submit;
         });
+    }
+
+    // Botões OK / Começar / setas
+    form.addEventListener("click", function (e) {
+      if (e.target.closest('[data-action="next"]')) next();
     });
+    $("nav-prev").addEventListener("click", function () { show(current - 1); });
+    $("nav-next").addEventListener("click", next);
+    form.addEventListener("submit", function (e) { e.preventDefault(); next(); });
+
+    // Teclado: Enter avança, letras (A, B, C…) escolhem opções
+    document.addEventListener("keydown", function (e) {
+      if (e.isComposing || e.ctrlKey || e.metaKey || e.altKey) return;
+      var tag = e.target.tagName;
+
+      if (e.key === "Enter") {
+        if (tag === "BUTTON" || tag === "A" || (tag === "TEXTAREA" && e.shiftKey)) return;
+        e.preventDefault();
+        next();
+        return;
+      }
+
+      var q = cfg.fields[current - 1];
+      var typing = (tag === "INPUT" && e.target.type === "text") || tag === "TEXTAREA";
+      if (!q || !isChoice(q) || typing || e.key.length !== 1) return;
+      var box = boxesOf(q, form)[LETTERS.indexOf(e.key.toUpperCase())];
+      if (box && !box.disabled) {
+        e.preventDefault();
+        box.click();
+        var choice = box.closest(".choice");
+        choice.classList.add("pulse");
+        setTimeout(function () { choice.classList.remove("pulse"); }, 300);
+      }
+    });
+
+    // Validação em tempo real + avanço automático na escolha única
+    cfg.fields.forEach(function (q, qi) {
+      fieldsOf(q).forEach(function (f) {
+        var wrap = form.querySelector('[data-field="' + f.name + '"]');
+        ["input", "change"].forEach(function (evt) {
+          wrap.addEventListener(evt, function (e) {
+            if (isChoice(f) && evt === "change") syncChoices(f, form, e.target);
+            if (wrap.classList.contains("field--invalid")) validateField(f, form);
+            updateProgress();
+
+            if (evt === "change" && q === f && f.type === "radio" && e.target.type === "radio" && e.target.value !== OTHER) {
+              setTimeout(function () { if (current === qi + 1) next(); }, 450);
+            }
+          });
+        });
+        wrap.addEventListener("focusout", function (e) {
+          if (e.target.value && e.target.type !== "radio" && e.target.type !== "checkbox") validateField(f, form);
+        });
+      });
+    });
+
+    updateProgress();
+    steps[0].focus({ preventScroll: true });
   }
 
   init();

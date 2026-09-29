@@ -17,24 +17,21 @@ window.FORM_CONFIG = {
   // ---------------------------------------------------------------
   brand: {
     name: "Digital Galaxy",
-    logo: "assets/logo.svg",          // caminho ou URL do logo (SVG/PNG)
-    favicon: "assets/logo.svg",
-    website: "https://example.com",   // link do logo / rodapé
+    logo: "assets/logo-mark.png",     // símbolo em branco, fundo transparente
+    favicon: "assets/favicon.png",    // ícone da aba do navegador
+    website: "https://www.instagram.com/digitalgalaxymkt",
     colors: {
-      primary: "#5B3DF5",             // botões, destaques
-      primaryContrast: "#FFFFFF",     // texto sobre a cor primária
-      accent: "#16C8B0",              // detalhes secundários
-      background: "#0E0B2B",          // fundo da página
-      surface: "#FFFFFF",             // fundo do cartão do formulário
-      text: "#1B1838",                // texto principal no cartão
-      muted: "#6B6890",               // textos auxiliares
-      error: "#D93A4A"
+      background: "#3B008E",          // roxo da marca (canto superior esquerdo)
+      backgroundEnd: "#000000",       // degradê termina em preto
+      text: "#FFFFFF",                // perguntas e respostas
+      button: "#FFFFFF",              // botões "OK", "Começar", setas
+      buttonText: "#3B008E",          // texto dos botões
+      accent: "#B794FF",              // números das perguntas e barra de progresso
+      error: "#FF5C6C"
     },
-    font: {
-      family: "Inter",                // qualquer fonte do Google Fonts
-      weights: "400;500;600;700"
-    },
-    radius: "14px"                    // arredondamento de campos e cartão
+    font: { family: "Sora", weights: "400;500;600;700" },       // textos
+    headingFont: { family: "Orbitron", weights: "600;700" },    // título e nome da marca
+    radius: "8px"
   },
 
   // ---------------------------------------------------------------
@@ -47,6 +44,9 @@ window.FORM_CONFIG = {
       "Olá! Antes da nossa conversa, queremos conhecer um pouco do seu negócio. " +
       "São 10 perguntas rápidas, cerca de 5 minutos. Não existe resposta certa: " +
       "quanto mais sincero, melhor conseguimos ajudar.",
+    start: "Começar",
+    duration: "Leva cerca de 5 minutos",
+    ok: "OK",
     submit: "Enviar respostas",
     submitting: "Enviando…",
     successTitle: "Obrigado!",
@@ -54,8 +54,7 @@ window.FORM_CONFIG = {
       "Vamos analisar suas respostas e chegar à reunião com ideias para o seu negócio.",
     errorMessage:
       "Não foi possível enviar agora. Verifique sua conexão e tente novamente.",
-    privacyUrl: "https://example.com/privacidade",
-    footer: "© Digital Galaxy. Todos os direitos reservados."
+    privacyUrl: "https://example.com/privacidade"
   },
 
   // Opcional: redirecionar para outra página após o envio (ex.: página
@@ -63,23 +62,21 @@ window.FORM_CONFIG = {
   // mensagem de sucesso na própria página.
   redirectUrl: "",
 
-  numbered: true,       // numera as perguntas (1., 2., 3.…)
-  showProgress: true,   // barra "X de 10 respondidas"
   markRequired: false,  // asterisco nos obrigatórios (desligado: todas são obrigatórias)
 
   // ---------------------------------------------------------------
   // 4. PERGUNTAS
-  // Cada item é uma pergunta. "name" vira o nome da coluna na planilha.
+  // Cada item é uma tela (uma pergunta por vez, no estilo Typeform).
+  // "name" vira o nome da coluna na planilha.
   //
   // Tipos: text, email, tel, textarea, select, checkbox (aceite único),
-  //   radio       → escolha única
+  //   radio       → escolha única (avança sozinha ao escolher)
   //   checkboxes  → múltipla escolha ("max": limite de opções,
   //                 "exclusive": opções que desmarcam as demais)
   //   group       → várias perguntas curtas sob um mesmo título
   //
   // Opções extras:
   //   other: true      → adiciona "Outro" com campo de texto
-  //   layout: "list"   → opções empilhadas (bom para textos longos)
   //   width: "half"    → dois campos lado a lado em telas largas
   //   required: true   → obrigatório
   // ---------------------------------------------------------------
@@ -104,7 +101,7 @@ window.FORM_CONFIG = {
       options: ["Menos de 1 ano", "De 1 a 3 anos", "De 3 a 10 anos", "Mais de 10 anos"]
     },
     {
-      name: "objetivo_6_meses", type: "radio", required: true, layout: "list",
+      name: "objetivo_6_meses", type: "radio", required: true,
       label: "Qual é o seu principal objetivo para os próximos 6 meses?",
       options: [
         "Ser mais conhecido e passar mais credibilidade",
@@ -115,7 +112,7 @@ window.FORM_CONFIG = {
       ]
     },
     {
-      name: "como_clientes_chegam", type: "checkboxes", required: true, layout: "list", other: true,
+      name: "como_clientes_chegam", type: "checkboxes", required: true, other: true,
       label: "Como os clientes chegam até você hoje?",
       options: [
         "Indicação",
@@ -126,7 +123,7 @@ window.FORM_CONFIG = {
       ]
     },
     {
-      name: "o_que_ja_tem", type: "checkboxes", required: true, layout: "list",
+      name: "o_que_ja_tem", type: "checkboxes", required: true,
       label: "O que você já tem hoje?",
       options: [
         "Logo e identidade visual definidas",
@@ -139,12 +136,12 @@ window.FORM_CONFIG = {
       exclusive: ["Nenhum desses"]
     },
     {
-      name: "quem_cuida_marketing", type: "radio", required: true, layout: "list",
+      name: "quem_cuida_marketing", type: "radio", required: true,
       label: "Quem cuida do marketing hoje?",
       options: ["Eu mesmo, quando dá tempo", "Alguém da equipe", "Agência ou freelancer", "Ninguém"]
     },
     {
-      name: "maiores_incomodos", type: "checkboxes", required: true, layout: "list", other: true, max: 2,
+      name: "maiores_incomodos", type: "checkboxes", required: true, other: true, max: 2,
       label: "O que mais te incomoda no marketing da sua empresa hoje?",
       options: [
         "Não consigo postar com frequência",
@@ -156,7 +153,7 @@ window.FORM_CONFIG = {
       ]
     },
     {
-      name: "investimento_mensal", type: "radio", required: true, layout: "list",
+      name: "investimento_mensal", type: "radio", required: true,
       label: "Quanto você pretende investir por mês em marketing, somando consultoria e anúncios?",
       options: ["Até R$ 1.000", "De R$ 1.000 a R$ 3.000", "De R$ 3.000 a R$ 6.000", "Acima de R$ 6.000", "Ainda não sei"]
     },

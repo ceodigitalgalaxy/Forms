@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Formulário</title>
+  <meta name="description" content="Formulário de contato">
+  <link rel="icon" id="favicon" href="assets/logo.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="assets/style.css">
+  <script src="config.js"></script>
+</head>
+<body>
+  <main class="page">
+    <header class="brand">
+      <a id="brand-link" class="brand__link" href="#">
+        <img id="brand-logo" class="brand__logo" src="" alt="">
+        <span id="brand-name" class="brand__name"></span>
+      </a>
+    </header>
+
+    <section class="card" aria-live="polite">
+      <div id="form-view">
+        <h1 id="headline" class="card__title"></h1>
+        <p id="subheadline" class="card__subtitle"></p>
+
+        <form id="lead-form" class="form" novalidate>
+          <div id="fields" class="form__grid"></div>
+
+          <!-- Anti-spam (honeypot): invisível para humanos -->
+          <div class="hp" aria-hidden="true">
+            <label>Não preencha <input type="text" name="_hp" tabindex="-1" autocomplete="off"></label>
+          </div>
+
+          <p id="form-error" class="form__error" role="alert" hidden></p>
+          <button id="submit" type="submit" class="btn"></button>
+        </form>
+      </div>
+
+      <div id="success-view" class="success" hidden>
+        <div class="success__icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="32" height="32"><path d="M20 6 9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <h2 id="success-title" class="card__title"></h2>
+        <p id="success-message" class="card__subtitle"></p>
+      </div>
+    </section>
+
+    <footer id="footer" class="footer"></footer>
+  </main>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

@@ -47,7 +47,7 @@ window.FORM_CONFIG = {
       "São 10 perguntas rápidas, cerca de 5 minutos. Não existe resposta certa: " +
       "quanto mais sincero, melhor conseguimos ajudar.",
     start: "Começar",
-    duration: "Leva cerca de 5 minutos",
+    duration: "",                     // linha extra abaixo do botão (vazio = oculta)
     ok: "OK",
     submit: "Enviar respostas",
     submitting: "Enviando…",

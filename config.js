@@ -51,7 +51,8 @@ window.FORM_CONFIG = {
     submitting: "Enviando…",
     successTitle: "Obrigado!",
     successMessage:
-      "Vamos analisar suas respostas e chegar à reunião com ideias para o seu negócio.",
+      "Suas respostas nos ajudam a chegar à reunião já conhecendo o seu cenário. " +
+      "Assim, aproveitamos cada minuto para falar do que faz diferença no seu negócio.",
     errorMessage:
       "Não foi possível enviar agora. Verifique sua conexão e tente novamente.",
     privacyUrl: "https://example.com/privacidade"

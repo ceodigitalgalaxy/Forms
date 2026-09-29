@@ -280,6 +280,49 @@ body {
 .nav__btn:last-child { border-radius: 0 var(--radius) var(--radius) 0; }
 .nav__btn:disabled { opacity: .45; cursor: default; }
 
+/* Estrela da logo → Instagram (tela final) */
+.star-link {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text);
+  text-decoration: none;
+}
+.star-link__btn {
+  display: grid;
+  place-items: center;
+  width: 52px; height: 52px;
+  border-radius: 50%;
+  color: var(--button-text);
+  background: var(--button);
+  box-shadow: 0 0 0 0 color-mix(in srgb, var(--button) 45%, transparent), 0 8px 24px -8px rgb(0 0 0 / .6);
+  animation: star-glow 2.8s ease-in-out infinite;
+  transition: transform .2s;
+}
+.star-link__btn svg { transition: transform .5s cubic-bezier(.2, .8, .2, 1); }
+.star-link:hover .star-link__btn, .star-link:focus-visible .star-link__btn { transform: scale(1.08); }
+.star-link:hover svg, .star-link:focus-visible svg { transform: rotate(90deg); }
+.star-link:focus-visible { outline: none; }
+.star-link:focus-visible .star-link__btn { outline: 2px solid var(--accent); outline-offset: 3px; }
+.star-link__label {
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 8px 12px;
+  border-radius: var(--radius);
+  background: color-mix(in srgb, var(--text) 12%, transparent);
+  backdrop-filter: blur(6px);
+}
+@keyframes star-glow {
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--button) 40%, transparent), 0 8px 24px -8px rgb(0 0 0 / .6); }
+  50% { box-shadow: 0 0 0 10px transparent, 0 8px 24px -8px rgb(0 0 0 / .6); }
+}
+@media (prefers-reduced-motion: reduce) { .star-link__btn { animation: none; } }
+@media (max-width: 600px) { .star-link { right: 16px; bottom: 16px; } }
+
 .hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
 
 @media (max-width: 600px) {

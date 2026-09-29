@@ -43,7 +43,14 @@
     document.querySelector('meta[name="theme-color"]').content = c.backgroundEnd;
     $("favicon").href = b.favicon;
     $("apple-icon").href = b.favicon;
-    $("brand-link").href = b.website;
+    // Logo/nome no topo: recomeça o formulário do zero (mantém UTMs da URL)
+    $("brand-link").href = location.pathname + location.search;
+    if (b.instagram) {
+      $("social-star").href = b.instagram;
+      $("social-star").setAttribute("aria-label", b.instagramLabel || "Instagram");
+      $("social-label").textContent = b.instagramLabel || "";
+      $("social-label").hidden = !b.instagramLabel;
+    }
     $("brand-logo").src = b.logo;
     $("brand-name").textContent = b.name;
     $("welcome-logo").src = b.logo;
@@ -465,6 +472,7 @@
           if (cfg.redirectUrl) { location.href = cfg.redirectUrl; return; }
           form.hidden = true;
           $("nav").hidden = true;
+          $("social-star").hidden = !cfg.brand.instagram;
           $("progress-fill").style.width = "100%";
           $("success-view").classList.add("is-active", "from-below");
           $("success-view").focus({ preventScroll: true });
@@ -478,6 +486,12 @@
           btn.textContent = cfg.texts.submit;
         });
     }
+
+    // Logo no topo: recomeçar. Durante o preenchimento, pede confirmação.
+    $("brand-link").addEventListener("click", function (e) {
+      var started = !form.hidden && cfg.fields.some(function (q) { return isAnswered(q, form); });
+      if (started && !window.confirm("Recomeçar o formulário? As respostas preenchidas serão apagadas.")) e.preventDefault();
+    });
 
     // Botões OK / Começar / setas
     form.addEventListener("click", function (e) {

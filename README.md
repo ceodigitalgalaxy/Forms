@@ -33,7 +33,8 @@ Abra `config.js` e ajuste:
 
 | Seção | O que muda |
 |---|---|
-| `brand.name`, `brand.logo`, `brand.favicon`, `brand.website` | Nome, logo e link da empresa |
+| `brand.name`, `brand.logo`, `brand.favicon` | Nome e logo (clicar no logo recomeça o formulário) |
+| `brand.instagram`, `brand.instagramLabel` | Estrela no canto da tela final que leva ao Instagram |
 | `brand.colors` | Cores (hex): degradê do fundo (`background` → `backgroundEnd`), texto, botões e destaque |
 | `brand.font`, `brand.headingFont` | Fontes do [Google Fonts](https://fonts.google.com) para textos e títulos |
 | `brand.radius` | Arredondamento (`"4px"` = mais reto, `"20px"` = mais arredondado) |

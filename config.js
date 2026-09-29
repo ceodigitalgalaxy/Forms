@@ -19,7 +19,9 @@ window.FORM_CONFIG = {
     name: "Digital Galaxy",
     logo: "assets/logo-mark.png",     // símbolo em branco, fundo transparente
     favicon: "assets/favicon.png",    // ícone da aba do navegador
-    website: "https://www.instagram.com/digitalgalaxymkt",
+    // Estrela no canto inferior direito da tela final
+    instagram: "https://www.instagram.com/digitalgalaxymkt",
+    instagramLabel: "Siga @digitalgalaxymkt",
     colors: {
       background: "#3B008E",          // roxo da marca (canto superior esquerdo)
       backgroundEnd: "#000000",       // degradê termina em preto

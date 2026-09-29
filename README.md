@@ -6,7 +6,7 @@ gravadas automaticamente numa **planilha Google Sheets**.
 
 - Um único arquivo de configuração (`config.js`) para logo, cores, fonte, textos e campos
 - Responsivo, acessível e com validação (e-mail, telefone com DDD, campos obrigatórios)
-- Perguntas numeradas, barra de progresso, múltipla escolha com limite, opção \"Outro\" com texto
+- Perguntas numeradas, barra de progresso, múltipla escolha com limite, opção "Outro" com texto
 - Máscara de WhatsApp brasileira
 - Captura automática de origem do lead (UTMs, gclid, fbclid, página e referência)
 - Anti-spam (honeypot) e proteção contra injeção de fórmulas na planilha

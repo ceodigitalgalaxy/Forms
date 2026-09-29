@@ -47,6 +47,21 @@
   }
 
   // ---------------------------------------------------------------
+  // Estrutura: "fields" pode conter campos soltos ou grupos
+  // ({ type: "group", label, fields: [...] }). Cada item de primeiro
+  // nível é uma pergunta (numerada quando cfg.numbered = true).
+  // ---------------------------------------------------------------
+  var OTHER = "Outro";
+
+  function allFields() {
+    return cfg.fields.reduce(function (acc, q) {
+      return acc.concat(q.type === "group" ? q.fields : [q]);
+    }, []);
+  }
+
+  function isChoice(f) { return f.type === "radio" || f.type === "checkboxes"; }
+
+  // ---------------------------------------------------------------
   // Renderização dos campos
   // ---------------------------------------------------------------
   function el(tag, attrs, children) {
@@ -61,11 +76,21 @@
     return node;
   }
 
-  function labelFor(f) {
+  function labelFor(f, number) {
     return el("label", { className: "field__label", for: "f-" + f.name }, [
+      number ? el("span", { className: "field__num", text: number + "." }) : null,
       document.createTextNode(f.label),
-      f.required ? el("span", { className: "field__req", text: "*", "aria-hidden": "true" }) : null
+      f.required && cfg.markRequired !== false
+        ? el("span", { className: "field__req", text: "*", "aria-hidden": "true" }) : null
     ]);
+  }
+
+  function hintFor(f) {
+    var text = f.hint;
+    if (!text && f.type === "checkboxes") {
+      text = f.max ? "Escolha até " + f.max + " opções." : "Marque quantas quiser.";
+    }
+    return text ? el("p", { className: "field__hint", id: "f-" + f.name + "-hint", text: text }) : null;
   }
 
   // Substitui {privacy} por um link para a política de privacidade
@@ -82,9 +107,35 @@
     return frag;
   }
 
-  function renderField(f) {
+  function renderChoices(f, id) {
+    var type = f.type === "radio" ? "radio" : "checkbox";
+    var options = f.options.concat(f.other ? [OTHER] : []);
+    var group = el("div", {
+      className: "choices" + (f.layout === "list" ? " choices--list" : ""),
+      role: type === "radio" ? "radiogroup" : "group",
+      "aria-labelledby": id + "-lbl",
+      "aria-describedby": id + "-err"
+    }, options.map(function (o, i) {
+      return el("label", { className: "choice choice--" + type }, [
+        el("input", { type: type, name: f.name, value: o, id: i === 0 ? id : undefined }),
+        el("span", { text: o })
+      ]);
+    }));
+    var other = f.other ? el("input", {
+      className: "input choice-other",
+      type: "text",
+      name: f.name + "__outro",
+      placeholder: f.otherPlaceholder || "Qual?",
+      "aria-label": f.label + " – outro",
+      maxlength: 200,
+      hidden: true
+    }) : null;
+    return [group, other];
+  }
+
+  function renderField(f, number) {
     var id = "f-" + f.name;
-    var common = { id: id, name: f.name, required: !!f.required, "aria-describedby": id + "-err" };
+    var common = { id: id, name: f.name, "aria-describedby": id + "-err" };
     var wrap = el("div", { className: "field" + (f.width === "half" ? " field--half" : ""), "data-field": f.name });
     var control;
 
@@ -93,19 +144,16 @@
         control = el("select", Object.assign({ className: "select" }, common),
           [el("option", { value: "", text: "Selecione…" })].concat(
             f.options.map(function (o) { return el("option", { value: o, text: o }); })));
-        wrap.append(labelFor(f), control);
+        wrap.append(labelFor(f, number), control);
         break;
 
       case "radio":
-        var group = el("div", { className: "choices", role: "radiogroup", "aria-labelledby": id + "-lbl" },
-          f.options.map(function (o, i) {
-            return el("label", { className: "choice" }, [
-              el("input", { type: "radio", name: f.name, value: o, id: i === 0 ? id : undefined, required: !!f.required }),
-              el("span", { text: o })
-            ]);
-          }));
-        var lbl = labelFor(f); lbl.id = id + "-lbl"; lbl.removeAttribute("for");
-        wrap.append(lbl, group);
+      case "checkboxes":
+        var lbl = labelFor(f, number); lbl.id = id + "-lbl"; lbl.removeAttribute("for");
+        wrap.append(lbl);
+        var hint = hintFor(f);
+        if (hint) wrap.append(hint);
+        renderChoices(f, id).forEach(function (n) { if (n) wrap.append(n); });
         break;
 
       case "checkbox":
@@ -118,7 +166,7 @@
 
       case "textarea":
         control = el("textarea", Object.assign({ className: "textarea", rows: f.rows || 4, placeholder: f.placeholder }, common));
-        wrap.append(labelFor(f), control);
+        wrap.append(labelFor(f, number), control);
         break;
 
       default:
@@ -127,14 +175,24 @@
           type: f.type || "text",
           placeholder: f.placeholder,
           autocomplete: f.autocomplete,
+          maxlength: f.maxlength,
           inputmode: f.type === "tel" ? "tel" : undefined
         }, common));
         if (f.type === "tel") control.addEventListener("input", maskPhone);
-        wrap.append(labelFor(f), control);
+        wrap.append(labelFor(f, number), control);
     }
 
     wrap.appendChild(el("span", { className: "field__error", id: id + "-err" }));
     return wrap;
+  }
+
+  function renderGroup(g, number) {
+    var legend = el("legend", { className: "field__label group__legend" }, [
+      number ? el("span", { className: "field__num", text: number + "." }) : null,
+      document.createTextNode(g.label)
+    ]);
+    var grid = el("div", { className: "form__grid" }, g.fields.map(function (f) { return renderField(f); }));
+    return el("fieldset", { className: "field group" }, [legend, grid]);
   }
 
   // Máscara de telefone brasileiro: (11) 91234-5678
@@ -148,15 +206,70 @@
   }
 
   // ---------------------------------------------------------------
-  // Validação
+  // Múltipla escolha: opção exclusiva, limite máximo e campo "Outro"
   // ---------------------------------------------------------------
+  function boxesOf(f, form) {
+    return Array.prototype.slice.call(form.querySelectorAll('input[name="' + f.name + '"]'));
+  }
+
+  function syncChoices(f, form, changed) {
+    var boxes = boxesOf(f, form);
+    var exclusive = f.exclusive || [];
+
+    if (f.type === "checkboxes") {
+      if (changed && changed.checked) {
+        var changedIsExclusive = exclusive.indexOf(changed.value) !== -1;
+        boxes.forEach(function (b) {
+          if (b === changed) return;
+          if (changedIsExclusive || exclusive.indexOf(b.value) !== -1) b.checked = false;
+        });
+      }
+      if (f.max) {
+        var count = boxes.filter(function (b) { return b.checked; }).length;
+        boxes.forEach(function (b) { b.disabled = !b.checked && count >= f.max; });
+      }
+    }
+
+    if (f.other) {
+      var otherBox = boxes.filter(function (b) { return b.value === OTHER; })[0];
+      var otherInput = form.elements[f.name + "__outro"];
+      var show = otherBox.checked;
+      otherInput.hidden = !show;
+      if (show && changed === otherBox) otherInput.focus();
+    }
+  }
+
+  // ---------------------------------------------------------------
+  // Valores e validação
+  // ---------------------------------------------------------------
+  function fieldValue(f, form) {
+    if (isChoice(f)) {
+      return boxesOf(f, form)
+        .filter(function (b) { return b.checked; })
+        .map(function (b) {
+          if (f.other && b.value === OTHER) {
+            var t = form.elements[f.name + "__outro"].value.trim();
+            return t ? OTHER + ": " + t : OTHER;
+          }
+          return b.value;
+        })
+        .join("; ");
+    }
+    if (f.type === "checkbox") return form.elements[f.name].checked ? "sim" : "";
+    return form.elements[f.name].value.trim();
+  }
+
   function validateField(f, form) {
     var wrap = form.querySelector('[data-field="' + f.name + '"]');
     var errEl = wrap.querySelector(".field__error");
     var msg = "";
 
-    if (f.type === "radio") {
-      if (f.required && !form.querySelector('input[name="' + f.name + '"]:checked')) msg = "Escolha uma opção.";
+    if (isChoice(f)) {
+      var checked = boxesOf(f, form).filter(function (b) { return b.checked; });
+      var otherChecked = checked.some(function (b) { return b.value === OTHER; });
+      if (f.required && !checked.length) msg = f.type === "radio" ? "Escolha uma opção." : "Escolha pelo menos uma opção.";
+      else if (f.max && checked.length > f.max) msg = "Escolha no máximo " + f.max + " opções.";
+      else if (f.other && otherChecked && !form.elements[f.name + "__outro"].value.trim()) msg = "Conte qual é a outra opção.";
     } else if (f.type === "checkbox") {
       if (f.required && !form.elements[f.name].checked) msg = "É necessário aceitar para continuar.";
     } else {
@@ -164,13 +277,29 @@
       if (f.required && !v) msg = "Campo obrigatório.";
       else if (v && f.type === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v)) msg = "Informe um e-mail válido.";
       else if (v && f.type === "tel" && !/^\d{10,11}$/.test(v.replace(/\D/g, ""))) msg = "Informe um telefone com DDD.";
+      form.elements[f.name].setAttribute("aria-invalid", msg ? "true" : "false");
     }
 
     errEl.textContent = msg;
     wrap.classList.toggle("field--invalid", !!msg);
-    var input = form.elements[f.name];
-    if (input && input.setAttribute) input.setAttribute("aria-invalid", msg ? "true" : "false");
     return !msg;
+  }
+
+  // ---------------------------------------------------------------
+  // Progresso (perguntas respondidas)
+  // ---------------------------------------------------------------
+  function isAnswered(q, form) {
+    if (q.type !== "group") return fieldValue(q, form) !== "";
+    var needed = q.fields.filter(function (f) { return f.required; });
+    return (needed.length ? needed : q.fields).every(function (f) { return fieldValue(f, form) !== ""; });
+  }
+
+  function updateProgress(form) {
+    if (!cfg.showProgress) return;
+    var total = cfg.fields.length;
+    var done = cfg.fields.filter(function (q) { return isAnswered(q, form); }).length;
+    $("progress-fill").style.width = (100 * done / total) + "%";
+    $("progress-text").textContent = done + " de " + total + " respondidas";
   }
 
   // ---------------------------------------------------------------
@@ -188,23 +317,17 @@
 
   function buildPayload(form, utm) {
     var data = new URLSearchParams();
-    cfg.fields.forEach(function (f) {
-      var value;
-      if (f.type === "radio") {
-        var sel = form.querySelector('input[name="' + f.name + '"]:checked');
-        value = sel ? sel.value : "";
-      } else if (f.type === "checkbox") {
-        value = form.elements[f.name].checked ? "sim" : "não";
-      } else {
-        value = form.elements[f.name].value.trim();
-      }
+    var fields = allFields();
+    fields.forEach(function (f) {
+      var value = fieldValue(f, form);
+      if (f.type === "checkbox" && !value) value = "não";
       data.append(f.name, value);
     });
     Object.keys(utm).forEach(function (k) { data.append(k, utm[k]); });
     data.append("pagina", location.href.split("?")[0]);
     data.append("referencia", document.referrer || "");
     data.append("_hp", form.elements._hp.value);
-    data.append("_fields", cfg.fields.map(function (f) { return f.name; }).join(","));
+    data.append("_fields", fields.map(function (f) { return f.name; }).join(","));
     return data;
   }
 
@@ -220,16 +343,26 @@
     var utm = captureUtm();
     var form = $("lead-form");
     var container = $("fields");
-    cfg.fields.forEach(function (f) { container.appendChild(renderField(f)); });
+    if (cfg.numbered) container.classList.add("form__grid--survey");
+    cfg.fields.forEach(function (q, i) {
+      var number = cfg.numbered ? i + 1 : null;
+      container.appendChild(q.type === "group" ? renderGroup(q, number) : renderField(q, number));
+    });
+    $("progress").hidden = !cfg.showProgress;
+    updateProgress(form);
 
     // Validação em tempo real: limpa o erro enquanto a pessoa corrige o campo.
     // Erros de formato só aparecem ao sair de um campo preenchido, para não
     // mover o layout (e "perder" cliques) ao sair de um campo vazio.
-    cfg.fields.forEach(function (f) {
+    allFields().forEach(function (f) {
       var wrap = form.querySelector('[data-field="' + f.name + '"]');
       ["input", "change"].forEach(function (evt) {
-        wrap.addEventListener(evt, function () {
-          if (evt === "change" || wrap.classList.contains("field--invalid")) validateField(f, form);
+        wrap.addEventListener(evt, function (e) {
+          if (isChoice(f) && evt === "change") syncChoices(f, form, e.target);
+          var revalidate = wrap.classList.contains("field--invalid") ||
+            (evt === "change" && (f.type === "select" || (f.type === "radio" && !f.other)));
+          if (revalidate) validateField(f, form);
+          updateProgress(form);
         });
       });
       wrap.addEventListener("focusout", function (e) {
@@ -243,11 +376,12 @@
       errBox.hidden = true;
 
       var firstInvalid = null;
-      cfg.fields.forEach(function (f) {
+      allFields().forEach(function (f) {
         if (!validateField(f, form) && !firstInvalid) firstInvalid = f;
       });
       if (firstInvalid) {
-        var node = form.querySelector('[data-field="' + firstInvalid.name + '"] input, [data-field="' + firstInvalid.name + '"] select, [data-field="' + firstInvalid.name + '"] textarea');
+        var sel = '[data-field="' + firstInvalid.name + '"] ';
+        var node = form.querySelector(sel + "input:not([disabled]):not([hidden]), " + sel + "select, " + sel + "textarea");
         if (node) node.focus();
         return;
       }

@@ -15,6 +15,8 @@
 
 * { box-sizing: border-box; }
 
+[hidden] { display: none !important; }
+
 html, body { margin: 0; }
 
 body {
@@ -59,7 +61,36 @@ body {
   line-height: 1.2;
   letter-spacing: -0.02em;
 }
-.card__subtitle { margin: 0 0 24px; color: var(--muted); line-height: 1.5; }
+.card__subtitle { margin: 0 0 24px; color: var(--muted); line-height: 1.55; }
+
+/* Barra de progresso fixa no topo enquanto a pessoa rola o questionário */
+.progress {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 -8px 24px;
+  padding: 12px 8px;
+  background: var(--surface);
+}
+.progress__bar {
+  flex: 1;
+  height: 6px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--muted) 18%, transparent);
+  overflow: hidden;
+}
+.progress__bar span {
+  display: block;
+  height: 100%;
+  width: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  transition: width .3s ease;
+}
+.progress__text { font-size: 0.8rem; color: var(--muted); white-space: nowrap; font-variant-numeric: tabular-nums; }
 
 .form__grid {
   display: grid;
@@ -71,6 +102,17 @@ body {
 @media (max-width: 520px) { .field--half { grid-column: span 2; } }
 
 .field__label { font-weight: 600; font-size: 0.92rem; }
+.field__num { color: var(--primary); margin-right: 6px; }
+.field__hint { margin: -2px 0 4px; font-size: 0.82rem; color: var(--muted); }
+
+/* Questionário numerado: mais respiro entre perguntas e rótulos maiores */
+.form__grid--survey { row-gap: 32px; }
+.form__grid--survey > .field > .field__label,
+.form__grid--survey > .group > .group__legend { font-size: 1.02rem; line-height: 1.4; }
+
+.group { border: 0; margin: 0; padding: 0; min-width: 0; }
+.group__legend { padding: 0; margin-bottom: 12px; }
+.input, .select, .textarea, .choice input { scroll-margin-top: 90px; }
 .field__req { color: var(--primary); margin-left: 2px; }
 
 .input, .select, .textarea {
@@ -116,6 +158,37 @@ body {
   font-weight: 600;
 }
 .choice input:focus-visible + span { box-shadow: 0 0 0 4px color-mix(in srgb, var(--primary) 20%, transparent); }
+.choice input:disabled { cursor: not-allowed; }
+.choice input:disabled + span { opacity: .45; }
+
+/* Layout em lista: opções longas empilhadas, com indicador de rádio/checkbox */
+.choices--list { flex-direction: column; }
+.choices--list .choice span {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: var(--radius);
+  line-height: 1.35;
+}
+.choices--list .choice span::before {
+  content: "";
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--border);
+  border-radius: 5px;
+  background: var(--surface);
+  transition: all .15s;
+}
+.choices--list .choice--radio span::before { border-radius: 50%; }
+.choices--list .choice input:checked + span::before {
+  border-color: var(--primary);
+  background: var(--primary);
+  box-shadow: inset 0 0 0 3px var(--surface);
+}
+.choice-other { margin-top: 8px; }
 
 .check { flex-direction: row; align-items: flex-start; gap: 10px; font-size: 0.9rem; color: var(--muted); line-height: 1.45; }
 .check input { width: 18px; height: 18px; margin-top: 1px; accent-color: var(--primary); flex-shrink: 0; }

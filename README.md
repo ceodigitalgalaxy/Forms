@@ -1,12 +1,13 @@
-# Formulário de Leads com domínio próprio
+# Formulário pré-reunião com domínio próprio
 
-Formulário de captação de leads com a identidade visual da sua empresa,
+Questionário pré-reunião com a identidade visual da sua empresa,
 publicado gratuitamente no **GitHub Pages** com **domínio próprio** e respostas
 gravadas automaticamente numa **planilha Google Sheets**.
 
 - Um único arquivo de configuração (`config.js`) para logo, cores, fonte, textos e campos
 - Responsivo, acessível e com validação (e-mail, telefone com DDD, campos obrigatórios)
-- Máscara de WhatsApp brasileira, consentimento LGPD com link para política de privacidade
+- Perguntas numeradas, barra de progresso, múltipla escolha com limite, opção \"Outro\" com texto
+- Máscara de WhatsApp brasileira
 - Captura automática de origem do lead (UTMs, gclid, fbclid, página e referência)
 - Anti-spam (honeypot) e proteção contra injeção de fórmulas na planilha
 - Aviso opcional por e-mail a cada novo lead
@@ -40,19 +41,31 @@ Abra `config.js` e ajuste:
 Para trocar o logo, coloque seu arquivo em `assets/` (ex.: `assets/minha-logo.png`)
 e atualize `brand.logo`. Logos claros funcionam melhor, pois ficam sobre o fundo escuro.
 
-### Campos
+### Perguntas
 
-Cada campo tem `name` (vira o nome da coluna na planilha), `label`, `type` e,
+Cada pergunta tem `name` (vira o nome da coluna na planilha), `label`, `type` e,
 opcionalmente, `required`, `placeholder`, `width: "half"` e `options`.
 
-Tipos: `text`, `email`, `tel`, `select`, `radio`, `textarea`, `checkbox`.
+| Tipo | Uso |
+|---|---|
+| `text`, `email`, `tel`, `textarea`, `select` | Campos de texto e lista suspensa |
+| `radio` | Escolha única |
+| `checkboxes` | Múltipla escolha (`max: 2` limita a quantidade; `exclusive: ["Nenhum desses"]` desmarca as demais) |
+| `group` | Várias perguntas curtas sob um título (ex.: "Seus dados") |
+| `checkbox` | Aceite único (ex.: LGPD, com `{privacy}` virando link) |
+
+Extras: `other: true` adiciona a opção "Outro" com campo de texto e `layout: "list"`
+empilha opções longas. No topo do arquivo, `numbered`, `showProgress` e
+`markRequired` controlam a numeração, a barra de progresso e os asteriscos.
 
 ```js
-{ name: "cidade", label: "Cidade", type: "text", width: "half" },
-{ name: "segmento", label: "Segmento", type: "select", options: ["Varejo", "Indústria", "Serviços"] }
+{ name: "cidade", label: "Cidade", type: "text", required: true },
+{ name: "segmento", label: "Segmento", type: "radio", options: ["Varejo", "Indústria", "Serviços"], other: true }
 ```
 
-Novos campos criam novas colunas na planilha automaticamente, sem apagar dados antigos.
+Respostas de múltipla escolha ficam numa única célula, separadas por `;`
+(ex.: `Indicação; Outro: Feiras`). Novas perguntas criam novas colunas na planilha
+automaticamente, sem apagar dados antigos.
 
 ## 2. Conectar ao Google Sheets
 

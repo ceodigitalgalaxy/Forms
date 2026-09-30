@@ -71,6 +71,42 @@
   }
 
   // ---------------------------------------------------------------
+  // Fundo: estrelas piscando (pontos de luz + algumas estrelas da logo)
+  // ---------------------------------------------------------------
+  var STAR_PATH = "M12 1.5c.5 0 .8.3.9.8.9 5 3.8 7.9 8.8 8.8.5.1.8.4.8.9s-.3.8-.8.9c-5 .9-7.9 3.8-8.8 8.8-.1.5-.4.8-.9.8s-.8-.3-.9-.8c-.9-5-3.8-7.9-8.8-8.8-.5-.1-.8-.4-.8-.9s.3-.8.8-.9c5-.9 7.9-3.8 8.8-8.8.1-.5.4-.8.9-.8Z";
+
+  function createStarfield() {
+    var sky = $("starfield");
+    if (!sky) return;
+    var rand = function (min, max) { return min + Math.random() * (max - min); };
+    var dots = isMobile ? 26 : 55;
+    var brandStars = isMobile ? 3 : 6;
+
+    for (var i = 0; i < dots + brandStars; i++) {
+      var brand = i >= dots;
+      var size = brand ? rand(7, 12) : rand(1, 2.4);
+      var star = el("span", { className: "star" + (brand ? " star--brand" : "") });
+      star.style.left = rand(0, 100) + "%";
+      star.style.top = rand(0, 100) + "%";
+      star.style.width = star.style.height = size + "px";
+      star.style.setProperty("--dur", rand(brand ? 5 : 3, brand ? 9 : 7).toFixed(2) + "s");
+      star.style.setProperty("--delay", (-rand(0, 9)).toFixed(2) + "s");
+      star.style.setProperty("--max", rand(brand ? .35 : .3, brand ? .6 : .85).toFixed(2));
+      if (brand) {
+        var ns = "http://www.w3.org/2000/svg";
+        var svg = document.createElementNS(ns, "svg");
+        svg.setAttribute("viewBox", "0 0 24 24");
+        var path = document.createElementNS(ns, "path");
+        path.setAttribute("d", STAR_PATH);
+        path.setAttribute("fill", "currentColor");
+        svg.appendChild(path);
+        star.appendChild(svg);
+      }
+      sky.appendChild(star);
+    }
+  }
+
+  // ---------------------------------------------------------------
   // Estrutura: cada item de "fields" é uma tela. Um item pode ser um
   // campo ou um grupo ({ type: "group", label, fields: [...] }).
   // ---------------------------------------------------------------
@@ -400,6 +436,7 @@
   // ---------------------------------------------------------------
   function init() {
     applyBrand();
+    createStarfield();
     var utm = captureUtm();
     var form = $("lead-form");
     var total = cfg.fields.length;

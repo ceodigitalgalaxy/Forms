@@ -7,6 +7,8 @@
   var OTHER = "Outro";
   var LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
   var canHover = window.matchMedia("(hover: hover)").matches;
+  var isMobile = window.matchMedia("(max-width: 600px)").matches;
+  var BACK = "M15 18l-6-6 6-6";
 
   // ---------------------------------------------------------------
   // Tema / identidade visual
@@ -55,7 +57,11 @@
     $("brand-name").textContent = b.name;
     $("welcome-logo").src = b.logo;
     $("welcome-logo").alt = b.name;
-    $("headline").textContent = t.headline;
+    t.headline.split(" ").forEach(function (word, i) {
+      if (i) $("headline").appendChild(document.createTextNode(" "));
+      $("headline").appendChild(word.indexOf("-") > -1
+        ? el("span", { className: "nowrap", text: word }) : document.createTextNode(word));
+    });
     $("subheadline").textContent = t.subheadline;
     $("start-btn").textContent = t.start;
     $("welcome-hint").textContent = t.duration;
@@ -158,7 +164,7 @@
         el("input", { type: type, name: f.name, value: o, id: i === 0 ? id : undefined }),
         el("span", { className: "choice__body" }, [
           el("span", { className: "choice__key", text: LETTERS[i], "aria-hidden": "true" }),
-          el("span", { className: "choice__text", text: o }),
+          el("span", { className: "choice__text", text: o.replace(/R\$ /g, "R$\u00A0") }), // "R$" não se separa do valor
           icon(CHECK, 18, "choice__check")
         ])
       ]);
@@ -209,7 +215,7 @@
 
       case "textarea":
         control = el("textarea", Object.assign({
-          className: "textarea", rows: f.rows || 2, placeholder: f.placeholder || "Digite sua resposta aqui…"
+          className: "textarea", rows: f.rows || 2, placeholder: placeholderFor(f)
         }, common));
         wrap.append(labelFor(f, number), control);
         break;
@@ -218,7 +224,7 @@
         control = el("input", Object.assign({
           className: "input",
           type: f.type || "text",
-          placeholder: f.placeholder || "Digite sua resposta aqui…",
+          placeholder: placeholderFor(f),
           autocomplete: f.autocomplete,
           maxlength: f.maxlength,
           inputmode: f.type === "tel" ? "tel" : undefined
@@ -237,6 +243,11 @@
     return el("fieldset", { className: "group" }, [legend, grid]);
   }
 
+  // No celular usa "placeholderMobile" (mais curto), quando existir
+  function placeholderFor(f) {
+    return (isMobile && f.placeholderMobile) || f.placeholder || (isMobile ? "Digite aqui…" : "Digite sua resposta aqui…");
+  }
+
   function renderStep(q, i, total) {
     var last = i === total - 1;
     var btn = el("button", { type: "button", className: "btn", "data-action": "next" }, [
@@ -249,7 +260,13 @@
     return el("section", { className: "step", tabindex: "-1", "aria-label": "Pergunta " + (i + 1) + " de " + total }, [
       el("div", { className: "step__inner" }, [
         q.type === "group" ? renderGroup(q, i + 1) : renderField(q, i + 1),
-        el("div", { className: "step__actions" }, [btn, hint]),
+        el("div", { className: "step__actions" }, [
+          // "Voltar" só aparece no celular (no computador ficam as setas)
+          el("button", { type: "button", className: "btn-back", "data-action": "back", "aria-label": "Voltar para a pergunta anterior" }, [
+            icon(BACK, 18), el("span", { text: "Voltar" })
+          ]),
+          btn, hint
+        ]),
         last ? el("p", { className: "form__error", id: "form-error", role: "alert", hidden: true }) : null
       ])
     ]);
@@ -496,6 +513,7 @@
     // Botões OK / Começar / setas
     form.addEventListener("click", function (e) {
       if (e.target.closest('[data-action="next"]')) next();
+      if (e.target.closest('[data-action="back"]')) show(current - 1);
     });
     $("nav-prev").addEventListener("click", function () { show(current - 1); });
     $("nav-next").addEventListener("click", next);

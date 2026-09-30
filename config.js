@@ -81,6 +81,7 @@ window.FORM_CONFIG = {
   // Opções extras:
   //   other: true      → adiciona "Outro" com campo de texto
   //   width: "half"    → dois campos lado a lado em telas largas
+  //   placeholderMobile → texto de exemplo mais curto para o celular
   //   required: true   → obrigatório
   // ---------------------------------------------------------------
   fields: [
@@ -90,13 +91,14 @@ window.FORM_CONFIG = {
         { name: "nome", label: "Nome", type: "text", required: true, autocomplete: "name", width: "half" },
         { name: "empresa", label: "Nome da empresa", type: "text", required: true, autocomplete: "organization", width: "half" },
         { name: "whatsapp", label: "WhatsApp", type: "tel", required: true, autocomplete: "tel", placeholder: "(11) 91234-5678", width: "half" },
-        { name: "instagram_site", label: "@ do Instagram ou site", type: "text", required: true, placeholder: "@suaempresa ou suaempresa.com.br", width: "half" }
+        { name: "instagram_site", label: "@ do Instagram ou site", type: "text", required: true, placeholder: "@suaempresa ou suaempresa.com.br", placeholderMobile: "@empresa ou site", width: "half" }
       ]
     },
     {
       name: "o_que_vende", type: "text", required: true, maxlength: 200,
       label: "Em uma frase, o que sua empresa vende e para quem?",
-      placeholder: "Ex.: Doces artesanais para festas infantis em Campinas"
+      placeholder: "Ex.: Doces artesanais para festas infantis em Campinas",
+      placeholderMobile: "Ex.: Doces para festas infantis"
     },
     {
       name: "tempo_de_negocio", type: "radio", required: true,

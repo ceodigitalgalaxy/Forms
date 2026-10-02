@@ -1,6 +1,6 @@
-# Formulário pré-reunião com domínio próprio
+# Diagnóstico inicial — formulário com domínio próprio
 
-Questionário pré-reunião com a identidade visual da sua empresa,
+Formulário de diagnóstico inicial com a identidade visual da sua empresa,
 publicado gratuitamente no **GitHub Pages** com **domínio próprio** e respostas
 gravadas automaticamente numa **planilha Google Sheets**.
 

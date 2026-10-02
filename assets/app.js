@@ -41,7 +41,6 @@
 
     var t = cfg.texts;
     document.title = t.pageTitle;
-    document.querySelector('meta[name="description"]').content = t.subheadline;
     document.querySelector('meta[name="theme-color"]').content = c.backgroundEnd;
     $("favicon").href = b.favicon;
     $("apple-icon").href = b.favicon;
@@ -424,12 +423,21 @@
       steps[n].classList.remove("from-below", "from-above", "shake");
       steps[n].classList.add("is-active", n > current ? "from-below" : "from-above");
       if (n > current) Galaxy.pulse();
+      if (n >= total - 3) warmUp();
       current = n;
       window.scrollTo(0, 0);
       $("nav-prev").disabled = n === 0;
       $("nav-next").disabled = n === steps.length - 1;
       focusStep(n);
       updateProgress();
+    }
+
+    // "Acorda" o Apps Script na reta final: a 1ª chamada após um tempo parado é a mais lenta
+    var warmed = false;
+    function warmUp() {
+      if (warmed || !cfg.endpoint) return;
+      warmed = true;
+      fetch(cfg.endpoint, { method: "GET", mode: "no-cors", cache: "no-store" }).catch(function () {});
     }
 
     function shake(step) {
@@ -477,41 +485,74 @@
       btn.disabled = true;
       btn.textContent = cfg.texts.submitting;
       Galaxy.setLevel(1);
-      Galaxy.charge();
 
+      // O envio acontece em paralelo à decolagem: a pessoa não espera a planilha responder
+      var status = "pending";
+      var payload = buildPayload(form, utm);
+      sendWithRetry(payload, 1).then(function () { status = "ok"; }, function () { status = "error"; });
+
+      if (cfg.redirectUrl) {
+        var wait = setInterval(function () {
+          if (status === "pending") return;
+          clearInterval(wait);
+          if (status === "ok") location.href = cfg.redirectUrl; else fail();
+        }, 100);
+        return;
+      }
+
+      launch(function () { return status === "pending"; }, function () {
+        if (status === "ok") showSuccess(); else fail();
+      });
+
+      function fail() {
+        sending = false;
+        Galaxy.abort();
+        $("launch").classList.remove("is-active");
+        document.body.classList.remove("is-launching");
+        errBox.textContent = cfg.texts.errorMessage;
+        errBox.hidden = false;
+        btn.disabled = false;
+        btn.textContent = cfg.texts.submit;
+      }
+    }
+
+    // POST para o Google Apps Script, com tempo limite e 1 nova tentativa automática
+    function sendWithRetry(payload, retries) {
+      var ctrl = window.AbortController ? new AbortController() : null;
+      var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, 15000) : null;
       // application/x-www-form-urlencoded é uma "simple request": sem preflight CORS
-      fetch(cfg.endpoint, { method: "POST", body: buildPayload(form, utm) })
+      return fetch(cfg.endpoint, { method: "POST", body: payload, keepalive: true, signal: ctrl ? ctrl.signal : undefined })
         .then(function (r) { return r.json(); })
         .then(function (res) {
+          if (timer) clearTimeout(timer);
           if (!res || res.ok !== true) throw new Error((res && res.error) || "erro");
-          if (cfg.redirectUrl) { location.href = cfg.redirectUrl; return; }
-          $("progress-fill").style.width = "100%";
-          launch();
         })
-        .catch(function () {
-          sending = false;
-          Galaxy.calm();
-          errBox.textContent = cfg.texts.errorMessage;
-          errBox.hidden = false;
-          btn.disabled = false;
-          btn.textContent = cfg.texts.submit;
+        .catch(function (err) {
+          if (timer) clearTimeout(timer);
+          if (retries > 0) return sendWithRetry(payload, retries - 1);
+          throw err;
         });
     }
 
-    // Decolagem: a estrela sobe, as estrelas viram riscos de luz e, no clarão, aparece o obrigado
-    function launch() {
+    // Decolagem: a estrela sobe, as estrelas viram riscos de luz e, no clarão, aparece o resultado
+    function launch(waiting, onPeak) {
       document.body.classList.add("is-launching");
+      $("launch").classList.remove("is-active");
+      void $("launch").offsetWidth; // reinicia a animação se for uma nova tentativa
       $("launch").classList.add("is-active");
-      Galaxy.launch(function () {
-        form.hidden = true;
-        $("nav").hidden = true;
-        $("launch").classList.remove("is-active");
-        document.body.classList.remove("is-launching");
-        $("social-star").hidden = !cfg.brand.instagram;
-        $("success-view").classList.add("is-active", "from-below");
-        $("success-view").focus({ preventScroll: true });
-        window.scrollTo(0, 0);
-      });
+      Galaxy.launch(onPeak, waiting);
+    }
+
+    function showSuccess() {
+      form.hidden = true;
+      $("nav").hidden = true;
+      $("progress-fill").style.width = "100%";
+      $("launch").classList.remove("is-active");
+      document.body.classList.remove("is-launching");
+      $("social-star").hidden = !cfg.brand.instagram;
+      $("success-view").classList.add("is-active", "from-below");
+      $("success-view").focus({ preventScroll: true });
+      window.scrollTo(0, 0);
     }
 
     // Logo no topo: recomeçar. Durante o preenchimento, pede confirmação.

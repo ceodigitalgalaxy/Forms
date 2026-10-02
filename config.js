@@ -40,7 +40,7 @@ window.FORM_CONFIG = {
   // 3. TEXTOS
   // ---------------------------------------------------------------
   texts: {
-    pageTitle: "Diagnóstico | Digital Galaxy",
+    pageTitle: "Diagnóstico inicial | Digital Galaxy",
     // Aparecem no topo da primeira pergunta (o formulário já abre nela)
     headline: "Vamos levar o seu negócio mais longe",
     subheadline: "10 perguntas rápidas, cerca de 5 minutos.",

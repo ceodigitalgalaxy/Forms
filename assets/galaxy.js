@@ -184,10 +184,13 @@ window.Galaxy = (function () {
   function stepLaunch(time) {
     var L = launchState;
     var t = time - L.start;
+    L.lastFrame = performance.now();
     if (t < 300) {                                    // conteúdo sai de cena
       targetSpeed = 0.12;
     } else if (t < 1500) {                            // acelera até a velocidade da luz
       var k = (t - 300) / 1200;
+      // envio ainda não confirmado: segue viajando em velocidade da luz, antes do clarão
+      if (k > 0.7 && L.waiting && L.waiting()) { k = 0.7; L.start = time - (300 + 0.7 * 1200); }
       targetSpeed = 0.25 + Math.pow(k, 2.2) * 3.2;
       galaxyScale = 1 - 0.55 * k;
       flash = Math.max(0, (k - 0.75) / 0.25) * 0.9;
@@ -232,11 +235,28 @@ window.Galaxy = (function () {
     },
     charge: function () { if (!reduced && !launchState) targetSpeed = 0.12; },
     calm: function () { if (!launchState) targetSpeed = BASE_SPEED; },
-    launch: function (cb) {
-      if (!ctx || reduced) { if (cb) cb(); return; }
-      var L = launchState = { start: performance.now(), cb: cb, fired: false };
-      // Segurança: se a aba estiver em segundo plano, a animação pausa; o obrigado aparece mesmo assim
-      setTimeout(function () { if (!L.fired) { L.fired = true; if (cb) cb(); } }, 2400);
+    // waiting(): enquanto retornar true, a viagem continua antes do clarão
+    launch: function (cb, waiting) {
+      var fire = function () { if (!L.fired) { L.fired = true; if (cb) cb(); } };
+      var L = { start: performance.now(), cb: cb, waiting: waiting, fired: false };
+      if (!ctx || reduced) {
+        var poll = setInterval(function () { if (!waiting || !waiting()) { clearInterval(poll); fire(); } }, 100);
+        return;
+      }
+      launchState = L;
+      // Segurança: com a aba em segundo plano a animação pausa; o resultado aparece mesmo assim
+      var guard = setInterval(function () {
+        if (L.fired) { clearInterval(guard); return; }
+        var paused = performance.now() - (L.lastFrame || L.start) > 600;   // aba em segundo plano
+        if (paused && (!waiting || !waiting())) { clearInterval(guard); fire(); }
+      }, 300);
+    },
+    // Cancela a decolagem (ex.: falha no envio)
+    abort: function () {
+      launchState = null;
+      flash = 0;
+      galaxyScale = 1;
+      targetSpeed = BASE_SPEED;
     }
   };
 })();

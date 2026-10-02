@@ -486,23 +486,21 @@
       btn.textContent = cfg.texts.submitting;
       Galaxy.setLevel(1);
 
-      // O envio acontece em paralelo à decolagem: a pessoa não espera a planilha responder
-      var status = "pending";
-      var payload = buildPayload(form, utm);
-      sendWithRetry(payload, 1).then(function () { status = "ok"; }, function () { status = "error"; });
+      // Sem internet: avisa na hora, sem decolar
+      if (navigator.onLine === false) { fail(); return; }
+
+      // O envio roda em segundo plano (keepalive: continua mesmo se a aba for fechada).
+      // A pessoa não espera a planilha responder: o obrigado aparece no fim da decolagem.
+      var payload = buildPayload(form, utm).toString();
+      var delivery = deliver(payload);
 
       if (cfg.redirectUrl) {
-        var wait = setInterval(function () {
-          if (status === "pending") return;
-          clearInterval(wait);
-          if (status === "ok") location.href = cfg.redirectUrl; else fail();
-        }, 100);
+        delivery.then(function () { location.href = cfg.redirectUrl; }, fail);
         return;
       }
 
-      launch(function () { return status === "pending"; }, function () {
-        if (status === "ok") showSuccess(); else fail();
-      });
+      delivery.catch(function () {});   // falhas já ficam na fila de reenvio
+      launch(null, showSuccess);
 
       function fail() {
         sending = false;
@@ -516,12 +514,47 @@
       }
     }
 
-    // POST para o Google Apps Script, com tempo limite e 1 nova tentativa automática
-    function sendWithRetry(payload, retries) {
+    // ---------------------------------------------------------------
+    // Entrega garantida das respostas
+    // 1) fetch com keepalive (+1 nova tentativa)
+    // 2) se falhar: navigator.sendBeacon
+    // 3) se ainda assim não der: guarda no aparelho e reenvia na próxima visita
+    // ---------------------------------------------------------------
+    var QUEUE_KEY = "dg_envios_pendentes";
+
+    function readQueue() {
+      try { return JSON.parse(localStorage.getItem(QUEUE_KEY) || "[]"); } catch (_) { return []; }
+    }
+    function writeQueue(list) {
+      try {
+        if (list.length) localStorage.setItem(QUEUE_KEY, JSON.stringify(list.slice(-5)));
+        else localStorage.removeItem(QUEUE_KEY);
+      } catch (_) {}
+    }
+
+    function deliver(payload) {
+      return post(payload, 1).catch(function (err) {
+        var queued = false;
+        try {
+          queued = !!(navigator.sendBeacon && navigator.sendBeacon(cfg.endpoint,
+            new Blob([payload], { type: "application/x-www-form-urlencoded" })));
+        } catch (_) {}
+        if (!queued) writeQueue(readQueue().concat([payload]));
+        throw err;
+      });
+    }
+
+    function post(payload, retries) {
       var ctrl = window.AbortController ? new AbortController() : null;
-      var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, 15000) : null;
+      var timer = ctrl ? setTimeout(function () { ctrl.abort(); }, 20000) : null;
       // application/x-www-form-urlencoded é uma "simple request": sem preflight CORS
-      return fetch(cfg.endpoint, { method: "POST", body: payload, keepalive: true, signal: ctrl ? ctrl.signal : undefined })
+      return fetch(cfg.endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8" },
+        body: payload,
+        keepalive: true,
+        signal: ctrl ? ctrl.signal : undefined
+      })
         .then(function (r) { return r.json(); })
         .then(function (res) {
           if (timer) clearTimeout(timer);
@@ -529,9 +562,19 @@
         })
         .catch(function (err) {
           if (timer) clearTimeout(timer);
-          if (retries > 0) return sendWithRetry(payload, retries - 1);
+          if (retries > 0) return post(payload, retries - 1);
           throw err;
         });
+    }
+
+    // Reenvia respostas que ficaram guardadas no aparelho (ex.: sem sinal na hora do envio)
+    function flushQueue() {
+      var pending = readQueue();
+      if (!pending.length || !cfg.endpoint || navigator.onLine === false) return;
+      writeQueue([]);
+      pending.forEach(function (payload) {
+        post(payload, 1).catch(function () { writeQueue(readQueue().concat([payload])); });
+      });
     }
 
     // Decolagem: a estrela sobe, as estrelas viram riscos de luz e, no clarão, aparece o resultado
@@ -606,7 +649,7 @@
             updateProgress();
 
             if (evt === "change" && q === f && f.type === "radio" && e.target.type === "radio" && e.target.value !== OTHER) {
-              setTimeout(function () { if (current === qi) next(); }, 450);
+              setTimeout(function () { if (current === qi) next(); }, 350);
             }
           });
         });
@@ -620,6 +663,7 @@
     $("nav-prev").disabled = true;
     updateProgress();
     focusStep(0);
+    flushQueue();
   }
 
   init();

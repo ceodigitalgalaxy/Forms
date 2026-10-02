@@ -185,23 +185,23 @@ window.Galaxy = (function () {
     var L = launchState;
     var t = time - L.start;
     L.lastFrame = performance.now();
-    if (t < 300) {                                    // conteúdo sai de cena
+    if (t < 200) {                                    // conteúdo sai de cena
       targetSpeed = 0.12;
-    } else if (t < 1500) {                            // acelera até a velocidade da luz
-      var k = (t - 300) / 1200;
-      // envio ainda não confirmado: segue viajando em velocidade da luz, antes do clarão
-      if (k > 0.7 && L.waiting && L.waiting()) { k = 0.7; L.start = time - (300 + 0.7 * 1200); }
+    } else if (t < 1200) {                            // acelera até a velocidade da luz
+      var k = (t - 200) / 1000;
+      // se for preciso esperar algo antes do clarão, segue viajando em velocidade da luz
+      if (k > 0.7 && L.waiting && L.waiting()) { k = 0.7; L.start = time - (200 + 0.7 * 1000); }
       targetSpeed = 0.25 + Math.pow(k, 2.2) * 3.2;
       galaxyScale = 1 - 0.55 * k;
       flash = Math.max(0, (k - 0.75) / 0.25) * 0.9;
-    } else if (t < 1800) {                            // clarão
+    } else if (t < 1450) {                            // clarão
       flash = 0.9;
       if (!L.fired) { L.fired = true; if (L.cb) L.cb(); }
       targetSpeed = BASE_SPEED * 2;
       speed = 0.3;
       galaxyScale = 1;
-    } else if (t < 2900) {                            // dissipa e volta ao cruzeiro
-      flash = 0.9 * (1 - (t - 1800) / 1100);
+    } else if (t < 2400) {                            // dissipa e volta ao cruzeiro
+      flash = 0.9 * (1 - (t - 1450) / 950);
     } else {
       flash = 0;
       targetSpeed = BASE_SPEED;

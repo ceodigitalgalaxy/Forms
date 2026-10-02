@@ -60,7 +60,7 @@ main { position: relative; z-index: 1; }
   width: 56px;
   height: 56px;
   margin-left: -28px;
-  animation: lift-off 1.55s cubic-bezier(.55, 0, .85, .35) .3s both;
+  animation: lift-off 1.15s cubic-bezier(.55, 0, .85, .35) .2s both;
 }
 .launch__star {
   position: relative;
@@ -69,7 +69,7 @@ main { position: relative; z-index: 1; }
   height: 100%;
   color: #fff;
   filter: drop-shadow(0 0 10px #D9C6FF) drop-shadow(0 0 28px #8A4DFF);
-  animation: star-spin 1.55s ease-in .3s both;
+  animation: star-spin 1.15s ease-in .2s both;
 }
 .launch__trail {
   position: absolute;
@@ -81,7 +81,7 @@ main { position: relative; z-index: 1; }
   border-radius: 3px;
   background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(183,148,255,.6) 30%, rgba(90,26,199,0));
   filter: blur(1px);
-  animation: trail 1.55s cubic-bezier(.55, 0, .85, .35) .3s both;
+  animation: trail 1.15s cubic-bezier(.55, 0, .85, .35) .2s both;
 }
 @keyframes lift-off {
   0%   { transform: translateY(0) scale(.4); opacity: 0; }
@@ -96,7 +96,7 @@ main { position: relative; z-index: 1; }
 }
 /* O conteúdo sai de cena enquanto a nave decola */
 .is-launching #lead-form,
-.is-launching .nav { animation: content-out .5s ease-in forwards; }
+.is-launching .nav { animation: content-out .3s ease-in forwards; }
 @keyframes content-out { to { opacity: 0; transform: translateY(-24px) scale(.97); } }
 
 /* ---------- Título e legenda da primeira pergunta ---------- */

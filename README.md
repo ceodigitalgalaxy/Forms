@@ -6,7 +6,8 @@ gravadas automaticamente numa **planilha Google Sheets**.
 
 - Um único arquivo de configuração (`config.js`) para logo, cores, fonte, textos e campos
 - Responsivo, acessível e com validação (e-mail, telefone com DDD, campos obrigatórios)
-- Estilo Typeform: uma pergunta por tela, tela de boas-vindas, barra de progresso e setas ↑↓
+- Estilo Typeform: abre direto na primeira pergunta, uma por tela, com barra de progresso e setas ↑↓
+- Galáxia animada que se forma conforme a pessoa responde e "decolagem" ao enviar (assets/galaxy.js)
 - Atalhos de teclado (Enter avança, letras A, B, C… escolhem opções) e avanço automático na escolha única
 - Múltipla escolha com limite, opção exclusiva e "Outro" com campo de texto
 - Máscara de WhatsApp brasileira

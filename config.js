@@ -40,21 +40,15 @@ window.FORM_CONFIG = {
   // 3. TEXTOS
   // ---------------------------------------------------------------
   texts: {
-    pageTitle: "Formulário pré-reunião | Digital Galaxy",
-    headline: "Formulário pré-reunião",
-    subheadline:
-      "Olá! Antes da nossa conversa, queremos conhecer um pouco do seu negócio. " +
-      "São 10 perguntas rápidas, cerca de 5 minutos. Não existe resposta certa: " +
-      "quanto mais sincero, melhor conseguimos ajudar.",
-    start: "Começar",
-    duration: "",                     // linha extra abaixo do botão (vazio = oculta)
+    pageTitle: "Diagnóstico | Digital Galaxy",
+    // Aparecem no topo da primeira pergunta (o formulário já abre nela)
+    headline: "Vamos levar o seu negócio mais longe",
+    subheadline: "10 perguntas rápidas, cerca de 5 minutos.",
     ok: "OK",
     submit: "Enviar respostas",
     submitting: "Enviando…",
     successTitle: "Obrigado!",
-    successMessage:
-      "Suas respostas nos ajudam a chegar à reunião já conhecendo o seu cenário. " +
-      "Assim, aproveitamos cada minuto para falar do que faz diferença no seu negócio.",
+    successMessage: "Recebemos suas respostas. Nossa equipe entrará em contato em breve.",
     errorMessage:
       "Não foi possível enviar agora. Verifique sua conexão e tente novamente.",
     privacyUrl: "https://example.com/privacidade"

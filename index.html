@@ -14,7 +14,7 @@
   <script src="config.js"></script>
 </head>
 <body>
-  <div class="starfield" id="starfield" aria-hidden="true"></div>
+  <canvas class="galaxy" id="galaxy" aria-hidden="true"></canvas>
   <div class="progress" aria-hidden="true"><span id="progress-fill"></span></div>
 
   <header class="brand">
@@ -26,20 +26,6 @@
 
   <main>
     <form id="lead-form" novalidate>
-      <!-- Tela de boas-vindas -->
-      <section class="step step--welcome is-active" tabindex="-1">
-        <div class="step__inner">
-          <img id="welcome-logo" class="welcome__logo" src="" alt="">
-          <h1 id="headline" class="welcome__title"></h1>
-          <p id="subheadline" class="welcome__text"></p>
-          <div class="step__actions">
-            <button type="button" class="btn" data-action="next" id="start-btn"></button>
-            <span class="step__hint">pressione <strong>Enter ↵</strong></span>
-          </div>
-          <p id="welcome-hint" class="welcome__hint"></p>
-        </div>
-      </section>
-
       <!-- Perguntas (geradas a partir de config.js) -->
       <div id="steps"></div>
 
@@ -48,6 +34,14 @@
         <label>Não preencha <input type="text" name="_hp" tabindex="-1" autocomplete="off"></label>
       </div>
     </form>
+
+    <!-- Decolagem: a estrela da logo sobe ao enviar -->
+    <div class="launch" id="launch" aria-hidden="true">
+      <div class="launch__ship">
+      <span class="launch__trail"></span>
+      <svg class="launch__star" viewBox="0 0 24 24"><path d="M12 1.5c.5 0 .8.3.9.8.9 5 3.8 7.9 8.8 8.8.5.1.8.4.8.9s-.3.8-.8.9c-5 .9-7.9 3.8-8.8 8.8-.1.5-.4.8-.9.8s-.8-.3-.9-.8c-.9-5-3.8-7.9-8.8-8.8-.5-.1-.8-.4-.8-.9s.3-.8.8-.9c5-.9 7.9-3.8 8.8-8.8.1-.5.4-.8.9-.8Z" fill="currentColor"/></svg>
+      </div>
+    </div>
 
     <!-- Tela final -->
     <section id="success-view" class="step step--end" tabindex="-1" aria-live="polite">
@@ -71,7 +65,7 @@
     </span>
   </a>
 
-  <nav class="nav" id="nav" hidden aria-label="Navegação entre perguntas">
+  <nav class="nav" id="nav" aria-label="Navegação entre perguntas">
     <button type="button" class="nav__btn" id="nav-prev" aria-label="Pergunta anterior">
       <svg viewBox="0 0 24 24" width="18" height="18"><path d="m6 15 6-6 6 6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
@@ -80,6 +74,7 @@
     </button>
   </nav>
 
+  <script src="assets/galaxy.js"></script>
   <script src="assets/app.js"></script>
 </body>
 </html>

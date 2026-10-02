@@ -55,55 +55,8 @@
     }
     $("brand-logo").src = b.logo;
     $("brand-name").textContent = b.name;
-    $("welcome-logo").src = b.logo;
-    $("welcome-logo").alt = b.name;
-    t.headline.split(" ").forEach(function (word, i) {
-      if (i) $("headline").appendChild(document.createTextNode(" "));
-      $("headline").appendChild(word.indexOf("-") > -1
-        ? el("span", { className: "nowrap", text: word }) : document.createTextNode(word));
-    });
-    $("subheadline").textContent = t.subheadline;
-    $("start-btn").textContent = t.start;
-    $("welcome-hint").textContent = t.duration;
-    $("welcome-hint").hidden = !t.duration;
     $("success-title").textContent = t.successTitle;
     $("success-message").textContent = t.successMessage;
-  }
-
-  // ---------------------------------------------------------------
-  // Fundo: estrelas piscando (pontos de luz + algumas estrelas da logo)
-  // ---------------------------------------------------------------
-  var STAR_PATH = "M12 1.5c.5 0 .8.3.9.8.9 5 3.8 7.9 8.8 8.8.5.1.8.4.8.9s-.3.8-.8.9c-5 .9-7.9 3.8-8.8 8.8-.1.5-.4.8-.9.8s-.8-.3-.9-.8c-.9-5-3.8-7.9-8.8-8.8-.5-.1-.8-.4-.8-.9s.3-.8.8-.9c5-.9 7.9-3.8 8.8-8.8.1-.5.4-.8.9-.8Z";
-
-  function createStarfield() {
-    var sky = $("starfield");
-    if (!sky) return;
-    var rand = function (min, max) { return min + Math.random() * (max - min); };
-    var dots = isMobile ? 26 : 55;
-    var brandStars = isMobile ? 3 : 6;
-
-    for (var i = 0; i < dots + brandStars; i++) {
-      var brand = i >= dots;
-      var size = brand ? rand(7, 12) : rand(1, 2.4);
-      var star = el("span", { className: "star" + (brand ? " star--brand" : "") });
-      star.style.left = rand(0, 100) + "%";
-      star.style.top = rand(0, 100) + "%";
-      star.style.width = star.style.height = size + "px";
-      star.style.setProperty("--dur", rand(brand ? 5 : 3, brand ? 9 : 7).toFixed(2) + "s");
-      star.style.setProperty("--delay", (-rand(0, 9)).toFixed(2) + "s");
-      star.style.setProperty("--max", rand(brand ? .35 : .3, brand ? .6 : .85).toFixed(2));
-      if (brand) {
-        var ns = "http://www.w3.org/2000/svg";
-        var svg = document.createElementNS(ns, "svg");
-        svg.setAttribute("viewBox", "0 0 24 24");
-        var path = document.createElementNS(ns, "path");
-        path.setAttribute("d", STAR_PATH);
-        path.setAttribute("fill", "currentColor");
-        svg.appendChild(path);
-        star.appendChild(svg);
-      }
-      sky.appendChild(star);
-    }
   }
 
   // ---------------------------------------------------------------
@@ -293,8 +246,13 @@
     var hint = el("span", { className: "step__hint" }, [
       document.createTextNode("pressione "), el("strong", { text: "Enter ↵" })
     ]);
-    return el("section", { className: "step", tabindex: "-1", "aria-label": "Pergunta " + (i + 1) + " de " + total }, [
+    var intro = i === 0 ? el("header", { className: "intro" }, [
+      el("h1", { className: "intro__title", text: cfg.texts.headline }),
+      cfg.texts.subheadline ? el("p", { className: "intro__text", text: cfg.texts.subheadline }) : null
+    ]) : null;
+    return el("section", { className: "step" + (i === 0 ? " step--first" : ""), tabindex: "-1", "aria-label": "Pergunta " + (i + 1) + " de " + total }, [
       el("div", { className: "step__inner" }, [
+        intro,
         q.type === "group" ? renderGroup(q, i + 1) : renderField(q, i + 1),
         el("div", { className: "step__actions" }, [
           // "Voltar" só aparece no celular (no computador ficam as setas)
@@ -436,21 +394,22 @@
   // ---------------------------------------------------------------
   function init() {
     applyBrand();
-    createStarfield();
+    Galaxy.init($("galaxy"));
     var utm = captureUtm();
     var form = $("lead-form");
     var total = cfg.fields.length;
     var stepsBox = $("steps");
     cfg.fields.forEach(function (q, i) { stepsBox.appendChild(renderStep(q, i, total)); });
 
-    // steps[0] = boas-vindas; steps[i] = pergunta i
-    var steps = [form.querySelector(".step--welcome")].concat(Array.prototype.slice.call(stepsBox.children));
+    // steps[i] = pergunta i + 1 (o formulário já abre na primeira pergunta)
+    var steps = Array.prototype.slice.call(stepsBox.children);
     var current = 0;
     var sending = false;
 
     function updateProgress() {
       var done = cfg.fields.filter(function (q) { return isAnswered(q, form); }).length;
       $("progress-fill").style.width = (100 * done / total) + "%";
+      Galaxy.setLevel(Math.max(done, current) / total);   // a galáxia se forma conforme avança
     }
 
     function focusStep(n) {
@@ -464,12 +423,13 @@
       steps[current].classList.remove("is-active", "from-below", "from-above", "shake");
       steps[n].classList.remove("from-below", "from-above", "shake");
       steps[n].classList.add("is-active", n > current ? "from-below" : "from-above");
+      if (n > current) Galaxy.pulse();
       current = n;
       window.scrollTo(0, 0);
-      $("nav").hidden = n === 0;
-      $("nav-prev").disabled = n <= 1;
+      $("nav-prev").disabled = n === 0;
       $("nav-next").disabled = n === steps.length - 1;
       focusStep(n);
+      updateProgress();
     }
 
     function shake(step) {
@@ -480,7 +440,7 @@
 
     function validateStep(n, focus) {
       var firstInvalid = null;
-      fieldsOf(cfg.fields[n - 1]).forEach(function (f) {
+      fieldsOf(cfg.fields[n]).forEach(function (f) {
         if (!validateField(f, form) && !firstInvalid) firstInvalid = f;
       });
       if (firstInvalid && focus) {
@@ -494,14 +454,13 @@
 
     function next() {
       if (sending) return;
-      if (current === 0) return show(1);
       if (!validateStep(current, true)) return;
       if (current < steps.length - 1) return show(current + 1);
       submit();
     }
 
     function submit() {
-      for (var n = 1; n < steps.length; n++) {
+      for (var n = 0; n < steps.length; n++) {
         if (!validateStep(n, false)) { show(n); validateStep(n, true); return; }
       }
       var errBox = $("form-error");
@@ -517,6 +476,8 @@
       sending = true;
       btn.disabled = true;
       btn.textContent = cfg.texts.submitting;
+      Galaxy.setLevel(1);
+      Galaxy.charge();
 
       // application/x-www-form-urlencoded é uma "simple request": sem preflight CORS
       fetch(cfg.endpoint, { method: "POST", body: buildPayload(form, utm) })
@@ -524,21 +485,33 @@
         .then(function (res) {
           if (!res || res.ok !== true) throw new Error((res && res.error) || "erro");
           if (cfg.redirectUrl) { location.href = cfg.redirectUrl; return; }
-          form.hidden = true;
-          $("nav").hidden = true;
-          $("social-star").hidden = !cfg.brand.instagram;
           $("progress-fill").style.width = "100%";
-          $("success-view").classList.add("is-active", "from-below");
-          $("success-view").focus({ preventScroll: true });
-          window.scrollTo(0, 0);
+          launch();
         })
         .catch(function () {
           sending = false;
+          Galaxy.calm();
           errBox.textContent = cfg.texts.errorMessage;
           errBox.hidden = false;
           btn.disabled = false;
           btn.textContent = cfg.texts.submit;
         });
+    }
+
+    // Decolagem: a estrela sobe, as estrelas viram riscos de luz e, no clarão, aparece o obrigado
+    function launch() {
+      document.body.classList.add("is-launching");
+      $("launch").classList.add("is-active");
+      Galaxy.launch(function () {
+        form.hidden = true;
+        $("nav").hidden = true;
+        $("launch").classList.remove("is-active");
+        document.body.classList.remove("is-launching");
+        $("social-star").hidden = !cfg.brand.instagram;
+        $("success-view").classList.add("is-active", "from-below");
+        $("success-view").focus({ preventScroll: true });
+        window.scrollTo(0, 0);
+      });
     }
 
     // Logo no topo: recomeçar. Durante o preenchimento, pede confirmação.
@@ -568,7 +541,7 @@
         return;
       }
 
-      var q = cfg.fields[current - 1];
+      var q = cfg.fields[current];
       var typing = (tag === "INPUT" && e.target.type === "text") || tag === "TEXTAREA";
       if (!q || !isChoice(q) || typing || e.key.length !== 1) return;
       var box = boxesOf(q, form)[LETTERS.indexOf(e.key.toUpperCase())];
@@ -592,7 +565,7 @@
             updateProgress();
 
             if (evt === "change" && q === f && f.type === "radio" && e.target.type === "radio" && e.target.value !== OTHER) {
-              setTimeout(function () { if (current === qi + 1) next(); }, 450);
+              setTimeout(function () { if (current === qi) next(); }, 450);
             }
           });
         });
@@ -602,8 +575,10 @@
       });
     });
 
+    steps[0].classList.add("is-active", "from-below");
+    $("nav-prev").disabled = true;
     updateProgress();
-    steps[0].focus({ preventScroll: true });
+    focusStep(0);
   }
 
   init();

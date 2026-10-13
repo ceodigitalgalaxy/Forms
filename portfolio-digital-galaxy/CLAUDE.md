@@ -17,7 +17,7 @@ Publicado no GitHub Pages pelo repositório `ceodigitalgalaxy/portfolio` (branch
 
 ## Regras de conteúdo
 - A página é para enviar a clientes: não colocar pendências internas nem nomes de quem da equipe faz cada tarefa.
-- Visual da marca Digital Galaxy: fundo #0A090E com brilho roxo (#3B008E) e estrelas, acento lilás #A77BFF (claro #C4A6FF), texto #F3F0FA, apoio #C9C4D8, cinza #8A8599, linhas #221F2C. Fontes Saira (títulos e números), Saira Semi Expanded (chamada final) e Manrope (texto). Símbolo em `img/logo-mark.png` (branco, fundo transparente). Visual editorial com linhas finas, sem caixas arredondadas repetidas nem selos.
+- Visual claro e limpo (preferência do dono): fundo #f7f6fa, texto #16131f, linhas #dcd8e5, acento roxo #6a35e8 (texto #5524cc), roxo da marca #3B008E no botão e na barra degradê #3B008E → #A77BFF dos títulos de seção. Sem fundo escuro, brilho ou estrelas. Fontes Saira (títulos e números), Saira Semi Expanded (chamada final) e Manrope (texto). Símbolo roxo em `img/logo-mark-roxo.png` (há também o branco `img/logo-mark.png`). Visual editorial com linhas finas, sem caixas arredondadas repetidas nem selos.
 - Página resumida: deixar claro que é só uma seleção de trabalhos. Linguagem para leigos ("anúncios no Instagram e Facebook", "perfil do Google", "exibições"), sem termos como Meta Ads, tráfego pago ou impressões.
 - Chamada final leva ao diagnóstico: https://diagnostico.digitalgalaxy.com.br
 - A página tem `noindex` para não aparecer no Google.

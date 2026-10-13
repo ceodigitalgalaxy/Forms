@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#0A090E">
+<meta name="theme-color" content="#f7f6fa">
 <title>Portfólio Digital Galaxy</title>
 <link rel="icon" type="image/png" href="img/favicon.png">
 <link rel="apple-touch-icon" href="img/favicon.png">
@@ -12,22 +12,20 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Saira:wght@500;600;700&family=Saira+Semi+Expanded:wght@600;700&family=Manrope:wght@400;500;600;700&display=swap">
 <style>
-/* Identidade Digital Galaxy: fundo quase preto, brilho roxo, acento lilás, Saira nos títulos e números, Manrope no texto. Visual editorial: linhas finas, sem caixas repetidas nem selos. */
+/* Identidade Digital Galaxy em versão clara: fundo claro, símbolo e acentos em roxo, Saira nos títulos e números, Manrope no texto. Visual editorial: linhas finas, sem caixas repetidas nem selos. */
 :root{
-  --bg:#0A090E;
-  --deep:#12052C;
+  --bg:#f7f6fa;
+  --surface:#efedf4;
   --purple:#3B008E;
-  --accent:#A77BFF;
-  --accent-light:#C4A6FF;
-  --ink:#F3F0FA;
-  --muted:#C9C4D8;
-  --gray:#8A8599;
-  --line:#221F2C;
-  --surface:#15131C;
+  --accent:#6a35e8;
+  --accent-light:#5524cc;
+  --ink:#16131f;
+  --muted:#4a4558;
+  --gray:#6b6579;
+  --line:#dcd8e5;
   --display:"Saira","Arial Narrow",system-ui,sans-serif;
   --wide:"Saira Semi Expanded","Saira",system-ui,sans-serif;
   --body:"Manrope",system-ui,-apple-system,"Segoe UI",sans-serif;
-  color-scheme:dark;
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -40,29 +38,8 @@ h1,h2,h3{font-family:var(--display);line-height:1.05;margin:0;text-wrap:balance;
 p{margin:0}
 img{display:block;max-width:100%;height:auto}
 
-/* Céu estrelado (estático, só CSS) */
-.sky{position:relative;isolation:isolate;overflow:hidden}
-.sky::before{content:"";position:absolute;inset:0;z-index:-2;
-  background:
-    radial-gradient(1200px 620px at -8% -20%,rgba(59,0,142,.85),transparent 62%),
-    radial-gradient(700px 420px at 110% 120%,rgba(42,7,112,.55),transparent 65%),
-    var(--bg)}
-.sky::after{content:"";position:absolute;inset:0;z-index:-1;opacity:.7;
-  background-image:
-    radial-gradient(1px 1px at 12% 18%,#fff 50%,transparent 51%),
-    radial-gradient(1px 1px at 27% 64%,#fff 50%,transparent 51%),
-    radial-gradient(1.5px 1.5px at 41% 32%,#d9ccff 50%,transparent 51%),
-    radial-gradient(1px 1px at 58% 12%,#fff 50%,transparent 51%),
-    radial-gradient(1px 1px at 66% 78%,#fff 50%,transparent 51%),
-    radial-gradient(1.5px 1.5px at 79% 44%,#fff 50%,transparent 51%),
-    radial-gradient(1px 1px at 88% 22%,#c4a6ff 50%,transparent 51%),
-    radial-gradient(1px 1px at 93% 86%,#fff 50%,transparent 51%),
-    radial-gradient(1px 1px at 6% 82%,#fff 50%,transparent 51%),
-    radial-gradient(1px 1px at 35% 90%,#d9ccff 50%,transparent 51%);
-  background-size:520px 520px}
-
 /* Topo */
-.top{position:sticky;top:0;z-index:5;background:rgba(10,9,14,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.top{position:sticky;top:0;z-index:5;background:rgba(247,246,250,.88);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
 .top .wrap{display:flex;align-items:center;gap:24px;padding-block:12px}
 .brand{display:flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none;font-family:var(--display);font-weight:600;font-size:19px;white-space:nowrap}
 .brand img{width:30px;height:30px}
@@ -73,9 +50,9 @@ img{display:block;max-width:100%;height:auto}
 .cta-sm{color:var(--ink);text-decoration:none;font-weight:700;font-size:14px;white-space:nowrap;border-bottom:2px solid var(--accent);padding-bottom:2px}
 
 /* Abertura */
-.hero{padding-block:clamp(64px,10vw,128px) clamp(48px,7vw,88px)}
+.hero{overflow:hidden;padding-block:clamp(64px,10vw,128px) clamp(48px,7vw,88px)}
 .hero .wrap{position:relative}
-.hero .mark{position:absolute;right:clamp(-120px,-6vw,-40px);top:50%;transform:translateY(-50%);width:clamp(260px,38vw,460px);opacity:.07;pointer-events:none}
+.hero .mark{position:absolute;right:clamp(-120px,-6vw,-40px);top:50%;transform:translateY(-50%);width:clamp(260px,38vw,460px);opacity:.06;pointer-events:none}
 .eyebrow{font-family:var(--wide);font-weight:600;font-size:13px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent-light)}
 .hero h1{margin-top:18px;font-size:clamp(42px,7.4vw,92px);font-weight:700;max-width:13ch}
 .hero h1 em{font-style:normal;color:var(--accent)}
@@ -100,6 +77,7 @@ h2.big{font-size:clamp(30px,4.4vw,50px);font-weight:700;max-width:20ch}
 .results b span{white-space:nowrap}
 .results b small{display:block;margin-top:8px;font-family:var(--body);font-size:14px;font-weight:600;color:var(--gray);letter-spacing:0}
 .results>div:last-child b{color:var(--accent)}
+.hero h1 em,.results>div:last-child b{color:var(--accent)}
 .results h3{font-family:var(--body);font-size:15.5px;font-weight:700;letter-spacing:0;line-height:1.35;margin-top:14px}
 .results p{color:var(--gray);font-size:14px;margin-top:6px}
 
@@ -119,7 +97,7 @@ h2.big{font-size:clamp(30px,4.4vw,50px);font-weight:700;max-width:20ch}
 .gallery.two{grid-template-columns:repeat(2,minmax(0,1fr))}
 .gallery img{width:100%;background:var(--surface)}
 .gallery .full{grid-column:1/-1}
-.shot{overflow-x:auto;background:#fff}
+.shot{overflow-x:auto;background:#fff;border:1px solid var(--line)}
 .shot img{min-width:640px;width:100%}
 .caption{font-size:13px;color:var(--gray);margin-top:8px}
 .case video{width:100%;max-width:300px;aspect-ratio:9/16;height:auto;background:var(--surface);display:block}
@@ -138,7 +116,7 @@ h2.big{font-size:clamp(30px,4.4vw,50px);font-weight:700;max-width:20ch}
 .photos .ph:not(.tall){aspect-ratio:1/1}
 .photos .ph:nth-child(4){grid-column:2/4;aspect-ratio:2/1}
 dialog#lightbox{border:0;padding:0;background:transparent;max-width:min(92vw,1100px);max-height:92vh}
-dialog#lightbox::backdrop{background:rgba(6,5,10,.9)}
+dialog#lightbox::backdrop{background:rgba(10,8,16,.88)}
 #lb-img{max-width:100%;max-height:86vh;width:auto;margin:0 auto}
 .lb-close{display:block;margin:0 0 10px auto;background:none;border:0;color:#fff;font:600 15px var(--body);cursor:pointer;padding:6px 0}
 @media (prefers-reduced-motion:reduce){.ph img{transition:none}}
@@ -160,12 +138,13 @@ dialog#lightbox::backdrop{background:rgba(6,5,10,.9)}
 .steps p{color:var(--muted);font-size:15px}
 
 /* Chamada final */
-.closing{margin-top:clamp(72px,9vw,120px);padding-block:clamp(64px,8vw,104px)}
+.closing{margin-top:clamp(72px,9vw,120px);padding-block:clamp(64px,8vw,104px);border-top:1px solid var(--ink)}
+.closing{overflow:hidden}
 .closing .wrap{position:relative}
 .closing h2{font-family:var(--wide);font-size:clamp(30px,4.6vw,56px);font-weight:700;max-width:16ch}
 .closing p{margin-top:16px;max-width:52ch;color:var(--muted);font-size:17px}
-.btn{display:inline-flex;align-items:center;gap:10px;margin-top:28px;background:var(--ink);color:var(--purple);font-weight:700;font-size:16px;text-decoration:none;padding:14px 24px}
-.btn:hover{background:#fff}
+.btn{display:inline-flex;align-items:center;gap:10px;margin-top:28px;background:var(--purple);color:#fff;font-weight:700;font-size:16px;text-decoration:none;padding:14px 24px}
+.btn:hover{background:var(--accent)}
 .closing .mark{position:absolute;right:clamp(-80px,-4vw,-20px);bottom:-40px;width:clamp(200px,28vw,340px);opacity:.08;pointer-events:none}
 footer{border-top:1px solid var(--line);padding-block:28px 40px;color:var(--gray);font-size:14px}
 footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
@@ -195,7 +174,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-betw
 
 <header class="top">
   <div class="wrap">
-    <a class="brand" href="#inicio"><img src="img/logo-mark.png" width="30" height="30" alt="">Digital Galaxy</a>
+    <a class="brand" href="#inicio"><img src="img/logo-mark-roxo.png" width="30" height="30" alt="">Digital Galaxy</a>
     <ul aria-label="Seções">
       <li><a href="#resultados">Resultados</a></li>
       <li><a href="#cases">Cases</a></li>
@@ -208,9 +187,9 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-betw
 </header>
 
 <main>
-  <section id="inicio" class="sky hero">
+  <section id="inicio" class="hero">
     <div class="wrap">
-      <img class="mark" src="img/logo-mark.png" width="256" height="256" alt="">
+      <img class="mark" src="img/logo-mark-roxo.png" width="256" height="256" alt="">
       <div class="eyebrow">Portfólio · Seleção de trabalhos</div>
       <h1>Marketing medido em <em>clientes e faturamento</em>.</h1>
       <p>Alguns dos negócios locais e médias empresas que passaram a ser encontrados, receber contatos todos os dias e vender mais.</p>
@@ -408,9 +387,9 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-betw
     </div>
   </section>
 
-  <section class="sky closing" aria-label="Contato">
+  <section class="closing" aria-label="Contato">
     <div class="wrap">
-      <img class="mark" src="img/logo-mark.png" width="256" height="256" alt="">
+      <img class="mark" src="img/logo-mark-roxo.png" width="256" height="256" alt="">
       <h2>Vamos começar?</h2>
       <p>Responda 10 perguntas rápidas sobre o seu negócio e receba um diagnóstico da sua presença digital.</p>
       <a class="btn" href="https://diagnostico.digitalgalaxy.com.br" target="_blank" rel="noopener">Fazer o diagnóstico <span aria-hidden="true">→</span></a>

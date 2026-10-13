@@ -6,6 +6,10 @@
 <meta name="robots" content="noindex, nofollow">
 <meta name="theme-color" content="#f7f6fa">
 <title>Portfólio Digital Galaxy</title>
+<meta name="description" content="Alguns trabalhos da Digital Galaxy: anúncios, perfil do Google, sites, marca e conteúdo para negócios locais, com os resultados de cada um.">
+<meta property="og:title" content="Portfólio Digital Galaxy">
+<meta property="og:description" content="Marketing medido em clientes e faturamento. Veja alguns dos nossos trabalhos e resultados.">
+<meta property="og:type" content="website">
 <link rel="icon" type="image/png" href="img/favicon.png">
 <link rel="apple-touch-icon" href="img/favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -149,6 +153,37 @@ dialog#lightbox::backdrop{background:rgba(10,8,16,.88)}
 footer{border-top:1px solid var(--line);padding-block:28px 40px;color:var(--gray);font-size:14px}
 footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-between}
 
+
+/* Conversão: botões, serviços, chamadas intermediárias e barra fixa no celular */
+.actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 24px;margin-top:32px}
+.actions .btn{margin-top:0}
+.link-arrow{color:var(--ink);font-weight:700;font-size:15px;text-decoration:none;border-bottom:2px solid var(--line);padding-bottom:2px}
+.link-arrow:hover{border-color:var(--accent)}
+.risk{margin-top:14px;font-size:14px;color:var(--gray)}
+.risk b{color:var(--ink);font-weight:700}
+.services{padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr));border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin-top:clamp(40px,6vw,64px)}
+.services li{list-style:none;padding:16px 16px 16px 0;font-size:14.5px;color:var(--muted)}
+.services li+li{padding-left:16px;border-left:1px solid var(--line)}
+.services b{display:block;font-family:var(--display);font-size:17px;font-weight:600;color:var(--ink);line-height:1.2;margin-bottom:2px}
+.mid-cta{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px 40px;align-items:center;margin-top:clamp(40px,5vw,56px);padding:clamp(24px,3vw,36px) 0;border-top:2px solid var(--purple);border-bottom:1px solid var(--line)}
+.mid-cta h3{font-size:clamp(24px,2.6vw,32px);font-weight:700}
+.mid-cta p{color:var(--muted);margin-top:6px;font-size:15.5px}
+.mid-cta .btn{margin-top:0}
+.event{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.event video,.event .ph{width:100%;max-width:none;aspect-ratio:9/16;height:auto;object-fit:cover}
+.event .ph img{object-fit:cover}
+.event .wide{grid-column:1/-1;aspect-ratio:3/2}
+.sticky-cta{display:none}
+@media (max-width:900px){.services{grid-template-columns:repeat(2,minmax(0,1fr))}.services li:nth-child(odd){padding-left:0;border-left:0}.services li{border-top:1px solid var(--line)}.services li:nth-child(-n+2){border-top:0}.services li:last-child{grid-column:1/-1}}
+@media (max-width:640px){
+  .mid-cta{grid-template-columns:minmax(0,1fr)}
+  .sticky-cta{display:flex;transform:translateY(110%);transition:transform .25s ease;position:fixed;left:0;right:0;bottom:0;z-index:6;justify-content:center;padding:10px 16px calc(10px + env(safe-area-inset-bottom,0px));background:rgba(247,246,250,.94);border-top:1px solid var(--line);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+  .sticky-cta .btn{margin:0;width:100%;justify-content:center}
+  .sticky-cta.show{transform:none}
+  body{padding-bottom:76px}
+}
+@media (prefers-reduced-motion:reduce){.sticky-cta{transition:none}}
+
 @media (max-width:900px){
   .results{grid-template-columns:repeat(2,minmax(0,1fr))}
   .results>div:nth-child(3){padding-left:0;border-left:0}
@@ -193,13 +228,24 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-betw
       <div class="eyebrow">Portfólio · Seleção de trabalhos</div>
       <h1>Marketing medido em <em>clientes e faturamento</em>.</h1>
       <p>Alguns dos negócios locais e médias empresas que passaram a ser encontrados, receber contatos todos os dias e vender mais.</p>
-      <p class="aside">Esta página reúne só uma parte dos nossos trabalhos, escolhida para mostrar como atuamos.</p>
+      <div class="actions">
+        <a class="btn" href="https://diagnostico.digitalgalaxy.com.br" target="_blank" rel="noopener">Quero um diagnóstico grátis <span aria-hidden="true">→</span></a>
+        <a class="link-arrow" href="#resultados">Ver resultados</a>
+      </div>
+      <p class="risk"><b>Primeiro mês sem fidelidade.</b> Esta página reúne só uma parte dos nossos trabalhos.</p>
+      <ul class="services" aria-label="O que fazemos">
+        <li><b>Anúncios</b>Instagram, Facebook e Google</li>
+        <li><b>Perfil do Google</b>Para ser achado perto de casa</li>
+        <li><b>Sites e lojas</b>Com WhatsApp em destaque</li>
+        <li><b>Marca</b>Identidade visual e fachada</li>
+        <li><b>Vídeo e foto</b>Reels, eventos e produtos</li>
+      </ul>
     </div>
   </section>
 
   <section id="resultados" class="block" style="padding-top:clamp(40px,5vw,64px)">
     <div class="wrap">
-      <div class="sec-head"><span class="n">01</span><span class="t">Resultados</span></div>
+      <div class="sec-head"><span class="n">01</span><span class="t">Resultados de clientes</span></div>
       <div class="results">
         <div>
           <b><span>R$ 50 mil →</span> <span>R$ 140 mil</span><small>faturamento por mês</small></b>
@@ -312,20 +358,32 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-betw
 
       <article class="case" id="tmpets">
         <div>
-          <div class="tag">Vídeo de evento</div>
+          <div class="tag">Vídeo e fotos de evento</div>
           <h3>T&amp;M Pets</h3>
-          <p class="meta">Inauguração de pet shop. Vídeo vertical para Reels e Stories.</p>
+          <p class="meta">Inauguração de pet shop. Vídeo vertical para Reels e Stories e fotos do dia.</p>
           <dl>
-            <div><dt>O que fizemos</dt><dd>Cobertura da inauguração: fachada, vitrine, os donos falando com o público e o movimento do evento.</dd></div>
-            <div><dt>Resultado</dt><dd>Um vídeo que apresenta a loja, os produtos e as pessoas, pronto para divulgar a abertura.</dd></div>
+            <div><dt>Desafio</dt><dd>Uma loja nova precisa que o bairro saiba que ela existe e sinta vontade de entrar no primeiro dia.</dd></div>
+            <div><dt>O que fizemos</dt><dd>Cobertura completa da inauguração: corte da fita, os donos falando com o público, o brinde, a vitrine de produtos e o movimento do evento.</dd></div>
+            <div><dt>Resultado</dt><dd>Vídeo e fotos que apresentam a loja, os produtos e as pessoas por trás dela, prontos para divulgar a abertura e alimentar o perfil nas semanas seguintes.</dd></div>
           </dl>
         </div>
-        <div>
+        <div class="event">
           <video controls playsinline preload="metadata" poster="img/tm-pets-poster.jpg" width="540" height="960">
             <source src="video/tm-pets-inauguracao.mp4" type="video/mp4">
           </video>
+          <button type="button" class="ph" data-full="img/tm-pets-donos.webp" aria-label="Ampliar foto dos donos no corte da fita"><img src="img/tm-pets-donos.webp" width="1100" height="1650" alt="Os donos da T&amp;M Pets sorrindo atrás da fita vermelha da inauguração" loading="lazy"></button>
+          <button type="button" class="ph" data-full="img/tm-pets-brinde.webp" aria-label="Ampliar foto do brinde da inauguração"><img src="img/tm-pets-brinde.webp" width="1100" height="1650" alt="Convidados brindando com espumante no balcão da loja durante a inauguração" loading="lazy"></button>
+          <button type="button" class="ph wide" data-full="img/tm-pets-racoes.webp" aria-label="Ampliar foto da vitrine de rações"><img src="img/tm-pets-racoes.webp" width="1600" height="1066" alt="Prateleiras da loja com rações Premier e Golden" loading="lazy"></button>
         </div>
       </article>
+
+      <div class="mid-cta">
+        <div>
+          <h3>Quer resultados assim no seu negócio?</h3>
+          <p>Comece com um diagnóstico grátis. Em poucos minutos, você mostra como está hoje e nós apontamos a oportunidade mais rápida.</p>
+        </div>
+        <a class="btn" href="https://diagnostico.digitalgalaxy.com.br" target="_blank" rel="noopener">Fazer o diagnóstico <span aria-hidden="true">→</span></a>
+      </div>
     </div>
   </section>
 
@@ -391,11 +449,14 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-betw
     <div class="wrap">
       <img class="mark" src="img/logo-mark-roxo.png" width="256" height="256" alt="">
       <h2>Vamos começar?</h2>
-      <p>Responda 10 perguntas rápidas sobre o seu negócio e receba um diagnóstico da sua presença digital.</p>
-      <a class="btn" href="https://diagnostico.digitalgalaxy.com.br" target="_blank" rel="noopener">Fazer o diagnóstico <span aria-hidden="true">→</span></a>
+      <p>Responda 10 perguntas rápidas sobre o seu negócio e receba um diagnóstico da sua presença digital. Sem custo e sem compromisso.</p>
+      <a class="btn" href="https://diagnostico.digitalgalaxy.com.br" target="_blank" rel="noopener">Fazer o diagnóstico grátis <span aria-hidden="true">→</span></a>
+      <p class="risk"><b>Primeiro mês sem fidelidade:</b> você vê os primeiros números antes de assumir compromisso.</p>
     </div>
   </section>
 </main>
+
+<div class="sticky-cta"><a class="btn" href="https://diagnostico.digitalgalaxy.com.br" target="_blank" rel="noopener">Quero um diagnóstico grátis <span aria-hidden="true">→</span></a></div>
 
 <footer>
   <div class="wrap">
@@ -415,6 +476,14 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:8px 24px;justify-content:space-betw
   });
   document.getElementById('lb-close').addEventListener('click',function(){dlg.close()});
   dlg.addEventListener('click',function(e){if(e.target===dlg)dlg.close()});
+})();
+</script>
+<script>
+// Barra fixa do celular aparece depois que o botão da abertura sai da tela
+(function(){
+  var bar=document.querySelector('.sticky-cta'),hero=document.querySelector('.hero .actions');
+  if(!bar||!hero||!('IntersectionObserver' in window)){if(bar)bar.classList.add('show');return;}
+  new IntersectionObserver(function(e){bar.classList.toggle('show',!e[0].isIntersecting&&e[0].boundingClientRect.top<0);}).observe(hero);
 })();
 </script>
 

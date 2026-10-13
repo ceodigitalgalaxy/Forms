@@ -9,17 +9,15 @@ Site estático do portfólio comercial da Digital Galaxy. Não tem build: é um 
 
 Os arquivos vieram em dois zips. Antes de publicar, confirme que os 4 vídeos estão em `video/`.
 
-## Publicar no Netlify com domínio próprio
-1. Instalar a CLI: `npm install -g netlify-cli`
-2. Login: `netlify login`. O dono da conta faz o login no navegador.
-3. Primeiro deploy: `netlify deploy --prod --dir .`, criando um site novo quando perguntar.
-4. Domínio: adicionar o subdomínio (ex.: `portfolio.dominio.com.br`) em Domain management no painel do Netlify, ou com `netlify domains`.
-5. DNS: criar um registro CNAME com nome `portfolio` apontando para o endereço `.netlify.app` do site, no painel onde o DNS do domínio é gerenciado.
-6. Depois da propagação, ativar o HTTPS em Domain management.
-
-Para atualizar: substituir os arquivos e rodar `netlify deploy --prod --dir .` de novo.
+## Publicação
+Publicado no GitHub Pages pelo repositório `ceodigitalgalaxy/portfolio` (branch `main`), em https://portfolio.digitalgalaxy.com.br.
+- O workflow `.github/workflows/pages.yml` publica a cada push na `main` (copia `index.html`, `img/`, `video/` e `.nojekyll`).
+- DNS: CNAME `portfolio` → `ceodigitalgalaxy.github.io`. Domínio verificado na conta do GitHub (TXT `_github-pages-challenge-ceodigitalgalaxy.portfolio`).
+- Para atualizar: substituir os arquivos e fazer push na `main`.
 
 ## Regras de conteúdo
 - A página é para enviar a clientes: não colocar pendências internas nem nomes de quem da equipe faz cada tarefa.
-- Visual: fontes Saira (títulos) e Manrope (texto), roxo como destaque, visual editorial, sem caixas arredondadas repetidas nem selos.
+- Visual da marca Digital Galaxy: fundo #0A090E com brilho roxo (#3B008E) e estrelas, acento lilás #A77BFF (claro #C4A6FF), texto #F3F0FA, apoio #C9C4D8, cinza #8A8599, linhas #221F2C. Fontes Saira (títulos e números), Saira Semi Expanded (chamada final) e Manrope (texto). Símbolo em `img/logo-mark.png` (branco, fundo transparente). Visual editorial com linhas finas, sem caixas arredondadas repetidas nem selos.
+- Página resumida: deixar claro que é só uma seleção de trabalhos. Linguagem para leigos ("anúncios no Instagram e Facebook", "perfil do Google", "exibições"), sem termos como Meta Ads, tráfego pago ou impressões.
+- Chamada final leva ao diagnóstico: https://diagnostico.digitalgalaxy.com.br
 - A página tem `noindex` para não aparecer no Google.

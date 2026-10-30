@@ -80,29 +80,32 @@ body{width:1080px;height:1350px;overflow:hidden;font-family:'Poppins',sans-serif
 .chao{position:absolute;left:50%;transform:translateX(-50%);height:46px;border-radius:50%;
   background:radial-gradient(closest-side,rgba(4,12,50,.55),rgba(4,12,50,0))}
 .prod{position:absolute;left:50%;transform:translateX(-50%);display:flex;align-items:flex-end;justify-content:center}
-.prod img{max-width:100%;max-height:100%;object-fit:contain;filter:drop-shadow(0 18px 22px rgba(3,10,50,.35))}
+.prod img{position:relative;z-index:1;max-width:100%;max-height:100%;object-fit:contain;
+  filter:drop-shadow(0 4px 6px rgba(2,8,40,.35)) drop-shadow(0 26px 30px rgba(2,8,40,.45))}
+.prod::after{content:"";position:absolute;z-index:0;left:14%;right:14%;bottom:-20px;height:48px;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(2,8,40,.75),rgba(2,8,40,0))}
 
 /* cartão de oferta */
 .cartao{position:absolute;left:48px;right:48px;background:#fff;border-radius:36px;display:flex;align-items:stretch;
   box-shadow:0 24px 60px rgba(3,10,50,.45);overflow:hidden}
-.cartao .info{flex:1;padding:36px 20px 36px 44px;display:flex;flex-direction:column;justify-content:center;color:var(--tinta)}
-.cartao .marca{font-weight:800;font-size:50px;line-height:1.05;letter-spacing:-1px;color:var(--azul)}
-.cartao .desc{font-weight:500;font-size:27px;line-height:1.3;color:var(--cinza);margin-top:10px}
-.cartao .chips{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
-.chip{font-weight:700;font-size:21px;letter-spacing:1px;text-transform:uppercase;padding:8px 16px;border-radius:10px;line-height:1}
+.cartao .info{flex:1;padding:30px 18px 30px 44px;display:flex;flex-direction:column;justify-content:center;color:var(--tinta)}
+.cartao .marca{font-weight:800;font-size:56px;line-height:1.04;letter-spacing:-1px;color:var(--azul)}
+.cartao .desc{font-weight:500;font-size:30px;line-height:1.28;color:var(--cinza);margin-top:10px}
+.cartao .chips{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
+.chip{font-weight:700;font-size:24px;letter-spacing:1px;text-transform:uppercase;padding:9px 18px;border-radius:10px;line-height:1}
 .chip.azul{background:var(--azul);color:#fff}
 .chip.verde{background:var(--verde);color:var(--azul-esc)}
 .chip.vermelho{background:#FDE7E6;color:var(--vermelho)}
-.cartao .preco{flex:none;width:344px;background:var(--laranja);display:flex;flex-direction:column;justify-content:center;
-  align-items:center;padding:24px 18px;color:var(--azul-esc)}
-.preco .rot{font-weight:700;font-size:21px;letter-spacing:2px;text-transform:uppercase}
-.preco .val{display:flex;align-items:flex-start;font-weight:800;line-height:1;margin-top:6px;letter-spacing:-3px}
-.preco .rs{font-size:30px;margin-top:14px;margin-right:6px;letter-spacing:0}
-.preco .int{font-size:104px}
-.preco .cent{font-size:42px;margin-top:10px;letter-spacing:-1px}
+.cartao .preco{flex:none;width:420px;background:linear-gradient(160deg,#F2352B 0%,var(--vermelho) 45%,#B3131B 100%);
+  display:flex;flex-direction:column;justify-content:center;align-items:center;padding:20px 14px;color:#fff}
+.preco .rot{font-weight:800;font-size:26px;letter-spacing:3px;text-transform:uppercase;color:#FFD45C}
+.preco .val{display:flex;align-items:flex-start;font-weight:800;line-height:1;margin-top:2px;letter-spacing:-4px;text-shadow:0 4px 0 rgba(90,0,0,.25)}
+.preco .rs{font-size:40px;margin-top:20px;margin-right:8px;letter-spacing:0}
+.preco .int{font-size:136px}
+.preco .cent{font-size:56px;margin-top:16px;letter-spacing:-1px}
 
 .rodape{position:absolute;left:48px;right:48px;bottom:34px;display:flex;align-items:center;justify-content:center;gap:14px;
-  font-weight:600;font-size:24px;color:rgba(255,255,255,.92)}
+  font-weight:600;font-size:27px;color:rgba(255,255,255,.92)}
 .rodape b{font-weight:800;color:#fff}
 .rodape .sep{width:6px;height:6px;border-radius:50%;background:var(--laranja)}
 """
@@ -112,13 +115,13 @@ def page(body):
     return f'<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><style>{CSS}</style></head><body>{body}</body></html>'
 
 
-def lockup(size=46):
+def lockup(size=50):
     return (f'<div class="lockup"><img src="{LOGO}" alt="Agropet Bichão">'
             f'<div class="txt" style="font-size:{size}px"><span>Fecha mês</span><span class="b">Bichão</span></div></div>')
 
 
 def rodape():
-    return (f'<div class="rodape">{icon("wa", 30, "#fff")}<b>{WHATS}</b><span class="sep"></span>'
+    return (f'<div class="rodape">{icon("wa", 34, "#fff")}<b>{WHATS}</b><span class="sep"></span>'
             f'<span>Tele-entrega grátis: consulte condições</span></div>')
 
 
@@ -132,7 +135,6 @@ def produto(n, total, p):
     chips = f'<span class="chip azul">{p["size"]}</span>'
     if p.get("extra"):
         chips += f'<span class="chip verde">{p["extra"]}</span>'
-    chips += '<span class="chip vermelho">Poucas unidades</span>'
     body = f"""
 <div class="slide">
   <div class="abs" style="left:48px;top:44px">{lockup()}</div>
@@ -142,13 +144,13 @@ def produto(n, total, p):
   </div>
   <div class="abs" style="left:48px;top:212px"><span class="pill verde">{p["cat"]}</span></div>
 
-  <div class="palco anel" style="top:205px;width:760px;height:760px"></div>
-  <div class="palco disco" style="top:265px;width:640px;height:640px"></div>
-  <div class="chao" style="top:878px;width:520px"></div>
-  <div class="prod" style="top:268px;width:{p.get("w", 520)}px;height:{p.get("h", 630)}px">
+  <div class="palco anel" style="top:190px;width:760px;height:760px"></div>
+  <div class="palco disco" style="top:250px;width:640px;height:640px"></div>
+  <div class="prod" style="top:{875 - p.get("h", 640)}px;width:{p.get("w", 520)}px;height:{p.get("h", 640)}px">
     <img src="{foto(p["slug"])}" alt="{p["brand"]}"></div>
+  <div class="abs" style="right:48px;top:212px;z-index:3"><span class="pill vermelho" style="font-size:22px;transform:rotate(4deg);box-shadow:0 8px 18px rgba(0,0,0,.3)">Poucas unidades</span></div>
 
-  <div class="cartao" style="top:950px;height:300px">
+  <div class="cartao" style="top:918px;height:342px">
     <div class="info"><div class="marca">{p["brand"]}</div><div class="desc">{p["desc"]}</div><div class="chips">{chips}</div></div>
     {preco(p["price"], p.get("rotulo", "Por apenas"))}
   </div>
@@ -180,7 +182,6 @@ def capa(total, publico, destaques):
     <span class="pill vermelho" style="font-size:26px;padding:12px 26px">Poucas unidades</span>
   </div>
   <div class="palco disco" style="top:860px;width:1200px;height:1200px"></div>
-  <div class="chao" style="top:1228px;width:900px"></div>
   {prods}
   <div class="abs" style="right:48px;bottom:44px;z-index:3;display:flex;align-items:center;gap:10px;font-weight:700;font-size:24px;
     letter-spacing:2px;text-transform:uppercase;color:var(--azul-esc)">Arraste {icon("arrow", 30, "#06175E", 3)}</div>
@@ -230,9 +231,9 @@ CAES = [
          desc="Cães acima de 8 kg · 8 meses de proteção", price="189,99", w=600, h=600),
     dict(slug="nexgard-4-10kg", cat=ANTI, size="4,1 a 10 kg", brand="NexGard",
          desc="Tablete mastigável para cães", extra="Combo 3 unidades", price="189,99",
-         rotulo="Combo por", w=700, h=560),
-    dict(slug="origens-shih-tzu", cat="Ração para cães", size="10,1 kg", brand="Origens Shih Tzu e Lhasa Apso",
-         desc="Cães adultos · Raças específicas", price="109,99"),
+         rotulo="Combo por", w=620, h=520),
+    dict(slug="origens-shih-tzu", cat="Ração para cães", size="10,1 kg", brand="Origens",
+         desc="Shih Tzu e Lhasa Apso · Cães adultos", price="109,99"),
     dict(slug="guabi-natural-caes-medias", cat="Ração para cães", size="12 kg", brand="Guabi Natural",
          desc="Cães adultos · Raças médias", price="199,99"),
     dict(slug="bionatural-junior-grandes", cat="Ração super premium", size="15 kg", brand="Bionatural Prime Júnior",

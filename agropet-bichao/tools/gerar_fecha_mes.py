@@ -13,6 +13,8 @@ LOGO = base64.b64encode((ROOT / "brand/logo-agropet-bichao.png").read_bytes()).d
 LOGO_URI = f"data:image/png;base64,{LOGO}"
 
 WHATS = "(51) 98062-1781"
+VALIDADE = "31/10"
+FOTOS = ROOT / "produtos"  # coloque aqui <slug>.png para exibir a foto no cartão
 
 # Pegada de pet (SVG) usada como elemento gráfico
 PAW = (
@@ -78,6 +80,13 @@ body{width:1080px;height:1350px;font-family:'Montserrat',sans-serif;overflow:hid
 .foot .wa{font-weight:800;font-size:30px}
 .foot .wa span{display:block;font-weight:600;font-size:22px;opacity:.75;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px}
 .foot .logo-badge{position:static;width:140px;height:140px}
+.foot .aviso{font-weight:700;font-size:22px;line-height:1.3;text-align:center;letter-spacing:1px;text-transform:uppercase;
+  border:3px solid var(--laranja);border-radius:16px;padding:10px 18px}
+.foot .aviso b{font-weight:900;color:var(--laranja)}
+.bg-creme .foot .aviso b{color:#c66f00}
+.card .foto{width:210px;flex:none;background:#fff;display:flex;align-items:center;justify-content:center;padding:14px}
+.card .foto img{max-width:100%;max-height:220px;object-fit:contain}
+.card .chip{display:inline-block;align-self:flex-start;margin-top:12px;font-weight:900;font-size:24px;background:var(--azul);color:#fff;padding:6px 14px;border-radius:10px}
 .swipe{font-weight:800;font-size:26px;letter-spacing:2px;text-transform:uppercase}
 """
 
@@ -108,10 +117,25 @@ def price(valor, rotulo="por"):
     )
 
 
+def foto(slug):
+    for ext in ("png", "jpg", "jpeg", "webp"):
+        f = FOTOS / f"{slug}.{ext}"
+        if f.exists():
+            mime = "jpeg" if ext in ("jpg", "jpeg") else ext
+            return f"data:image/{mime};base64,{base64.b64encode(f.read_bytes()).decode()}"
+    return None
+
+
 def card(p):
     extra = f'<span class="extra">{p["extra"]}</span>' if p.get("extra") else ""
+    img = foto(p["slug"]) if p.get("slug") else None
+    if img:
+        left = f'<div class="foto"><img src="{img}" alt="{p["brand"]}"></div>'
+        extra = f'<span class="chip">{p["size"]} {p["unit"]}</span>' + extra
+    else:
+        left = f'<div class="size"><b>{p["size"]}</b><small>{p["unit"]}</small></div>'
     return (
-        f'<div class="card"><div class="size"><b>{p["size"]}</b><small>{p["unit"]}</small></div>'
+        f'<div class="card">{left}'
         f'<div class="info"><div class="brand">{p["brand"]}</div><div class="desc">{p["desc"]}</div>{extra}</div>'
         f'{price(p["price"], p.get("rotulo", "por"))}</div>'
     )
@@ -121,6 +145,7 @@ def footer(dark):
     color = "#fff" if dark else "var(--azul)"
     return (
         f'<div class="foot" style="color:{color}"><div class="wa"><span>Peça pelo WhatsApp</span>{WA_ICON}{WHATS}</div>'
+        f'<div class="aviso">Válido até {VALIDADE}<br><b>Poucas unidades</b></div>'
         f'<div class="logo-badge"><img src="{LOGO_URI}" alt="Agropet Bichão"></div></div>'
     )
 
@@ -146,6 +171,8 @@ def capa(publico, subtitulo, total, acento):
     <h1 style="font-weight:900;font-size:150px;line-height:.92;margin-top:44px;letter-spacing:-4px">FECHA<br>MÊS<br>
       <span style="color:var(--laranja)">BICHÃO</span></h1>
     <p style="font-weight:600;font-size:38px;line-height:1.3;margin-top:40px;max-width:600px">{subtitulo}</p>
+    <div style="margin-top:34px;display:inline-block;background:#fff;color:var(--azul);font-weight:900;font-size:30px;
+      padding:14px 24px;border-radius:14px;letter-spacing:1px;line-height:1.25">VÁLIDO ATÉ {VALIDADE}<br><span style="color:#c66f00">POUCAS UNIDADES</span></div>
   </div>
   <div class="logo-badge" style="right:120px;bottom:150px;width:400px;height:400px;border:10px solid #fff">
     <img src="{LOGO_URI}" alt="Agropet Bichão"></div>
@@ -181,7 +208,7 @@ def cta(total, titulo, acento):
   {deco}
   <div class="counter">{total}/{total}</div>
   <div style="position:absolute;left:84px;right:84px;top:96px">
-    <span class="tag" style="background:{acento};color:var(--azul)">Fecha Mês Bichão</span>
+    <span class="tag" style="background:{acento};color:var(--azul)">Válido até {VALIDADE}</span>
     <h2 style="font-weight:900;font-size:84px;line-height:1;margin-top:34px;letter-spacing:-2px">{titulo}</h2>
     <p style="font-weight:600;font-size:34px;line-height:1.3;margin-top:28px;max-width:860px">
       Chame no WhatsApp, separe seus produtos e receba em casa.</p>
@@ -197,7 +224,7 @@ def cta(total, titulo, acento):
   <div class="logo-badge" style="right:84px;bottom:96px;width:300px;height:300px;border:8px solid #fff">
     <img src="{LOGO_URI}" alt="Agropet Bichão"></div>
   <p style="position:absolute;left:84px;bottom:100px;max-width:560px;font-weight:600;font-size:22px;line-height:1.4;opacity:.7">
-    Ofertas sujeitas à disponibilidade de estoque.</p>
+    Ofertas válidas até {VALIDADE} ou enquanto durarem os estoques.</p>
 </div>"""
     return page(body, acento)
 
@@ -207,41 +234,41 @@ def campanhas():
     caes = [
         capa("para cães", "Antipulgas e rações das melhores marcas com preço de fim de mês.", total, "var(--laranja)"),
         produtos(2, total, "Antipulgas e carrapatos", "Pulgas e carrapatos<br>longe do seu cão", [
-            dict(size="P", unit="Tamanho", brand="Seresto P", desc="Coleira antipulgas e carrapatos", price="149,99"),
-            dict(size="G", unit="Tamanho", brand="Seresto G", desc="Coleira antipulgas e carrapatos", price="189,99"),
-            dict(size="3", unit="unidades", brand="NexGard", desc="Cães de 4 a 10 kg", extra="Combo 3 unidades",
+            dict(slug="seresto-p", size="P", unit="Tamanho", brand="Seresto P", desc="Coleira antipulgas e carrapatos", price="149,99"),
+            dict(slug="seresto-g", size="G", unit="Tamanho", brand="Seresto G", desc="Coleira antipulgas e carrapatos", price="189,99"),
+            dict(slug="nexgard-4-10kg", size="3", unit="unidades", brand="NexGard", desc="Cães de 4 a 10 kg", extra="Combo 3 unidades",
                  price="189,99", rotulo="combo por"),
         ], "var(--laranja)"),
         produtos(3, total, "Rações para cães", "A ração está acabando?<br>Garanta a próxima", [
-            dict(size="10", unit="kg", brand="Origens", desc="Shih Tzu e Lhasa Apso · Adulto", price="109,99"),
-            dict(size="12", unit="kg", brand="Guabi Natural", desc="Adulto · Raças médias", price="199,99"),
-            dict(size="15", unit="kg", brand="Bionatural Júnior", desc="Raças grandes e gigantes", price="259,99"),
+            dict(slug="origens-shih-tzu", size="10", unit="kg", brand="Origens", desc="Shih Tzu e Lhasa Apso · Adulto", price="109,99"),
+            dict(slug="guabi-natural-caes-medias", size="12", unit="kg", brand="Guabi Natural", desc="Adulto · Raças médias", price="199,99"),
+            dict(slug="bionatural-junior-grandes", size="15", unit="kg", brand="Bionatural Júnior", desc="Raças grandes e gigantes", price="259,99"),
         ], "var(--laranja)"),
         produtos(4, total, "Nutrição específica", "Cuidado para<br>necessidades especiais", [
-            dict(size="15", unit="kg", brand="Bionatural Sensitive", desc="Adulto · Peixe · Raças pequenas",
+            dict(slug="bionatural-sensitive-peixe", size="15", unit="kg", brand="Bionatural Sensitive", desc="Adulto · Peixe · Raças pequenas",
                  price="279,99"),
-            dict(size="10", unit="kg", brand="Premier Diabetes", desc="Raças grandes", price="319,99"),
+            dict(size="10,1", unit="kg", brand="Premier Diabetes", desc="Nutrição Clínica · Médio e grande porte", price="319,99", slug="premier-diabetes-caes"),
         ], "var(--laranja)", premium=True),
-        cta(total, "O mês está<br>fechando. Garanta<br>já as ofertas!", "var(--laranja)"),
+        cta(total, "Poucas unidades.<br>Garanta antes<br>que acabe!", "var(--laranja)"),
     ]
     gatos = [
         capa("para gatos", "Rações, areia e antipulgas para o seu gato com preço de fim de mês.", total, "var(--verde)"),
         produtos(2, total, "Proteção e higiene", "O básico do mês<br>com preço especial", [
-            dict(size="P", unit="Tamanho", brand="Seresto P", desc="Coleira antipulgas e carrapatos", price="149,99"),
-            dict(size="4", unit="unidades", brand="Areia Bento", desc="Areia de mandioca · 4 kg cada",
+            dict(slug="seresto-p", size="P", unit="Tamanho", brand="Seresto P", desc="Coleira antipulgas e carrapatos", price="149,99"),
+            dict(slug="areia-bento", size="4", unit="unidades", brand="Areia Bento", desc="Areia de mandioca · 4 kg cada",
                  extra="Combo 4 unidades", price="99,99", rotulo="combo por"),
         ], "var(--verde)"),
         produtos(3, total, "Rações para gatos", "Do filhote ao<br>castrado, tem aqui", [
-            dict(size="7,5", unit="kg", brand="Frost", desc="Gatos filhotes", price="169,99"),
-            dict(size="7,5", unit="kg", brand="Guabi Natural", desc="Gatos adultos", price="189,99"),
-            dict(size="7,5", unit="kg", brand="Premier Nattu", desc="Gatos castrados · Abóbora", price="199,99"),
+            dict(slug="frost-gatos-filhotes", size="7,5", unit="kg", brand="Frost", desc="Gatos filhotes", price="169,99"),
+            dict(slug="guabi-natural-gatos", size="7,5", unit="kg", brand="Guabi Natural", desc="Gatos adultos", price="189,99"),
+            dict(slug="premier-nattu-gatos-castrados", size="7,5", unit="kg", brand="Premier Nattu", desc="Gatos castrados · Abóbora", price="199,99"),
         ], "var(--verde)"),
         produtos(4, total, "Premium e super premium", "Nutrição de alto<br>nível para seu gato", [
-            dict(size="7,5", unit="kg", brand="N&amp;D Tropical", desc="Gatos castrados · Frango", price="279,99"),
-            dict(size="7,5", unit="kg", brand="Premier Urinário", desc="Gatos", price="299,99"),
-            dict(size="7,5", unit="kg", brand="N&amp;D Pumpkin", desc="Gatos adultos · Frango", price="419,99"),
+            dict(slug="nd-tropical-gatos", size="7,5", unit="kg", brand="N&amp;D Tropical", desc="Gatos castrados · Frango", price="279,99"),
+            dict(slug="premier-urinario-gatos", size="7,5", unit="kg", brand="Premier Urinário", desc="Gatos", price="299,99"),
+            dict(slug="nd-pumpkin-gatos", size="7,5", unit="kg", brand="N&amp;D Pumpkin", desc="Gatos adultos · Frango", price="419,99"),
         ], "var(--verde)", premium=True),
-        cta(total, "O mês está<br>fechando. Garanta<br>já as ofertas!", "var(--verde)"),
+        cta(total, "Poucas unidades.<br>Garanta antes<br>que acabe!", "var(--verde)"),
     ]
     return {"caes": caes, "gatos": gatos}
 

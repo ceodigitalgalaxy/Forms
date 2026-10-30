@@ -13,13 +13,13 @@ Separamos ofertas de fim de mês em antipulgas e rações das melhores marcas:
 • Guabi Natural Adulto Raças Médias 12 kg — R$ 199,99
 • Bionatural Júnior Raças Grandes e Gigantes 15 kg — R$ 259,99
 • Bionatural Adulto Sensitive Peixe Raças Pequenas 15 kg — R$ 279,99
-• Premier Diabetes Raças Grandes 10 kg — R$ 319,99
+• Premier Nutrição Clínica Diabetes Cães Médio e Grande Porte 10,1 kg — R$ 319,99
 
 Chame no WhatsApp (51) 98062-1781 e garanta o seu.
 Tele-entrega grátis: consulte condições. Entregamos para toda Porto Alegre.
 
 📍 Av. Alberto Pasqualini, 451 — Jardim Sabará
-Ofertas sujeitas à disponibilidade de estoque.
+⏳ Ofertas válidas até 31/10 ou enquanto durarem os estoques. Poucas unidades!
 
 #AgropetBichao #FechaMesBichao #PetShopPortoAlegre #ZonaNortePOA #RacaoParaCaes
 
@@ -42,6 +42,6 @@ Peça pelo WhatsApp (51) 98062-1781.
 Tele-entrega grátis: consulte condições. Entregamos para toda Porto Alegre.
 
 📍 Av. Alberto Pasqualini, 451 — Jardim Sabará
-Ofertas sujeitas à disponibilidade de estoque.
+⏳ Ofertas válidas até 31/10 ou enquanto durarem os estoques. Poucas unidades!
 
 #AgropetBichao #FechaMesBichao #PetShopPortoAlegre #ZonaNortePOA #RacaoParaGatos

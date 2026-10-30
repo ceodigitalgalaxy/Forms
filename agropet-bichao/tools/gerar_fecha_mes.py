@@ -229,48 +229,119 @@ def cta(total, titulo, acento):
     return page(body, acento)
 
 
+SOLO_CSS = """
+.solo .top{position:absolute;left:84px;right:84px;top:84px;display:flex;justify-content:space-between;align-items:center}
+.solo .top .tag{background:var(--acento);color:var(--azul)}
+.solo .counter{position:static}
+.solo .vitrine{position:absolute;left:72px;right:72px;top:180px;height:600px;border-radius:40px;background:#fff;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 14px 40px rgba(10,37,136,.12)}
+.solo .vitrine img{max-width:82%;max-height:88%;object-fit:contain}
+.solo .vitrine .semfoto{text-align:center;color:var(--azul)}
+.solo .vitrine .semfoto b{display:block;font-weight:900;font-size:220px;line-height:.9;letter-spacing:-8px}
+.solo .vitrine .semfoto small{font-weight:800;font-size:40px;letter-spacing:6px;text-transform:uppercase;color:var(--laranja)}
+.solo .selo{position:absolute;top:150px;right:52px;width:200px;height:200px;border-radius:50%;background:var(--acento);
+  color:var(--azul-esc);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
+  font-weight:900;font-size:26px;line-height:1.1;transform:rotate(10deg);box-shadow:0 8px 20px rgba(0,0,0,.18)}
+.solo .selo b{font-size:40px}
+.solo .dados{position:absolute;left:84px;right:84px;top:820px;display:flex;gap:30px;align-items:stretch}
+.solo .txt{flex:1;display:flex;flex-direction:column;justify-content:center}
+.solo .nome{font-weight:900;font-size:58px;line-height:1.02;letter-spacing:-1px}
+.solo .desc{font-weight:600;font-size:30px;line-height:1.3;margin-top:12px;opacity:.85}
+.solo .chips{display:flex;gap:12px;margin-top:18px;flex-wrap:wrap}
+.solo .chips span{font-weight:900;font-size:24px;padding:8px 16px;border-radius:10px;background:var(--azul);color:#fff;letter-spacing:1px;text-transform:uppercase}
+.solo .chips span.v{background:var(--verde);color:var(--azul-esc)}
+.solo .preco{flex:none;width:330px;border-radius:30px;background:var(--laranja);color:var(--azul-esc);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
+.solo .preco .por{font-weight:800;font-size:24px;letter-spacing:2px;text-transform:uppercase}
+.solo .preco .val{display:flex;align-items:flex-start;font-weight:900;line-height:1}
+.solo .preco .rs{font-size:34px;margin-top:16px;margin-right:6px}
+.solo .preco .int{font-size:110px;letter-spacing:-4px}
+.solo .preco .cent{font-size:46px;margin-top:14px}
+.solo.bg-azul .vitrine{box-shadow:0 0 0 4px rgba(250,170,48,.6)}
+.solo.bg-azul .chips span{background:#fff;color:var(--azul)}
+.solo.bg-creme .nome{color:var(--azul)}
+.solo.bg-creme .desc{color:#3a4366}
+"""
+
+
+def produto(n, total, p, acento):
+    premium = p.get("premium", False)
+    cls = "slide solo " + ("bg-azul" if premium else "bg-creme")
+    img = foto(p["slug"])
+    if img:
+        vitrine = f'<img src="{img}" alt="{p["brand"]}">'
+    else:
+        vitrine = f'<div class="semfoto"><b>{p["size"]}</b><small>{p["unit"]}</small></div>'
+    chips = f'<span>{p["size"]} {p["unit"]}</span>' if p["unit"] in ("kg",) else ""
+    if p.get("extra"):
+        chips += f'<span class="v">{p["extra"]}</span>'
+    inteiro, cent = p["price"].split(",")
+    cor = "#fff" if premium else "var(--azul)"
+    body = f"""
+<div class="{cls}">
+  <div class="top"><span class="tag">{p["cat"]}</span><span class="counter" style="color:{cor}">{n}/{total}</span></div>
+  <div class="vitrine">{vitrine}</div>
+  <div class="selo"><span>POUCAS</span><b>UNID.</b></div>
+  <div class="dados">
+    <div class="txt"><div class="nome">{p["brand"]}</div><div class="desc">{p["desc"]}</div><div class="chips">{chips}</div></div>
+    <div class="preco"><div class="por">{p.get("rotulo", "por")}</div><div class="val"><span class="rs">R$</span>
+      <span class="int">{inteiro}</span><span class="cent">,{cent}</span></div></div>
+  </div>
+  {footer(premium)}
+</div>"""
+    return page(body, acento).replace("</style>", SOLO_CSS + "</style>", 1)
+
+
+CAES = [
+    dict(slug="seresto-p", cat="Antipulgas e carrapatos", size="P", unit="Tamanho", brand="Coleira Seresto P",
+         desc="Proteção contra pulgas e carrapatos", price="149,99"),
+    dict(slug="seresto-g", cat="Antipulgas e carrapatos", size="G", unit="Tamanho", brand="Coleira Seresto G",
+         desc="Proteção contra pulgas e carrapatos", price="189,99"),
+    dict(slug="nexgard-4-10kg", cat="Antipulgas e carrapatos", size="3", unit="unidades", brand="NexGard",
+         desc="Cães de 4 a 10 kg", extra="Combo 3 unidades", price="189,99", rotulo="combo por"),
+    dict(slug="origens-shih-tzu", cat="Ração para cães", size="10", unit="kg", brand="Origens Shih Tzu e Lhasa Apso",
+         desc="Cães adultos", price="109,99"),
+    dict(slug="guabi-natural-caes-medias", cat="Ração para cães", size="12", unit="kg", brand="Guabi Natural",
+         desc="Cães adultos · Raças médias", price="199,99"),
+    dict(slug="bionatural-junior-grandes", cat="Ração para cães", size="15", unit="kg", brand="Bionatural Júnior",
+         desc="Raças grandes e gigantes", price="259,99"),
+    dict(slug="bionatural-sensitive-peixe", cat="Super premium", size="15", unit="kg", brand="Bionatural Sensitive",
+         desc="Cães adultos · Peixe · Raças pequenas", price="279,99", premium=True),
+    dict(slug="premier-diabetes-caes", cat="Nutrição clínica", size="10,1", unit="kg", brand="Premier Diabetes",
+         desc="Cães · Médio e grande porte", price="319,99", premium=True),
+]
+GATOS = [
+    dict(slug="seresto-p", cat="Antipulgas e carrapatos", size="P", unit="Tamanho", brand="Coleira Seresto P",
+         desc="Proteção contra pulgas e carrapatos", price="149,99"),
+    dict(slug="areia-bento", cat="Higiene", size="4", unit="unidades", brand="Areia de Mandioca Bento",
+         desc="Pacotes de 4 kg", extra="Combo 4 unidades", price="99,99", rotulo="combo por"),
+    dict(slug="frost-gatos-filhotes", cat="Ração para gatos", size="7,5", unit="kg", brand="Frost",
+         desc="Gatos filhotes", price="169,99"),
+    dict(slug="guabi-natural-gatos", cat="Ração para gatos", size="7,5", unit="kg", brand="Guabi Natural",
+         desc="Gatos adultos", price="189,99"),
+    dict(slug="premier-nattu-gatos-castrados", cat="Ração para gatos", size="7,5", unit="kg", brand="Premier Nattu",
+         desc="Gatos castrados · Abóbora", price="199,99"),
+    dict(slug="nd-tropical-gatos", cat="Super premium", size="7,5", unit="kg", brand="N&amp;D Tropical",
+         desc="Gatos castrados · Frango", price="279,99", premium=True),
+    dict(slug="premier-urinario-gatos", cat="Nutrição clínica", size="7,5", unit="kg", brand="Premier Urinário",
+         desc="Gatos", price="299,99", premium=True),
+    dict(slug="nd-pumpkin-gatos", cat="Super premium", size="7,5", unit="kg", brand="N&amp;D Pumpkin",
+         desc="Gatos adultos · Frango", price="419,99", premium=True),
+]
+
+
 def campanhas():
-    total = 5
-    caes = [
-        capa("para cães", "Antipulgas e rações das melhores marcas com preço de fim de mês.", total, "var(--laranja)"),
-        produtos(2, total, "Antipulgas e carrapatos", "Pulgas e carrapatos<br>longe do seu cão", [
-            dict(slug="seresto-p", size="P", unit="Tamanho", brand="Seresto P", desc="Coleira antipulgas e carrapatos", price="149,99"),
-            dict(slug="seresto-g", size="G", unit="Tamanho", brand="Seresto G", desc="Coleira antipulgas e carrapatos", price="189,99"),
-            dict(slug="nexgard-4-10kg", size="3", unit="unidades", brand="NexGard", desc="Cães de 4 a 10 kg", extra="Combo 3 unidades",
-                 price="189,99", rotulo="combo por"),
-        ], "var(--laranja)"),
-        produtos(3, total, "Rações para cães", "A ração está acabando?<br>Garanta a próxima", [
-            dict(slug="origens-shih-tzu", size="10", unit="kg", brand="Origens", desc="Shih Tzu e Lhasa Apso · Adulto", price="109,99"),
-            dict(slug="guabi-natural-caes-medias", size="12", unit="kg", brand="Guabi Natural", desc="Adulto · Raças médias", price="199,99"),
-            dict(slug="bionatural-junior-grandes", size="15", unit="kg", brand="Bionatural Júnior", desc="Raças grandes e gigantes", price="259,99"),
-        ], "var(--laranja)"),
-        produtos(4, total, "Nutrição específica", "Cuidado para<br>necessidades especiais", [
-            dict(slug="bionatural-sensitive-peixe", size="15", unit="kg", brand="Bionatural Sensitive", desc="Adulto · Peixe · Raças pequenas",
-                 price="279,99"),
-            dict(size="10,1", unit="kg", brand="Premier Diabetes", desc="Nutrição Clínica · Médio e grande porte", price="319,99", slug="premier-diabetes-caes"),
-        ], "var(--laranja)", premium=True),
-        cta(total, "Poucas unidades.<br>Garanta antes<br>que acabe!", "var(--laranja)"),
-    ]
-    gatos = [
-        capa("para gatos", "Rações, areia e antipulgas para o seu gato com preço de fim de mês.", total, "var(--verde)"),
-        produtos(2, total, "Proteção e higiene", "O básico do mês<br>com preço especial", [
-            dict(slug="seresto-p", size="P", unit="Tamanho", brand="Seresto P", desc="Coleira antipulgas e carrapatos", price="149,99"),
-            dict(slug="areia-bento", size="4", unit="unidades", brand="Areia Bento", desc="Areia de mandioca · 4 kg cada",
-                 extra="Combo 4 unidades", price="99,99", rotulo="combo por"),
-        ], "var(--verde)"),
-        produtos(3, total, "Rações para gatos", "Do filhote ao<br>castrado, tem aqui", [
-            dict(slug="frost-gatos-filhotes", size="7,5", unit="kg", brand="Frost", desc="Gatos filhotes", price="169,99"),
-            dict(slug="guabi-natural-gatos", size="7,5", unit="kg", brand="Guabi Natural", desc="Gatos adultos", price="189,99"),
-            dict(slug="premier-nattu-gatos-castrados", size="7,5", unit="kg", brand="Premier Nattu", desc="Gatos castrados · Abóbora", price="199,99"),
-        ], "var(--verde)"),
-        produtos(4, total, "Premium e super premium", "Nutrição de alto<br>nível para seu gato", [
-            dict(slug="nd-tropical-gatos", size="7,5", unit="kg", brand="N&amp;D Tropical", desc="Gatos castrados · Frango", price="279,99"),
-            dict(slug="premier-urinario-gatos", size="7,5", unit="kg", brand="Premier Urinário", desc="Gatos", price="299,99"),
-            dict(slug="nd-pumpkin-gatos", size="7,5", unit="kg", brand="N&amp;D Pumpkin", desc="Gatos adultos · Frango", price="419,99"),
-        ], "var(--verde)", premium=True),
-        cta(total, "Poucas unidades.<br>Garanta antes<br>que acabe!", "var(--verde)"),
-    ]
-    return {"caes": caes, "gatos": gatos}
+    out = {}
+    for nome, itens, publico, sub, acento in [
+        ("caes", CAES, "para cães", "Antipulgas e rações das melhores marcas com preço de fim de mês.", "var(--laranja)"),
+        ("gatos", GATOS, "para gatos", "Rações, areia e antipulgas para o seu gato com preço de fim de mês.", "var(--verde)"),
+    ]:
+        total = len(itens) + 2
+        slides = [capa(publico, sub, total, acento)]
+        slides += [produto(i + 2, total, p, acento) for i, p in enumerate(itens)]
+        slides.append(cta(total, "Poucas unidades.<br>Garanta antes<br>que acabe!", acento))
+        out[nome] = slides
+    return out
 
 
 def main():

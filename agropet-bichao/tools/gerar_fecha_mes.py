@@ -138,9 +138,8 @@ def produto(n, total, p):
     body = f"""
 <div class="slide">
   <div class="abs" style="left:48px;top:44px">{lockup()}</div>
-  <div class="abs" style="right:48px;top:58px;display:flex;flex-direction:column;align-items:flex-end;gap:14px">
-    <span style="font-weight:700;font-size:22px;letter-spacing:3px;opacity:.7">{n:02d}/{total:02d}</span>
-    <span class="pill contorno">{icon("clock", 22, "#fff")}Válido até {VALIDADE}</span>
+  <div class="abs" style="right:48px;top:80px;display:flex;align-items:center">
+    <span class="pill contorno" style="font-size:24px;padding:12px 24px">{icon("clock", 22, "#fff")}Válido até {VALIDADE}</span>
   </div>
   <div class="abs" style="left:48px;top:212px"><span class="pill verde">{p["cat"]}</span></div>
 

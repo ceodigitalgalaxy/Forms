@@ -2,7 +2,7 @@
 const { chromium } = require('playwright');
 (async () => {
   const browser = await chromium.launch();
-  const page = await browser.newPage({ viewport: { width: 1080, height: 1350 } });
+  const page = await browser.newPage({ viewport: { width: 1080, height: Number(process.env.H || 1350) } });
   for (const job of process.argv.slice(2)) {
     const [src, out] = job.split('|');
     await page.goto('file://' + src, { waitUntil: 'networkidle' });

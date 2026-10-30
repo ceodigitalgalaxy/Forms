@@ -233,9 +233,10 @@ SOLO_CSS = """
 .solo .top{position:absolute;left:84px;right:84px;top:84px;display:flex;justify-content:space-between;align-items:center}
 .solo .top .tag{background:var(--acento);color:var(--azul)}
 .solo .counter{position:static}
-.solo .vitrine{position:absolute;left:72px;right:72px;top:180px;height:600px;border-radius:40px;background:#fff;
+.solo .vitrine{position:absolute;left:72px;right:72px;top:180px;height:650px;border-radius:40px;background:#fff;
   display:flex;align-items:center;justify-content:center;overflow:hidden;box-shadow:0 14px 40px rgba(10,37,136,.12)}
-.solo .vitrine img{max-width:82%;max-height:88%;object-fit:contain}
+.solo .vitrine::before{content:"";position:absolute;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(250,170,48,.28) 0,rgba(250,170,48,.10) 55%,rgba(250,170,48,0) 70%)}
+.solo .vitrine img{position:relative;max-width:80%;max-height:86%;object-fit:contain;filter:drop-shadow(0 18px 24px rgba(10,20,60,.22))}
 .solo .vitrine .semfoto{text-align:center;color:var(--azul)}
 .solo .vitrine .semfoto b{display:block;font-weight:900;font-size:220px;line-height:.9;letter-spacing:-8px}
 .solo .vitrine .semfoto small{font-weight:800;font-size:40px;letter-spacing:6px;text-transform:uppercase;color:var(--laranja)}
@@ -243,7 +244,7 @@ SOLO_CSS = """
   color:var(--azul-esc);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
   font-weight:900;font-size:26px;line-height:1.1;transform:rotate(10deg);box-shadow:0 8px 20px rgba(0,0,0,.18)}
 .solo .selo b{font-size:40px}
-.solo .dados{position:absolute;left:84px;right:84px;top:820px;display:flex;gap:30px;align-items:stretch}
+.solo .dados{position:absolute;left:84px;right:84px;top:870px;display:flex;gap:30px;align-items:stretch}
 .solo .txt{flex:1;display:flex;flex-direction:column;justify-content:center}
 .solo .nome{font-weight:900;font-size:58px;line-height:1.02;letter-spacing:-1px}
 .solo .desc{font-weight:600;font-size:30px;line-height:1.3;margin-top:12px;opacity:.85}
@@ -254,8 +255,8 @@ SOLO_CSS = """
   display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px}
 .solo .preco .por{font-weight:800;font-size:24px;letter-spacing:2px;text-transform:uppercase}
 .solo .preco .val{display:flex;align-items:flex-start;font-weight:900;line-height:1}
-.solo .preco .rs{font-size:34px;margin-top:16px;margin-right:6px}
-.solo .preco .int{font-size:110px;letter-spacing:-4px}
+.solo .preco .rs{font-size:30px;margin-top:16px;margin-right:6px}
+.solo .preco .int{font-size:98px;letter-spacing:-3px}
 .solo .preco .cent{font-size:46px;margin-top:14px}
 .solo.bg-azul .vitrine{box-shadow:0 0 0 4px rgba(250,170,48,.6)}
 .solo.bg-azul .chips span{background:#fff;color:var(--azul)}
@@ -298,9 +299,9 @@ CAES = [
     dict(slug="seresto-g", cat="Antipulgas e carrapatos", size="G", unit="Tamanho", brand="Coleira Seresto G",
          desc="Proteção contra pulgas e carrapatos", price="189,99"),
     dict(slug="nexgard-4-10kg", cat="Antipulgas e carrapatos", size="3", unit="unidades", brand="NexGard",
-         desc="Cães de 4 a 10 kg", extra="Combo 3 unidades", price="189,99", rotulo="combo por"),
-    dict(slug="origens-shih-tzu", cat="Ração para cães", size="10", unit="kg", brand="Origens Shih Tzu e Lhasa Apso",
-         desc="Cães adultos", price="109,99"),
+         desc="Cães de 4,1 a 10 kg · 3 tabletes", extra="Combo 3 unidades", price="189,99", rotulo="combo por"),
+    dict(slug="origens-shih-tzu", cat="Ração para cães", size="10,1", unit="kg", brand="Origens Shih Tzu e Lhasa Apso",
+         desc="Cães adultos · Raças específicas", price="109,99"),
     dict(slug="guabi-natural-caes-medias", cat="Ração para cães", size="12", unit="kg", brand="Guabi Natural",
          desc="Cães adultos · Raças médias", price="199,99"),
     dict(slug="bionatural-junior-grandes", cat="Ração para cães", size="15", unit="kg", brand="Bionatural Júnior",
@@ -321,12 +322,12 @@ GATOS = [
          desc="Gatos adultos", price="189,99"),
     dict(slug="premier-nattu-gatos-castrados", cat="Ração para gatos", size="7,5", unit="kg", brand="Premier Nattu",
          desc="Gatos castrados · Abóbora", price="199,99"),
-    dict(slug="nd-tropical-gatos", cat="Super premium", size="7,5", unit="kg", brand="N&amp;D Tropical",
+    dict(slug="nd-tropical-gatos", cat="Super premium", size="7,5", unit="kg", brand="N&amp;D Tropical Selection",
          desc="Gatos castrados · Frango", price="279,99", premium=True),
     dict(slug="premier-urinario-gatos", cat="Nutrição clínica", size="7,5", unit="kg", brand="Premier Urinário",
-         desc="Gatos", price="299,99", premium=True),
+         desc="Nutrição Clínica · Gatos adultos", price="299,99", premium=True),
     dict(slug="nd-pumpkin-gatos", cat="Super premium", size="7,5", unit="kg", brand="N&amp;D Pumpkin",
-         desc="Gatos adultos · Frango", price="419,99", premium=True),
+         desc="Gatos adultos · Frango e romã", price="419,99", premium=True),
 ]
 
 

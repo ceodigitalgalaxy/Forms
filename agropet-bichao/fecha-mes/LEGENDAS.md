@@ -11,7 +11,7 @@ Separamos ofertas de fim de mês em antipulgas e rações das melhores marcas:
 • NexGard 4,1 a 10 kg (combo 3 tabletes) — R$ 189,99
 • Origens Shih Tzu e Lhasa Apso Adulto 10,1 kg — R$ 109,99
 • Guabi Natural Adulto Raças Médias 12 kg — R$ 199,99
-• Bionatural Júnior Raças Grandes e Gigantes 15 kg — R$ 259,99
+• Bionatural Prime Júnior Raças Grandes e Gigantes 15 kg — R$ 259,99
 • Bionatural Adulto Sensitive Peixe Raças Pequenas 15 kg — R$ 279,99
 • Premier Nutrição Clínica Diabetes Cães Médio e Grande Porte 10,1 kg — R$ 319,99
 
@@ -30,8 +30,8 @@ Tele-entrega grátis: consulte condições. Entregamos para toda Porto Alegre.
 Ração, areia e antipulgas: o básico do seu gato com preço de fim de mês. 🐱
 
 • Seresto P — R$ 149,99
-• Areia de mandioca Bento 4 kg (combo 4 unidades) — R$ 99,99
-• Frost Gatos Filhotes 7,5 kg — R$ 169,99
+• Areia Bento Mandioca e Minerais 4 kg (combo 4 unidades) — R$ 99,99
+• Frost Kitten Gatos Filhotes 7,5 kg — R$ 169,99
 • Guabi Natural Gatos Adultos 7,5 kg — R$ 189,99
 • Premier Nattu Gatos Castrados Abóbora 7,5 kg — R$ 199,99
 • N&D Tropical Selection Gatos Castrados Frango 7,5 kg — R$ 279,99

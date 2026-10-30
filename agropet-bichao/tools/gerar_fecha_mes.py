@@ -1,8 +1,10 @@
 """Gera os carrosséis "Fecha Mês Bichão" (cães e gatos) em PNG 1080x1350.
 
-Visual baseado nos posts de referência da Agropet Bichão: fundo azul royal,
-título com tarja vermelha, embalagem sem fundo sobre forma laranja e preço
-em caixa vermelha e branca com tipografia condensada.
+Sistema visual:
+- Fundo azul royal da marca com luz suave; laranja e verde da logo como destaque.
+- Tipografia única (Poppins), com hierarquia por peso e tamanho.
+- Slide de produto: embalagem sem fundo como protagonista, sobre um círculo laranja;
+  cartão branco com nome, descrição, peso e preço alinhados em grade.
 
 Uso: python3 agropet-bichao/tools/gerar_fecha_mes.py
 Fotos: agropet-bichao/produtos/<slug>.png (PNG sem fundo)
@@ -20,84 +22,89 @@ VALIDADE = "31/10"
 
 
 def data_uri(path):
-    ext = path.suffix.lstrip(".").lower()
-    mime = "jpeg" if ext in ("jpg", "jpeg") else ext
-    return f"data:image/{mime};base64,{base64.b64encode(path.read_bytes()).decode()}"
+    return f"data:image/png;base64,{base64.b64encode(path.read_bytes()).decode()}"
 
 
 LOGO = data_uri(ROOT / "brand/logo-agropet-bichao-sem-fundo.png")
 
 
 def foto(slug):
-    for ext in ("png", "webp"):
-        f = FOTOS / f"{slug}.{ext}"
-        if f.exists():
-            return data_uri(f)
-    return None
+    f = FOTOS / f"{slug}.png"
+    return data_uri(f) if f.exists() else None
 
 
-WA_ICON = (
-    '<svg viewBox="0 0 32 32" width="{s}" height="{s}" fill="currentColor" style="flex:none">'
-    '<path d="M16 3C9 3 3.3 8.6 3.3 15.6c0 2.4.7 4.7 1.9 6.7L3 29l6.9-2.2c1.9 1 4 1.6 6.1 1.6 7 0 12.7-5.7 '
-    '12.7-12.7S23 3 16 3zm0 23.1c-1.9 0-3.8-.5-5.4-1.5l-.4-.2-4.1 1.3 1.3-4-.3-.4c-1.1-1.7-1.6-3.6-1.6-5.6 '
-    '0-5.8 4.7-10.5 10.5-10.5S26.5 9.9 26.5 15.6 21.8 26.1 16 26.1zm5.8-7.9c-.3-.2-1.9-.9-2.2-1-.3-.1-.5-.2-.7.2'
-    '-.2.3-.8 1-1 1.2-.2.2-.4.2-.7.1-.3-.2-1.3-.5-2.6-1.6-1-.9-1.6-1.9-1.8-2.3-.2-.3 0-.5.1-.7l.5-.6c.2-.2.2-.4.3-.6'
-    '.1-.2 0-.4 0-.6l-1-2.4c-.3-.6-.5-.5-.7-.5h-.6c-.2 0-.6.1-.9.4-.3.3-1.2 1.1-1.2 2.8s1.2 3.2 1.4 3.5c.2.2 2.4 3.6 '
-    '5.8 5.1 2.1.9 2.9 1 4 .8.6-.1 1.9-.8 2.2-1.5.3-.7.3-1.4.2-1.5-.1-.2-.3-.3-.6-.4z"/></svg>'
-)
+# Ícones de traço (24x24)
+ICON = {
+    "wa": '<path d="M12 3a9 9 0 0 0-7.8 13.5L3 21l4.6-1.2A9 9 0 1 0 12 3Z"/><path d="M8.6 8.4c.2-.5.5-.5.8-.5h.5c.2 0 .4.1.5.4l.7 1.6c.1.2 0 .4-.1.6l-.4.5c-.1.1-.2.3 0 .5.5.9 1.3 1.7 2.3 2.2.2.1.4.1.5-.1l.5-.6c.2-.2.4-.2.6-.1l1.6.7c.2.1.3.3.3.5 0 .9-.7 1.9-1.9 1.9-2.6 0-5.9-3-5.9-5.6 0-.6.2-1 .4-1.4Z"/>',
+    "truck": '<path d="M3 6h11v9H3z"/><path d="M14 9h4l3 3v3h-7z"/><circle cx="7" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/>',
+    "pin": '<path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.5"/>',
+    "store": '<path d="M4 10v10h16V10"/><path d="M3 10l2-6h14l2 6"/><path d="M3 10c0 1.7 1.3 3 3 3s3-1.3 3-3c0 1.7 1.3 3 3 3s3-1.3 3-3c0 1.7 1.3 3 3 3s3-1.3 3-3"/><path d="M10 20v-5h4v5"/>',
+    "clock": '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
+    "arrow": '<path d="M5 12h14M13 6l6 6-6 6"/>',
+}
+
+
+def icon(name, size, color="currentColor", sw=2.2):
+    return (f'<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" stroke="{color}" '
+            f'stroke-width="{sw}" stroke-linecap="round" stroke-linejoin="round" style="flex:none">{ICON[name]}</svg>')
+
 
 CSS = """
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,600;0,700;0,800;0,900;1,800&family=Oswald:wght@500;600;700&display=block');
-:root{--azul:#0A2588;--azul-esc:#071a66;--laranja:#FAAA30;--verde:#AACF51;--vermelho:#D8161E;--branco:#fff}
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800;900&display=block');
+:root{--azul:#0A2588;--azul-esc:#06175E;--laranja:#FAAA30;--laranja-esc:#E8901A;
+  --verde:#AACF51;--vermelho:#E2231A;--tinta:#0B1A4A;--cinza:#5B6483}
 *{box-sizing:border-box;margin:0;padding:0}
-body{width:1080px;height:1350px;overflow:hidden;font-family:'Montserrat',sans-serif}
+body{width:1080px;height:1350px;overflow:hidden;font-family:'Poppins',sans-serif;-webkit-font-smoothing:antialiased}
 .slide{position:relative;width:1080px;height:1350px;overflow:hidden;color:#fff;
-  background:radial-gradient(circle at 75% 30%,#1434a8 0,var(--azul) 50%,var(--azul-esc) 100%)}
-.logo{position:absolute;object-fit:contain;filter:drop-shadow(0 8px 18px rgba(0,0,0,.35))}
-.counter{position:absolute;font-weight:800;font-size:24px;letter-spacing:2px;opacity:.7}
+  background:radial-gradient(1100px 900px at 50% 38%,#1B3CC0 0%,var(--azul) 45%,var(--azul-esc) 100%)}
+.abs{position:absolute}
 
-/* título no padrão das referências */
-.titulo{position:absolute;left:72px;font-weight:900;line-height:1;letter-spacing:-2px;text-transform:uppercase}
-.titulo .l1{position:relative;display:inline-block;z-index:1}
-.titulo .l1::after{content:"";position:absolute;left:12%;right:-2%;bottom:2px;height:30%;background:var(--vermelho);z-index:-1}
-.titulo .l2{display:block;position:relative;z-index:2;margin-top:14px;color:var(--laranja)}
+/* assinatura da campanha */
+.lockup{display:flex;align-items:center;gap:18px}
+.lockup img{height:118px;filter:drop-shadow(0 6px 14px rgba(0,0,0,.35))}
+.lockup .txt{font-weight:900;line-height:.98;letter-spacing:-.5px;text-transform:uppercase}
+.lockup .txt span{display:block}
+.lockup .txt .b{color:var(--laranja)}
 
-.pill{display:inline-block;font-weight:800;font-size:26px;letter-spacing:2px;text-transform:uppercase;
-  padding:12px 26px;border-radius:999px;background:var(--verde);color:var(--azul-esc)}
+.pill{display:inline-flex;align-items:center;gap:10px;font-weight:700;font-size:22px;letter-spacing:1.5px;
+  text-transform:uppercase;padding:10px 22px;border-radius:999px;line-height:1}
+.pill.verde{background:var(--verde);color:var(--azul-esc)}
+.pill.contorno{border:2px solid rgba(255,255,255,.55);color:#fff}
+.pill.vermelho{background:var(--vermelho);color:#fff}
 
-/* área do produto */
-.forma{position:absolute;left:0;background:var(--laranja);border-radius:0 70px 70px 0}
-.produto{position:absolute;display:flex;align-items:flex-end;justify-content:center}
-.produto img{max-width:100%;max-height:100%;object-fit:contain;filter:drop-shadow(0 22px 26px rgba(4,14,60,.45))}
-.semfoto{color:var(--azul-esc);text-align:center;align-self:center}
-.semfoto b{display:block;font-family:'Oswald',sans-serif;font-weight:700;font-size:240px;line-height:.9}
-.semfoto small{font-family:'Oswald',sans-serif;font-weight:600;font-size:56px;letter-spacing:6px;text-transform:uppercase}
+/* palco do produto */
+.palco{position:absolute;left:50%;transform:translateX(-50%);border-radius:50%}
+.palco.anel{border:2px solid rgba(255,255,255,.14)}
+.palco.disco{background:radial-gradient(circle at 50% 40%,#FFC15C 0%,var(--laranja) 55%,var(--laranja-esc) 100%);
+  box-shadow:0 30px 80px rgba(3,10,50,.45)}
+.chao{position:absolute;left:50%;transform:translateX(-50%);height:46px;border-radius:50%;
+  background:radial-gradient(closest-side,rgba(4,12,50,.55),rgba(4,12,50,0))}
+.prod{position:absolute;left:50%;transform:translateX(-50%);display:flex;align-items:flex-end;justify-content:center}
+.prod img{max-width:100%;max-height:100%;object-fit:contain;filter:drop-shadow(0 18px 22px rgba(3,10,50,.35))}
 
-/* bloco de preço */
-.oferta{position:absolute;right:56px;width:400px;box-shadow:0 18px 40px rgba(0,0,0,.35)}
-.oferta .nome{background:var(--vermelho);padding:26px 28px;font-family:'Oswald',sans-serif;color:#fff}
-.oferta .nome b{display:block;font-weight:700;font-size:50px;line-height:1.02}
-.oferta .nome span{display:block;font-weight:500;font-size:30px;line-height:1.2;margin-top:10px;opacity:.95}
-.oferta .nome em{display:inline-block;font-style:normal;margin-top:14px;font-weight:600;font-size:26px;letter-spacing:1px;
-  background:#fff;color:var(--vermelho);padding:4px 14px;border-radius:6px;text-transform:uppercase}
-.oferta .preco{background:#fff;color:var(--vermelho);padding:20px 28px 24px;font-family:'Oswald',sans-serif}
-.oferta .preco small{display:block;font-weight:600;font-size:30px;letter-spacing:1px;text-transform:uppercase;color:var(--azul)}
-.oferta .preco div{display:flex;align-items:flex-start;font-weight:700;line-height:1}
-.oferta .preco .rs{font-size:44px;margin-top:14px;margin-right:8px}
-.oferta .preco .int{font-size:132px;letter-spacing:-2px}
-.oferta .preco .cent{font-size:56px;margin-top:12px}
+/* cartão de oferta */
+.cartao{position:absolute;left:48px;right:48px;background:#fff;border-radius:36px;display:flex;align-items:stretch;
+  box-shadow:0 24px 60px rgba(3,10,50,.45);overflow:hidden}
+.cartao .info{flex:1;padding:36px 20px 36px 44px;display:flex;flex-direction:column;justify-content:center;color:var(--tinta)}
+.cartao .marca{font-weight:800;font-size:50px;line-height:1.05;letter-spacing:-1px;color:var(--azul)}
+.cartao .desc{font-weight:500;font-size:27px;line-height:1.3;color:var(--cinza);margin-top:10px}
+.cartao .chips{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+.chip{font-weight:700;font-size:21px;letter-spacing:1px;text-transform:uppercase;padding:8px 16px;border-radius:10px;line-height:1}
+.chip.azul{background:var(--azul);color:#fff}
+.chip.verde{background:var(--verde);color:var(--azul-esc)}
+.chip.vermelho{background:#FDE7E6;color:var(--vermelho)}
+.cartao .preco{flex:none;width:344px;background:var(--laranja);display:flex;flex-direction:column;justify-content:center;
+  align-items:center;padding:24px 18px;color:var(--azul-esc)}
+.preco .rot{font-weight:700;font-size:21px;letter-spacing:2px;text-transform:uppercase}
+.preco .val{display:flex;align-items:flex-start;font-weight:800;line-height:1;margin-top:6px;letter-spacing:-3px}
+.preco .rs{font-size:30px;margin-top:14px;margin-right:6px;letter-spacing:0}
+.preco .int{font-size:104px}
+.preco .cent{font-size:42px;margin-top:10px;letter-spacing:-1px}
 
-.selo{position:absolute;width:190px;height:190px;border-radius:50%;background:var(--vermelho);color:#fff;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;
-  font-family:'Oswald',sans-serif;font-weight:700;font-size:30px;line-height:1.05;text-transform:uppercase;
-  transform:rotate(-10deg);border:6px solid #fff;box-shadow:0 10px 24px rgba(0,0,0,.3)}
-.selo b{font-size:44px}
-
-/* rodapé */
-.rodape{position:absolute;left:56px;right:56px;bottom:56px;display:flex;align-items:center;justify-content:space-between;gap:24px}
-.rodape .wa{display:flex;align-items:center;gap:14px;font-weight:800;font-size:34px}
-.rodape .validade{font-family:'Oswald',sans-serif;font-weight:600;font-size:30px;letter-spacing:1px;text-transform:uppercase;
-  background:var(--laranja);color:var(--azul-esc);padding:12px 24px;border-radius:12px}
+.rodape{position:absolute;left:48px;right:48px;bottom:34px;display:flex;align-items:center;justify-content:center;gap:14px;
+  font-weight:600;font-size:24px;color:rgba(255,255,255,.92)}
+.rodape b{font-weight:800;color:#fff}
+.rodape .sep{width:6px;height:6px;border-radius:50%;background:var(--laranja)}
 """
 
 
@@ -105,126 +112,153 @@ def page(body):
     return f'<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><style>{CSS}</style></head><body>{body}</body></html>'
 
 
+def lockup(size=46):
+    return (f'<div class="lockup"><img src="{LOGO}" alt="Agropet Bichão">'
+            f'<div class="txt" style="font-size:{size}px"><span>Fecha mês</span><span class="b">Bichão</span></div></div>')
+
+
 def rodape():
-    return (
-        f'<div class="rodape"><div class="wa">{WA_ICON.format(s=46)}{WHATS}</div>'
-        f'<div class="validade">Válido até {VALIDADE}</div></div>'
-    )
+    return (f'<div class="rodape">{icon("wa", 30, "#fff")}<b>{WHATS}</b><span class="sep"></span>'
+            f'<span>Tele-entrega grátis: consulte condições</span></div>')
 
 
-def titulo(top, size, l1="Fecha Mês", l2="Bichão"):
-    return f'<div class="titulo" style="top:{top}px;font-size:{size}px"><span class="l1">{l1}</span><span class="l2">{l2}</span></div>'
+def preco(valor, rotulo):
+    inteiro, cent = valor.split(",")
+    return (f'<div class="preco"><div class="rot">{rotulo}</div><div class="val"><span class="rs">R$</span>'
+            f'<span class="int">{inteiro}</span><span class="cent">,{cent}</span></div></div>')
 
 
-def capa(n_total, publico, destaques):  # n_total mantido para manter a assinatura
-    imgs = [foto(s) for s in destaques]
-    pos = [(50, 790, 340, 400), (360, 720, 360, 470), (690, 790, 340, 400)]
-    produtos = "".join(
-        f'<div class="produto" style="left:{x}px;top:{y}px;width:{w}px;height:{h}px"><img src="{i}" alt=""></div>'
-        for (x, y, w, h), i in zip(pos, imgs) if i
-    )
+def produto(n, total, p):
+    chips = f'<span class="chip azul">{p["size"]}</span>'
+    if p.get("extra"):
+        chips += f'<span class="chip verde">{p["extra"]}</span>'
+    chips += '<span class="chip vermelho">Poucas unidades</span>'
     body = f"""
 <div class="slide">
-  <div style="position:absolute;left:72px;top:72px"><span class="pill">Ofertas {publico}</span></div>
-  {titulo(160, 108)}
-  <img class="logo" src="{LOGO}" style="right:56px;top:56px;width:220px;height:264px" alt="Agropet Bichão">
-  <p style="position:absolute;left:72px;top:450px;max-width:640px;font-weight:700;font-size:38px;line-height:1.25">
-    Preço de fim de mês nas melhores marcas. <span style="color:var(--laranja)">Arraste e confira!</span></p>
-  <div class="forma" style="top:880px;width:1020px;height:310px"></div>
-  {produtos}
-  <div class="selo" style="right:50px;top:480px"><span>Poucas</span><b style="font-size:36px">unidades</b></div>
+  <div class="abs" style="left:48px;top:44px">{lockup()}</div>
+  <div class="abs" style="right:48px;top:58px;display:flex;flex-direction:column;align-items:flex-end;gap:14px">
+    <span style="font-weight:700;font-size:22px;letter-spacing:3px;opacity:.7">{n:02d}/{total:02d}</span>
+    <span class="pill contorno">{icon("clock", 22, "#fff")}Válido até {VALIDADE}</span>
+  </div>
+  <div class="abs" style="left:48px;top:212px"><span class="pill verde">{p["cat"]}</span></div>
+
+  <div class="palco anel" style="top:205px;width:760px;height:760px"></div>
+  <div class="palco disco" style="top:265px;width:640px;height:640px"></div>
+  <div class="chao" style="top:878px;width:520px"></div>
+  <div class="prod" style="top:268px;width:{p.get("w", 520)}px;height:{p.get("h", 630)}px">
+    <img src="{foto(p["slug"])}" alt="{p["brand"]}"></div>
+
+  <div class="cartao" style="top:950px;height:300px">
+    <div class="info"><div class="marca">{p["brand"]}</div><div class="desc">{p["desc"]}</div><div class="chips">{chips}</div></div>
+    {preco(p["price"], p.get("rotulo", "Por apenas"))}
+  </div>
   {rodape()}
 </div>"""
     return page(body)
 
 
-def produto(n, total, p):
-    img = foto(p["slug"])
-    if img:
-        vis = f'<img src="{img}" alt="{p["brand"]}">'
-    else:
-        num, unid = p["size"].split(" ", 1)
-        vis = f'<div class="semfoto"><b>{num}</b><small>{unid}</small></div>'
-    inteiro, cent = p["price"].split(",")
-    extra = f'<em>{p["extra"]}</em>' if p.get("extra") else f'<em>{p["size"]}</em>'
+def capa(total, publico, destaques):
+    # três embalagens no palco, a do meio em destaque
+    slots = [(-300, 380, 470), (0, 440, 560), (300, 380, 470)]
+    prods = "".join(
+        f'<div class="prod" style="top:{1250 - h}px;margin-left:{dx}px;width:{w}px;height:{h}px;z-index:{2 if dx == 0 else 1}">'
+        f'<img src="{foto(s)}" alt=""></div>'
+        for (dx, w, h), s in zip(slots, destaques)
+    )
     body = f"""
 <div class="slide">
-  <div class="counter" style="top:78px;left:72px">{n}/{total}</div>
-  {titulo(120, 104)}
-  <img class="logo" src="{LOGO}" style="right:56px;top:60px;width:200px;height:240px" alt="Agropet Bichão">
-  <div style="position:absolute;left:72px;top:380px"><span class="pill">{p["cat"]}</span></div>
-  <div class="forma" style="top:620px;width:700px;height:540px"></div>
-  <div class="produto" style="left:60px;top:480px;width:560px;height:640px">{vis}</div>
-  <div class="oferta" style="top:480px">
-    <div class="nome"><b>{p["brand"]}</b><span>{p["desc"]}</span>{extra}</div>
-    <div class="preco"><small>{p.get("rotulo", "Por apenas")}:</small>
-      <div><span class="rs">R$</span><span class="int">{inteiro}</span><span class="cent">,{cent}</span></div></div>
+  <div class="abs" style="left:0;right:0;top:48px;display:flex;justify-content:center">
+    <img src="{LOGO}" style="height:190px;filter:drop-shadow(0 8px 18px rgba(0,0,0,.35))" alt="Agropet Bichão"></div>
+  <div class="abs" style="left:0;right:0;top:262px;text-align:center;font-weight:900;text-transform:uppercase;line-height:1">
+    <div style="font-size:150px;letter-spacing:-5px">Fecha mês</div>
+    <div style="display:inline-block;margin-top:14px;background:var(--laranja);color:var(--azul-esc);font-size:112px;
+      letter-spacing:-3px;padding:8px 40px 14px;border-radius:22px;transform:rotate(-2deg);box-shadow:0 14px 0 var(--laranja-esc)">Bichão</div>
   </div>
-  <div class="selo" style="right:300px;top:1070px;width:160px;height:160px;font-size:24px"><span>Poucas</span><b style="font-size:36px">unid.</b></div>
-  {rodape()}
+  <div class="abs" style="left:0;right:0;top:600px;display:flex;justify-content:center;gap:14px">
+    <span class="pill verde" style="font-size:26px;padding:12px 26px">Ofertas {publico}</span>
+    <span class="pill contorno" style="font-size:26px;padding:12px 26px">{icon("clock", 24, "#fff")}Até {VALIDADE}</span>
+    <span class="pill vermelho" style="font-size:26px;padding:12px 26px">Poucas unidades</span>
+  </div>
+  <div class="palco disco" style="top:860px;width:1200px;height:1200px"></div>
+  <div class="chao" style="top:1228px;width:900px"></div>
+  {prods}
+  <div class="abs" style="right:48px;bottom:44px;z-index:3;display:flex;align-items:center;gap:10px;font-weight:700;font-size:24px;
+    letter-spacing:2px;text-transform:uppercase;color:var(--azul-esc)">Arraste {icon("arrow", 30, "#06175E", 3)}</div>
 </div>"""
     return page(body)
 
 
 def cta(total):
+    itens = [("truck", "Tele-entrega grátis", "Consulte condições"),
+             ("pin", "Toda Porto Alegre", "Entregamos em toda a cidade"),
+             ("store", "Visite a loja", "Av. Alberto Pasqualini, 451 — Jardim Sabará")]
+    cards = "".join(
+        f'<div style="display:flex;align-items:center;gap:24px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);'
+        f'border-radius:24px;padding:20px 30px"><div style="width:76px;height:76px;border-radius:20px;background:var(--laranja);'
+        f'display:flex;align-items:center;justify-content:center">{icon(i, 42, "#06175E")}</div>'
+        f'<div><div style="font-weight:800;font-size:34px;line-height:1.1">{t}</div>'
+        f'<div style="font-weight:500;font-size:25px;opacity:.85;margin-top:4px">{d}</div></div></div>'
+        for i, t, d in itens
+    )
     body = f"""
 <div class="slide">
-  <div style="position:absolute;left:72px;top:72px"><span class="pill" style="background:var(--vermelho);color:#fff">Poucas unidades</span></div>
-  {titulo(160, 108, "Garanta", "o seu!")}
-  <img class="logo" src="{LOGO}" style="right:56px;top:56px;width:220px;height:264px" alt="Agropet Bichão">
-  <p style="position:absolute;left:72px;top:470px;max-width:900px;font-weight:700;font-size:38px;line-height:1.3">
-    Chame no WhatsApp, separe seus produtos e receba em casa.</p>
-  <div style="position:absolute;left:72px;top:620px;display:flex;align-items:center;gap:20px;background:var(--laranja);color:var(--azul-esc);
-    font-family:'Oswald',sans-serif;font-weight:700;font-size:76px;padding:24px 44px;border-radius:24px;box-shadow:0 12px 0 #c9821a">
-    {WA_ICON.format(s=78)}{WHATS}</div>
-  <div style="position:absolute;left:72px;right:72px;top:860px;display:flex;flex-direction:column;gap:22px;font-size:36px;font-weight:700">
-    <div><span style="color:var(--laranja)">■</span>&nbsp; Tele-entrega grátis: consulte condições</div>
-    <div><span style="color:var(--laranja)">■</span>&nbsp; Entregamos para toda Porto Alegre</div>
-    <div><span style="color:var(--laranja)">■</span>&nbsp; Av. Alberto Pasqualini, 451 — Jardim Sabará</div>
+  <div class="abs" style="left:0;right:0;top:56px;display:flex;justify-content:center">
+    <img src="{LOGO}" style="height:170px;filter:drop-shadow(0 8px 18px rgba(0,0,0,.35))" alt="Agropet Bichão"></div>
+  <div class="abs" style="left:64px;right:64px;top:258px;text-align:center">
+    <span class="pill vermelho" style="font-size:24px">Poucas unidades</span>
+    <div style="font-weight:900;font-size:96px;line-height:1;letter-spacing:-3px;margin-top:26px;text-transform:uppercase">
+      Garanta antes<br><span style="color:var(--laranja)">que acabe!</span></div>
+    <p style="font-weight:500;font-size:32px;line-height:1.35;margin-top:24px;opacity:.92">
+      Chame no WhatsApp, separe seus produtos<br>e receba em casa.</p>
   </div>
-  <div style="position:absolute;left:0;right:0;bottom:0;height:150px;background:var(--vermelho);display:flex;align-items:center;justify-content:center;
-    font-family:'Oswald',sans-serif;font-weight:600;font-size:34px;letter-spacing:1px;text-transform:uppercase;text-align:center;padding:0 40px">
-    Ofertas válidas até {VALIDADE} ou enquanto durarem os estoques</div>
+  <div class="abs" style="left:0;right:0;top:690px;display:flex;justify-content:center">
+    <div style="display:flex;align-items:center;gap:20px;background:var(--laranja);color:var(--azul-esc);font-weight:800;font-size:62px;
+      letter-spacing:-1px;padding:22px 48px;border-radius:999px;box-shadow:0 12px 0 var(--laranja-esc)">
+      {icon("wa", 64, "#06175E", 2.4)}{WHATS}</div></div>
+  <div class="abs" style="left:64px;right:64px;top:850px;display:flex;flex-direction:column;gap:16px">{cards}</div>
+  <div class="abs" style="left:0;right:0;bottom:36px;text-align:center;font-weight:600;font-size:22px;opacity:.75">
+    Ofertas válidas até {VALIDADE} ou enquanto durarem os estoques.</div>
 </div>"""
     return page(body)
 
 
-ANTIPULGAS = "Antipulgas e carrapatos"
+ANTI = "Antipulgas e carrapatos"
 CAES = [
-    dict(slug="seresto-p", cat=ANTIPULGAS, size="P tamanho", brand="Coleira Seresto P",
-         desc="Cães e gatos até 8 kg", price="149,99"),
-    dict(slug="seresto-g", cat=ANTIPULGAS, size="G tamanho", brand="Coleira Seresto G",
-         desc="Cães acima de 8 kg", price="189,99"),
-    dict(slug="nexgard-4-10kg", cat=ANTIPULGAS, size="3 unidades", brand="NexGard",
-         desc="Antipulgas e carrapatos · Cães de 4,1 a 10 kg", extra="Combo 3 unidades",
-         price="189,99", rotulo="Combo por apenas"),
+    dict(slug="seresto-p", cat=ANTI, size="Tamanho P", brand="Coleira Seresto P",
+         desc="Cães e gatos até 8 kg · 8 meses de proteção", price="149,99", w=600, h=600),
+    dict(slug="seresto-g", cat=ANTI, size="Tamanho G", brand="Coleira Seresto G",
+         desc="Cães acima de 8 kg · 8 meses de proteção", price="189,99", w=600, h=600),
+    dict(slug="nexgard-4-10kg", cat=ANTI, size="4,1 a 10 kg", brand="NexGard",
+         desc="Tablete mastigável para cães", extra="Combo 3 unidades", price="189,99",
+         rotulo="Combo por", w=700, h=560),
     dict(slug="origens-shih-tzu", cat="Ração para cães", size="10,1 kg", brand="Origens Shih Tzu e Lhasa Apso",
          desc="Cães adultos · Raças específicas", price="109,99"),
     dict(slug="guabi-natural-caes-medias", cat="Ração para cães", size="12 kg", brand="Guabi Natural",
          desc="Cães adultos · Raças médias", price="199,99"),
-    dict(slug="bionatural-junior-grandes", cat="Ração para cães", size="15 kg", brand="Bionatural Júnior",
+    dict(slug="bionatural-junior-grandes", cat="Ração super premium", size="15 kg", brand="Bionatural Prime Júnior",
          desc="Raças grandes e gigantes", price="259,99"),
-    dict(slug="bionatural-sensitive-peixe", cat="Super premium", size="15 kg", brand="Bionatural Sensitive",
-         desc="Cães adultos · Peixe · Raças pequenas", price="279,99"),
+    dict(slug="bionatural-sensitive-peixe", cat="Ração super premium", size="15 kg", brand="Bionatural Sensitive",
+         desc="Cães adultos · Raças pequenas · Peixe", price="279,99"),
     dict(slug="premier-diabetes-caes", cat="Nutrição clínica", size="10,1 kg", brand="Premier Diabetes",
-         desc="Cães · Médio e grande porte", price="319,99"),
+         desc="Cães de porte médio e grande", price="319,99"),
 ]
 GATOS = [
-    dict(slug="seresto-p", cat=ANTIPULGAS, size="P tamanho", brand="Coleira Seresto P",
-         desc="Cães e gatos até 8 kg", price="149,99"),
-    dict(slug="areia-bento", cat="Higiene", size="4 unidades", brand="Areia de Mandioca Bento",
-         desc="Pacotes de 4 kg", extra="Combo 4 unidades", price="99,99", rotulo="Combo por apenas"),
-    dict(slug="frost-gatos-filhotes", cat="Ração para gatos", size="7,5 kg", brand="Frost",
-         desc="Gatos filhotes", price="169,99"),
+    dict(slug="seresto-p", cat=ANTI, size="Tamanho P", brand="Coleira Seresto P",
+         desc="Cães e gatos até 8 kg · 8 meses de proteção", price="149,99", w=600, h=600),
+    dict(slug="areia-bento", cat="Higiene", size="4 kg cada", brand="Areia Bento Mandioca",
+         desc="Granulado higiênico de mandioca e minerais", extra="Combo 4 unidades", price="99,99",
+         rotulo="Combo por", w=560),
+    dict(slug="frost-gatos-filhotes", cat="Ração para gatos", size="7,5 kg", brand="Frost Kitten",
+         desc="Gatos filhotes · Super premium", price="169,99"),
     dict(slug="guabi-natural-gatos", cat="Ração para gatos", size="7,5 kg", brand="Guabi Natural",
          desc="Gatos adultos", price="189,99"),
     dict(slug="premier-nattu-gatos-castrados", cat="Ração para gatos", size="7,5 kg", brand="Premier Nattu",
          desc="Gatos castrados · Abóbora", price="199,99"),
-    dict(slug="nd-tropical-gatos", cat="Super premium", size="7,5 kg", brand="N&amp;D Tropical Selection",
+    dict(slug="nd-tropical-gatos", cat="Ração super premium", size="7,5 kg", brand="N&amp;D Tropical Selection",
          desc="Gatos castrados · Frango", price="279,99"),
     dict(slug="premier-urinario-gatos", cat="Nutrição clínica", size="7,5 kg", brand="Premier Urinário",
          desc="Gatos adultos", price="299,99"),
-    dict(slug="nd-pumpkin-gatos", cat="Super premium", size="7,5 kg", brand="N&amp;D Pumpkin",
+    dict(slug="nd-pumpkin-gatos", cat="Ração super premium", size="7,5 kg", brand="N&amp;D Pumpkin",
          desc="Gatos adultos · Frango e romã", price="419,99"),
 ]
 
@@ -233,7 +267,7 @@ def campanhas():
     out = {}
     for nome, itens, publico, destaques in [
         ("caes", CAES, "para cães", ["seresto-g", "bionatural-sensitive-peixe", "nexgard-4-10kg"]),
-        ("gatos", GATOS, "para gatos", ["premier-nattu-gatos-castrados", "nd-pumpkin-gatos", "guabi-natural-gatos"]),
+        ("gatos", GATOS, "para gatos", ["premier-nattu-gatos-castrados", "nd-pumpkin-gatos", "frost-gatos-filhotes"]),
     ]:
         total = len(itens) + 2
         slides = [capa(total, publico, destaques)]

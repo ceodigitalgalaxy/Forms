@@ -88,21 +88,22 @@ body{width:1080px;height:1350px;overflow:hidden;font-family:'Poppins',sans-serif
 /* cartão de oferta */
 .cartao{position:absolute;left:48px;right:48px;background:#fff;border-radius:36px;display:flex;align-items:stretch;
   box-shadow:0 24px 60px rgba(3,10,50,.45);overflow:hidden}
-.cartao .info{flex:1;padding:30px 18px 30px 44px;display:flex;flex-direction:column;justify-content:center;color:var(--tinta)}
-.cartao .marca{font-weight:800;font-size:56px;line-height:1.04;letter-spacing:-1px;color:var(--azul)}
-.cartao .desc{font-weight:500;font-size:30px;line-height:1.28;color:var(--cinza);margin-top:10px}
+.cartao .info{flex:1;padding:34px 30px 34px 46px;display:flex;flex-direction:column;justify-content:center;color:var(--tinta)}
+.cartao .marca{text-wrap:balance;font-weight:800;font-size:52px;line-height:1.05;letter-spacing:-1px;color:var(--azul)}
+.cartao .marca::after{content:"";display:block;width:64px;height:6px;border-radius:3px;background:var(--laranja);margin-top:16px}
+.cartao .desc{font-weight:500;font-size:25px;line-height:1.45;color:var(--cinza);margin-top:14px;text-wrap:pretty}
 .cartao .chips{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
-.chip{font-weight:700;font-size:24px;letter-spacing:1px;text-transform:uppercase;padding:9px 18px;border-radius:10px;line-height:1}
+.chip{font-weight:700;font-size:22px;letter-spacing:1px;text-transform:uppercase;padding:9px 18px;border-radius:10px;line-height:1}
 .chip.azul{background:var(--azul);color:#fff}
 .chip.verde{background:var(--verde);color:var(--azul-esc)}
 .chip.vermelho{background:#FDE7E6;color:var(--vermelho)}
-.cartao .preco{flex:none;width:420px;background:linear-gradient(160deg,#F2352B 0%,var(--vermelho) 45%,#B3131B 100%);
+.cartao .preco{flex:none;width:392px;background:linear-gradient(160deg,#F2352B 0%,var(--vermelho) 45%,#B3131B 100%);
   display:flex;flex-direction:column;justify-content:center;align-items:center;padding:20px 14px;color:#fff}
 .preco .rot{font-weight:800;font-size:26px;letter-spacing:3px;text-transform:uppercase;color:#FFD45C}
 .preco .val{display:flex;align-items:flex-start;font-weight:800;line-height:1;margin-top:2px;letter-spacing:-4px;text-shadow:0 4px 0 rgba(90,0,0,.25)}
-.preco .rs{font-size:40px;margin-top:20px;margin-right:8px;letter-spacing:0}
-.preco .int{font-size:136px}
-.preco .cent{font-size:56px;margin-top:16px;letter-spacing:-1px}
+.preco .rs{font-size:38px;margin-top:18px;margin-right:8px;letter-spacing:0}
+.preco .int{font-size:128px}
+.preco .cent{font-size:52px;margin-top:14px;letter-spacing:-1px}
 
 .rodape{position:absolute;left:48px;right:48px;bottom:34px;display:flex;align-items:center;justify-content:center;gap:14px;
   font-weight:600;font-size:27px;color:rgba(255,255,255,.92)}
@@ -143,13 +144,13 @@ def produto(n, total, p):
   </div>
   <div class="abs" style="left:48px;top:212px"><span class="pill verde">{p["cat"]}</span></div>
 
-  <div class="palco anel" style="top:190px;width:760px;height:760px"></div>
-  <div class="palco disco" style="top:250px;width:640px;height:640px"></div>
-  <div class="prod" style="top:{875 - p.get("h", 640)}px;width:{p.get("w", 520)}px;height:{p.get("h", 640)}px">
+  <div class="palco anel" style="top:180px;width:680px;height:680px"></div>
+  <div class="palco disco" style="top:230px;width:580px;height:580px"></div>
+  <div class="prod" style="top:{800 - p.get("h", 570)}px;width:{p.get("w", 480)}px;height:{p.get("h", 570)}px">
     <img src="{foto(p["slug"])}" alt="{p["brand"]}"></div>
   <div class="abs" style="right:48px;top:212px;z-index:3"><span class="pill vermelho" style="font-size:22px;transform:rotate(4deg);box-shadow:0 8px 18px rgba(0,0,0,.3)">Poucas unidades</span></div>
 
-  <div class="cartao" style="top:918px;height:342px">
+  <div class="cartao" style="top:850px;height:410px">
     <div class="info"><div class="marca">{p["brand"]}</div><div class="desc">{p["desc"]}</div><div class="chips">{chips}</div></div>
     {preco(p["price"], p.get("rotulo", "Por apenas"))}
   </div>
@@ -225,41 +226,41 @@ def cta(total):
 ANTI = "Antipulgas e carrapatos"
 CAES = [
     dict(slug="seresto-p", cat=ANTI, size="Tamanho P", brand="Coleira Seresto P",
-         desc="Cães e gatos até 8 kg · 8 meses de proteção", price="149,99", w=600, h=600),
+         desc="Elimina pulgas e carrapatos em cães e pulgas em gatos de até 8 kg. Até 8 meses de proteção, sem cheiro e resistente à água.", price="149,99", w=560, h=560),
     dict(slug="seresto-g", cat=ANTI, size="Tamanho G", brand="Coleira Seresto G",
-         desc="Cães acima de 8 kg · 8 meses de proteção", price="189,99", w=600, h=600),
+         desc="Elimina pulgas e carrapatos em cães acima de 8 kg. Até 8 meses de proteção, sem cheiro e resistente à água.", price="189,99", w=560, h=560),
     dict(slug="nexgard-4-10kg", cat=ANTI, size="4,1 a 10 kg", brand="NexGard",
-         desc="Tablete mastigável para cães", extra="Combo 3 unidades", price="189,99",
-         rotulo="Combo por", w=620, h=520),
+         desc="Tablete mastigável sabor carne que mata pulgas e carrapatos. Ação rápida e proteção por 30 dias a cada dose.", extra="Combo 3 unidades", price="189,99",
+         rotulo="Combo por", w=580, h=480),
     dict(slug="origens-shih-tzu", cat="Ração para cães", size="10,1 kg", brand="Origens",
-         desc="Shih Tzu e Lhasa Apso · Cães adultos", price="109,99"),
+         desc="Ração Premium Especial para Shih Tzu e Lhasa Apso adultos, com fórmula pensada para as necessidades dessas raças.", price="109,99"),
     dict(slug="guabi-natural-caes-medias", cat="Ração para cães", size="12 kg", brand="Guabi Natural",
-         desc="Cães adultos · Raças médias", price="199,99"),
+         desc="Ração natural para cães adultos de raças médias. Sem corantes e aromas artificiais, conservada com antioxidantes naturais.", price="199,99"),
     dict(slug="bionatural-junior-grandes", cat="Ração super premium", size="15 kg", brand="Bionatural Prime Júnior",
-         desc="Raças grandes e gigantes", price="259,99"),
+         desc="Super premium natural para filhotes de raças grandes e gigantes, com DHA, colágeno, glucosamina e condroitina. Sabor cordeiro.", price="259,99"),
     dict(slug="bionatural-sensitive-peixe", cat="Ração super premium", size="15 kg", brand="Bionatural Sensitive",
-         desc="Cães adultos · Raças pequenas · Peixe", price="279,99"),
+         desc="Super premium natural para cães adultos de raças pequenas com pele sensível. Zero corantes, aromatizantes e transgênicos.", price="279,99"),
     dict(slug="premier-diabetes-caes", cat="Nutrição clínica", size="10,1 kg", brand="Premier Diabetes",
-         desc="Cães de porte médio e grande", price="319,99"),
+         desc="Coadjuvante no tratamento do diabetes em cães de porte médio e grande, filhotes e adultos. Use com orientação veterinária.", price="319,99"),
 ]
 GATOS = [
     dict(slug="seresto-p", cat=ANTI, size="Tamanho P", brand="Coleira Seresto P",
-         desc="Cães e gatos até 8 kg · 8 meses de proteção", price="149,99", w=600, h=600),
+         desc="Elimina pulgas e carrapatos em cães e pulgas em gatos de até 8 kg. Até 8 meses de proteção, sem cheiro e resistente à água.", price="149,99", w=560, h=560),
     dict(slug="areia-bento", cat="Higiene", size="4 kg cada", brand="Areia Bento Mandioca",
-         desc="Granulado higiênico de mandioca e minerais", extra="Combo 4 unidades", price="99,99",
-         rotulo="Combo por", w=560),
+         desc="Granulado higiênico super premium de mandioca e minerais, com alta absorção e controle de odores.", extra="Combo 4 unidades", price="99,99",
+         rotulo="Combo por", w=500),
     dict(slug="frost-gatos-filhotes", cat="Ração para gatos", size="7,5 kg", brand="Frost Kitten",
-         desc="Gatos filhotes · Super premium", price="169,99"),
+         desc="Super premium para gatos filhotes até 12 meses, com DHA para o desenvolvimento e grão mini.", price="169,99"),
     dict(slug="guabi-natural-gatos", cat="Ração para gatos", size="7,5 kg", brand="Guabi Natural",
-         desc="Gatos adultos", price="189,99"),
+         desc="Ração natural para gatos adultos. Sem corantes e aromas artificiais, conservada com antioxidantes naturais.", price="189,99"),
     dict(slug="premier-nattu-gatos-castrados", cat="Ração para gatos", size="7,5 kg", brand="Premier Nattu",
-         desc="Gatos castrados · Abóbora", price="199,99"),
+         desc="Para gatos castrados, com frango, abóbora, brócolis, quinoa e blueberry. Fórmula com antioxidantes naturais.", price="199,99"),
     dict(slug="nd-tropical-gatos", cat="Ração super premium", size="7,5 kg", brand="N&amp;D Tropical Selection",
-         desc="Gatos castrados · Frango", price="279,99"),
+         desc="Super premium para gatos castrados, com frango, cereais e frutas tropicais. Nutrição completa da Farmina.", price="279,99"),
     dict(slug="premier-urinario-gatos", cat="Nutrição clínica", size="7,5 kg", brand="Premier Urinário",
-         desc="Gatos adultos", price="299,99"),
+         desc="Coadjuvante no tratamento de cálculos urinários de estruvita em gatos adultos. Use com orientação veterinária.", price="299,99"),
     dict(slug="nd-pumpkin-gatos", cat="Ração super premium", size="7,5 kg", brand="N&amp;D Pumpkin",
-         desc="Gatos adultos · Frango e romã", price="419,99"),
+         desc="Super premium sem cereais para gatos adultos, com frango, abóbora e romã. Nutrição natural da Farmina.", price="419,99"),
 ]
 
 

@@ -55,6 +55,13 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--brand)}
 .radios label{display:flex;align-items:center;gap:8px;font-weight:600;min-height:34px}
 .radios input{width:20px;height:20px;accent-color:var(--brand)}
 .contact{font-size:13px;color:var(--muted);font-weight:600}
+.paste{display:flex;gap:8px;min-width:0}
+.paste input{flex:1;min-width:0}
+.btn-link{min-height:46px;padding:0 14px;background:var(--soft);color:var(--brand);font-size:14px;border-radius:10px}
+.chk{display:flex;align-items:center;gap:8px;font-weight:600;font-size:13.5px;min-height:32px}
+.chk input{width:20px;height:20px;accent-color:var(--brand)}
+.drop.over{border-color:var(--brand);background:var(--soft)}
+.drop img{background:repeating-conic-gradient(#e6e6e6 0 25%,#fff 0 50%) 0 0/12px 12px}
 .actions{display:flex;flex-direction:column;gap:10px;position:sticky;bottom:0;padding-block:12px calc(12px + env(safe-area-inset-bottom,0px));background:linear-gradient(transparent,var(--bg) 30%)}
 button{font:inherit;font-weight:800;border-radius:12px;min-height:52px;padding:0 18px;cursor:pointer;border:none}
 button:focus-visible{outline:3px solid var(--lime);outline-offset:2px}
@@ -124,8 +131,11 @@ button:focus-visible{outline:3px solid var(--lime);outline-offset:2px}
       <section class="box" id="sec-oferta">
         <h2>3 · Produto</h2>
         <div class="f" data-req="Envie a foto do produto."><span class="lbl">Foto do produto <span class="req">*</span></span>
-          <label class="drop" for="o-foto"><img id="o-foto-thumb" alt="" hidden><span id="o-foto-txt">Escolher foto. Fica melhor sem fundo (PNG).</span></label>
-          <input type="file" id="o-foto" accept="image/*" hidden><span class="msg"></span></div>
+          <label class="drop" for="o-foto"><img id="o-foto-thumb" alt="" hidden><span id="o-foto-txt">Escolher foto do aparelho</span></label>
+          <input type="file" id="o-foto" accept="image/*" hidden>
+          <div class="paste"><input type="text" id="o-foto-link" placeholder="Ou cole aqui a imagem copiada ou o link" autocomplete="off" aria-label="Colar imagem ou link"><button type="button" class="btn-link" data-photo="o">Usar link</button></div>
+          <span class="hint">Na web: clique com o botão direito na imagem, "Copiar imagem", e cole aqui.</span>
+          <label class="chk"><input type="checkbox" id="o-sem-fundo" checked> Remover o fundo automaticamente</label><span class="msg"></span></div>
         <div class="f" data-req="Escreva o nome do produto."><label for="o-produto">Nome do produto <span class="req">*</span></label>
           <textarea id="o-produto" maxlength="90" placeholder="Ex.: Antipulgas e Carrapatos Bravecto Comprimido para Cães de 10 a 20 kg"></textarea><span class="msg"></span></div>
         <div class="row">
@@ -148,8 +158,10 @@ button:focus-visible{outline:3px solid var(--lime);outline-offset:2px}
       <section class="box" id="sec-plano" hidden>
         <h2>3 · Plano ou pacote</h2>
         <div class="f" data-req="Envie uma foto."><span class="lbl">Foto <span class="req">*</span></span>
-          <label class="drop" for="p-foto"><img id="p-foto-thumb" alt="" hidden><span id="p-foto-txt">Escolher foto (pet no banho, creche, hotel)</span></label>
-          <input type="file" id="p-foto" accept="image/*" hidden><span class="msg"></span></div>
+          <label class="drop" for="p-foto"><img id="p-foto-thumb" alt="" hidden><span id="p-foto-txt">Escolher foto do aparelho</span></label>
+          <input type="file" id="p-foto" accept="image/*" hidden>
+          <div class="paste"><input type="text" id="p-foto-link" placeholder="Ou cole aqui a imagem copiada ou o link" autocomplete="off" aria-label="Colar imagem ou link"><button type="button" class="btn-link" data-photo="p">Usar link</button></div>
+          <span class="hint">Na web: clique com o botão direito na imagem, "Copiar imagem", e cole aqui.</span><span class="msg"></span></div>
         <div class="row">
           <div class="f"><label for="p-tipo">Tipo</label>
             <select id="p-tipo"><option>Plano</option><option>Pacote</option><option>Serviço</option><option>Promoção</option></select></div>
@@ -193,8 +205,11 @@ button:focus-visible{outline:3px solid var(--lime);outline-offset:2px}
           <input type="text" id="a-cta" maxlength="24" placeholder="Ex.: Faça sua reserva:">
           <span class="hint">O WhatsApp da sua unidade entra depois desse texto.</span></div>
         <div class="f"><span class="lbl">Foto de pet (opcional)</span>
-          <label class="drop" for="a-foto"><img id="a-foto-thumb" alt="" hidden><span id="a-foto-txt">Escolher foto sem fundo (PNG)</span></label>
-          <input type="file" id="a-foto" accept="image/*" hidden></div>
+          <label class="drop" for="a-foto"><img id="a-foto-thumb" alt="" hidden><span id="a-foto-txt">Escolher foto do aparelho</span></label>
+          <input type="file" id="a-foto" accept="image/*" hidden>
+          <div class="paste"><input type="text" id="a-foto-link" placeholder="Ou cole aqui a imagem copiada ou o link" autocomplete="off" aria-label="Colar imagem ou link"><button type="button" class="btn-link" data-photo="a">Usar link</button></div>
+          <span class="hint">Na web: clique com o botão direito na imagem, "Copiar imagem", e cole aqui.</span>
+          <label class="chk"><input type="checkbox" id="a-sem-fundo" checked> Remover o fundo automaticamente</label></div>
       </section>
 
       <div class="actions">
@@ -259,23 +274,28 @@ function lines(ctx,text,font,width,max){
   if(out.length>max){const keep=out.slice(0,max);let l=keep[max-1];while(l.length>1&&ctx.measureText(l+'…').width>width)l=l.slice(0,-1);keep[max-1]=l.replace(/\s+\S*$/,'')+'…';return keep;}
   return out;
 }
+// quebra as linhas com larguras parecidas (sem palavra sozinha na última linha)
+function balanced(ctx,text,font,width,max){const base=lines(ctx,text,font,width,max);if(base.length<2||/…$/.test(base[base.length-1]))return base;
+  let lo=width*0.35,hi=width;for(let i=0;i<14;i++){const mid=(lo+hi)/2,t=lines(ctx,text,font,mid,max);if(t.length===base.length&&!/…$/.test(t[t.length-1]))hi=mid;else lo=mid;}
+  return lines(ctx,text,font,hi,max);}
 function textBlock(ctx,text,{font,x,y,w,lh,max,color,align,draw,upper}){
-  const ls_=lines(ctx,upper?String(text).toUpperCase():text,font,w,max);
+  const ls_=balanced(ctx,upper?String(text).toUpperCase():text,font,w,max);
   if(draw){ctx.font=font;ctx.fillStyle=color;ctx.textBaseline='top';ctx.textAlign=align||'left';const ax=align==='center'?x+w/2:align==='right'?x+w:x;ls_.forEach((l,i)=>ctx.fillText(l,ax,y+i*lh));ctx.textAlign='left';}
   return y+ls_.length*lh;
 }
-function contain(ctx,im,x,y,w,h,valign){if(!im)return;const r=Math.min(w/im.naturalWidth,h/im.naturalHeight),iw=im.naturalWidth*r,ih=im.naturalHeight*r;
+const DW=im=>im.naturalWidth||im.width,DH=im=>im.naturalHeight||im.height;
+function contain(ctx,im,x,y,w,h,valign){if(!im)return;const r=Math.min(w/DW(im),h/DH(im)),iw=DW(im)*r,ih=DH(im)*r;
   ctx.drawImage(im,x+(w-iw)/2,valign==='bottom'?y+h-ih:y+(h-ih)/2,iw,ih);}
-function cover(ctx,im,x,y,w,h){const r=Math.max(w/im.naturalWidth,h/im.naturalHeight),iw=im.naturalWidth*r,ih=im.naturalHeight*r;ctx.drawImage(im,x+(w-iw)/2,y+(h-ih)/2,iw,ih);}
+function cover(ctx,im,x,y,w,h){const r=Math.max(w/DW(im),h/DH(im)),iw=DW(im)*r,ih=DH(im)*r;ctx.drawImage(im,x+(w-iw)/2,y+(h-ih)/2,iw,ih);}
 function placeholder(ctx,x,y,w,h,label,T){ctx.save();ctx.strokeStyle='rgba(255,255,255,.55)';ctx.setLineDash([14,10]);ctx.lineWidth=3;rr(ctx,x,y,w,h,24);ctx.stroke();
   ctx.fillStyle='rgba(255,255,255,.8)';ctx.font=f(700,Math.max(22,w/16));ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(label,x+w/2,y+h/2);ctx.restore();}
 function logo(ctx,key,x,y,h){const im=LOGOS[key];if(!im.complete||!im.naturalWidth)return 0;const w=h*im.naturalWidth/im.naturalHeight;ctx.drawImage(im,x,y,w,h);return w;}
 
-function background(ctx,F,T,wave){
+function background(ctx,F,T,wave,noArcs){
   const {W,H}=F,g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,T.bg1);g.addColorStop(1,T.bg2);ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
-  ctx.save();ctx.lineCap='round';
+  if(!noArcs){ctx.save();ctx.lineCap='round';
   ctx.strokeStyle=T.deco1;ctx.lineWidth=W*0.055;ctx.beginPath();ctx.arc(-W*0.03,-W*0.03,W*0.2,0,Math.PI/2);ctx.stroke();
-  ctx.strokeStyle=T.deco2;ctx.lineWidth=W*0.018;ctx.beginPath();ctx.arc(-W*0.03,-W*0.03,W*0.265,0.05,Math.PI/2-0.05);ctx.stroke();ctx.restore();
+  ctx.strokeStyle=T.deco2;ctx.lineWidth=W*0.018;ctx.beginPath();ctx.arc(-W*0.03,-W*0.03,W*0.265,0.05,Math.PI/2-0.05);ctx.stroke();ctx.restore();}
   if(T.snow){ctx.fillStyle='rgba(255,255,255,.18)';let s=7;const rnd=()=>(s=(s*9301+49297)%233280)/233280;for(let i=0;i<60;i++){ctx.beginPath();ctx.arc(rnd()*W,rnd()*H*0.8,2+rnd()*6,0,Math.PI*2);ctx.fill();}}
   if(wave){const hw=wave;ctx.fillStyle=T.deco2;ctx.beginPath();ctx.moveTo(0,H);ctx.lineTo(0,H-hw*0.55);ctx.bezierCurveTo(W*0.3,H-hw*0.2,W*0.62,H-hw*1.35,W,H-hw*1.12);ctx.lineTo(W,H);ctx.closePath();ctx.fill();
     ctx.fillStyle=T.deco1;ctx.beginPath();ctx.moveTo(0,H);ctx.lineTo(0,H-hw*0.3);ctx.bezierCurveTo(W*0.32,H-hw*0.02,W*0.6,H-hw*1.1,W,H-hw*0.85);ctx.lineTo(W,H);ctx.closePath();ctx.fill();}
@@ -295,14 +315,17 @@ function campaign(ctx,{x,y,w,chamada,nome,T,max,draw,align}){
 // bloco de preço: DE riscado + caixa branca "POR APENAS"
 function priceBlock(ctx,{x,y,w,d,T,s,align,draw}){
   const de=fmtMoney(d.de),por=fmtMoney(d.por);let cy=y;const cx=align==='center';
-  if(de){const t='DE: R$ '+de;ctx.font=f(800,34*s);const tw=ctx.measureText(t).width;const tx=cx?x+(w-tw)/2:x;
-    if(draw){ctx.fillStyle='#FFFFFF';ctx.textBaseline='top';ctx.fillText(t,tx,cy);const pre=ctx.measureText('DE: ').width;ctx.strokeStyle=T.alert;ctx.lineWidth=5*s;ctx.beginPath();ctx.moveTo(tx+pre-4,cy+30*s);ctx.lineTo(tx+tw+4,cy+8*s);ctx.stroke();}
-    cy+=34*s*1.35;}
-  ctx.font=ANTON(108*s);const nw=ctx.measureText(por).width;ctx.font=ANTON(56*s);const rw=ctx.measureText('R$ ').width;
-  const bw=Math.min(w,Math.max(nw+rw,240*s)+56*s),bh=(26+10+108*1.12)*s+36*s,bx=cx?x+(w-bw)/2:x;
+  if(de){const t='DE: R$ '+de;ctx.font=f(700,32*s);const tw=ctx.measureText(t).width;const tx=cx?x+(w-tw)/2:x;
+    if(draw){ctx.fillStyle='#FFFFFF';ctx.textBaseline='top';ctx.fillText(t,tx,cy);const pre=ctx.measureText('DE: ').width;ctx.strokeStyle=T.alert;ctx.lineWidth=4*s;ctx.beginPath();ctx.moveTo(tx+pre-2,cy+19*s);ctx.lineTo(tx+tw+2,cy+19*s);ctx.stroke();}
+    cy+=32*s*1.45;}
+  const padX=30*s,padY=24*s,lab=24*s,big=104*s,rsz=50*s;
+  ctx.font=ANTON(big);const nw=ctx.measureText(por).width;ctx.font=ANTON(rsz);const rw=ctx.measureText('R$').width+10*s;
+  ctx.font=f(900,lab);ls(ctx,1.5);const lw=ctx.measureText('POR APENAS:').width;ls(ctx,0);
+  const bw=Math.min(w,Math.max(lw,rw+nw)+padX*2),bh=padY+lab+10*s+big*1.02+padY*0.7,bx=cx?x+(w-bw)/2:x;
   if(draw){ctx.save();ctx.shadowColor='rgba(0,0,0,.22)';ctx.shadowBlur=22;ctx.shadowOffsetY=8;ctx.fillStyle='#FFFFFF';rr(ctx,bx,cy,bw,bh,18*s);ctx.fill();ctx.restore();
-    ctx.textBaseline='top';ctx.fillStyle=T.price;ctx.font=f(900,26*s);ls(ctx,1);ctx.fillText('POR APENAS:',bx+28*s,cy+18*s);ls(ctx,0);
-    const by=cy+18*s+26*s+6*s;ctx.font=ANTON(56*s);ctx.fillText('R$',bx+28*s,by+108*s*0.47);ctx.font=ANTON(108*s);ctx.fillText(por,bx+28*s+rw,by);}
+    ctx.textBaseline='top';ctx.fillStyle=T.price;ctx.font=f(900,lab);ls(ctx,1.5);ctx.fillText('POR APENAS:',bx+padX,cy+padY);ls(ctx,0);
+    const base=cy+padY+lab+10*s+big*0.98;ctx.textBaseline='alphabetic';ctx.font=ANTON(rsz);ctx.fillText('R$',bx+padX,base);ctx.font=ANTON(big);ctx.fillText(por,bx+padX+rw,base);}
+  if(Math.max(lw,rw+nw)+padX*2>w)cy+=1e6;
   cy+=bh;
   if(d.extra){cy+=14*s;cy=textBlock(ctx,d.extra,{font:f(700,26*s),x,y:cy,w,lh:26*s*1.3,max:2,color:'#FFFFFF',align:cx?'center':'left',draw});}
   return cy;
@@ -317,37 +340,24 @@ function footerOffer(ctx,F,T,d,U,{logoH,hw,pad}){
 
 /* ----- OFERTA ----- */
 function oferta(ctx,F,T,d,U,s,draw){
-  const {W,H}=F,story=d.formato==='story',side=d.formato==='feed';
-  const pad=side?60:72*W/1080,hw=side?150:story?230:210,logoH=side?170:story?210:220;
+  const {W,H}=F,story=d.formato==='story',feed=d.formato==='feed';
+  const pad=feed?60:72*W/1080,hw=feed?150:story?230:210,logoH=feed?170:story?220:230;
   if(draw)background(ctx,F,T,hw);
-  let y=campaign(ctx,{x:pad,y:side?40:story?210:90,w:W-pad*2,chamada:d.chamada,nome:d.nome,T,max:(side?140:story?200:180)*Math.min(s,1),draw});
-  y+=side?18:30*s;
-  const bottom=H-hw*0.62-(side?logoH*0.15:logoH+20);
-  if(side){
-    const lx=pad,lw=W*0.42,rx=W*0.47,rw=W-rx-pad,bottomL=H-hw*0.62-logoH-8;
+  let y=campaign(ctx,{x:pad,y:feed?40:story?220:90,w:W-pad*2,chamada:d.chamada,nome:d.nome,T,max:(feed?140:story?210:190)*Math.min(s,1),draw});
+  y+=feed?18:40;
+  const bottom=H-hw*0.62-24;
+  {
+    const rx=W*0.48,lx=pad,lw=rx-pad-36,rw=W-rx-pad,bottomL=H-hw*0.62-logoH-8;
     let ry=y,need=0;const meas=()=>{let t=0;if(d.selo)t+=54*s+16*s;t+=lines(ctx,d.produto,f(800,34*s),rw,4).length*34*s*1.18+18*s;return t+priceBlock(ctx,{x:rx,y:0,w:rw,d,T,s,draw:false});};
     need=meas();if(y+need>bottom)return bottom+1;
-    ry=y+Math.max(0,(bottom-y-need)/2);
-    if(draw){if(photos.o){ctx.save();ctx.shadowColor='rgba(0,0,0,.35)';ctx.shadowBlur=30;ctx.shadowOffsetY=16;contain(ctx,photos.o,lx,y,lw,bottomL-y,'bottom');ctx.restore();}else placeholder(ctx,lx,y,lw,bottomL-y,'Foto do produto',T);}
+    ry=Math.min(bottom-need,y+Math.max(0,(bottomL-y-need)/2));
+    if(draw){if(photos.o){ctx.save();ctx.shadowColor='rgba(0,0,0,.35)';ctx.shadowBlur=30;ctx.shadowOffsetY=16;contain(ctx,photos.o,lx,y,lw,bottomL-y);ctx.restore();}else placeholder(ctx,lx,y,lw,bottomL-y,'Foto do produto',T);}
     if(d.selo){if(draw)tagPill(ctx,rx,ry,d.selo,T,s);ry+=54*s+16*s;}
     ry=textBlock(ctx,d.produto,{font:f(800,34*s),x:rx,y:ry,w:rw,lh:34*s*1.18,max:4,color:'#FFFFFF',draw})+18*s;
     priceBlock(ctx,{x:rx,y:ry,w:rw,d,T,s,draw});
     if(draw)footerOffer(ctx,F,T,d,U,{logoH,hw,pad});
     return 0;
   }
-  // stories e A4: empilhado
-  const cw=W-pad*2;let selH=d.selo?54*s+18*s:0;
-  const nameH=lines(ctx,d.produto,f(800,44*s),cw,3).length*44*s*1.16+20*s;
-  const priceH=priceBlock(ctx,{x:pad,y:0,w:cw,d,T,s,align:'center',draw:false});
-  const photoH=bottom-y-selH-nameH-priceH-20*s;
-  if(photoH<(story?600:500))return bottom+1;
-  if(d.selo){if(draw){ctx.font=f(900,26*s);const tw=ctx.measureText(d.selo.toUpperCase()).width+56*s;tagPill(ctx,(W-tw)/2,y,d.selo,T,s);}y+=selH;}
-  if(draw){if(photos.o){ctx.save();ctx.shadowColor='rgba(0,0,0,.35)';ctx.shadowBlur=36;ctx.shadowOffsetY=18;contain(ctx,photos.o,pad,y,cw,photoH);ctx.restore();}else placeholder(ctx,pad+cw*0.15,y,cw*0.7,photoH,'Foto do produto',T);}
-  y+=photoH+20*s;
-  y=textBlock(ctx,d.produto,{font:f(800,44*s),x:pad,y,w:cw,lh:44*s*1.16,max:3,color:'#FFFFFF',align:'center',draw})+20*s;
-  priceBlock(ctx,{x:pad,y,w:cw,d,T,s,align:'center',draw});
-  if(draw)footerOffer(ctx,F,T,d,U,{logoH,hw,pad});
-  return 0;
 }
 function tagPill(ctx,x,y,text,T,s){ctx.font=f(900,26*s);ls(ctx,2);const t=text.toUpperCase(),w=ctx.measureText(t).width+56*s;ctx.save();ctx.translate(x,y);ctx.rotate(-0.03);ctx.fillStyle=T.tag;rr(ctx,0,0,w,54*s,10*s);ctx.fill();ctx.fillStyle=T.tagInk;ctx.textBaseline='middle';ctx.fillText(t,28*s,27*s+1);ctx.restore();ls(ctx,0);return w;}
 
@@ -359,14 +369,14 @@ function plano(ctx,F,T,d,U,s,draw){
   const inner=cw-80*s;
   const parts=[];let need=0;
   need+=56*s+22*s;
-  const tl=lines(ctx,d.titulo.toUpperCase(),f(900,52*s),inner,3);need+=tl.length*52*s*1.1+12*s;
-  const dl=d.detalhe?lines(ctx,d.detalhe,f(600,30*s),inner,2):[];need+=dl.length*30*s*1.3+(dl.length?16*s:0);
+  const tl=balanced(ctx,d.titulo.toUpperCase(),f(900,52*s),inner,3);need+=tl.length*52*s*1.1+12*s;
+  const dl=d.detalhe?balanced(ctx,d.detalhe,f(600,30*s),inner,2):[];need+=dl.length*30*s*1.3+(dl.length?16*s:0);
   if(d.brinde)need+=50*s+16*s;
   const big=d.modo==='desconto'?150*s:84*s;need+=big*1.05+18*s;
   need+=2*24*s*1.35+30*s;
   if(need>ch-50*s)return H;
   if(!draw)return 0;
-  background(ctx,F,T,P.hw);
+  background(ctx,F,T,P.hw,true);
   // cabeçalho: emblema + faixas
   const ex=pad,ey=P.ht;logo(ctx,'emblema',ex,ey,P.eh);
   ctx.save();ctx.translate(ex+P.eh*0.9,ey+P.eh*0.18);ctx.rotate(-0.035);
@@ -419,9 +429,9 @@ function aviso(ctx,F,T,d,U,s,draw){
   y+=tl.length*ts*0.98+14*s;
   if(d.sub)y=textBlock(ctx,d.sub,{font:f(600,32*s),x:pad,y,w:cw,lh:32*s*1.32,max:3,color:T.sub,align:'center',draw})+22*s;
   const hasPhoto=!!photos.a,colW=hasPhoto?W*0.58-pad:cw;
-  if(d.destaque){const dl=lines(ctx,d.destaque.toUpperCase(),f(800,28*s),colW-40*s,2);const dh=dl.length*28*s*1.25+24*s;
-    if(draw){ctx.font=f(800,28*s);const dw=Math.max(...dl.map(l=>ctx.measureText(l).width))+40*s;ctx.fillStyle=T.alert;rr(ctx,pad,y,dw,dh,8*s);ctx.fill();ctx.fillStyle='#FFFFFF';ctx.textBaseline='top';dl.forEach((l,i)=>ctx.fillText(l,pad+20*s,y+12*s+i*28*s*1.25));}
-    y+=dh+22*s;}
+  if(d.destaque){const dl=balanced(ctx,d.destaque.toUpperCase(),f(800,28*s),colW-48*s,2);const dh=dl.length*28*s*1.25+26*s;
+    if(draw){ctx.font=f(800,28*s);const dw=Math.max(...dl.map(l=>ctx.measureText(l).width))+48*s,dx=hasPhoto?pad:(W-dw)/2;ctx.fillStyle=T.alert;rr(ctx,dx,y,dw,dh,10*s);ctx.fill();ctx.fillStyle='#FFFFFF';ctx.textBaseline='top';ctx.textAlign='center';dl.forEach((l,i)=>ctx.fillText(l,dx+dw/2,y+13*s+i*28*s*1.25));ctx.textAlign='left';}
+    y+=dh+24*s;}
   const rowsTop=y,rows=d.units.filter(u=>u.status!=='oculto'),rh=96*s;
   for(const u of rows){
     if(draw){ctx.fillStyle=T.tag;rr(ctx,pad,y,colW,rh,rh/2);ctx.fill();
@@ -449,7 +459,7 @@ const fmtMoney=v=>{v=String(v||'').trim().replace(/^R\$\s*/i,'');if(!v)return ''
 const fmtDate=(v,full)=>{if(!v)return '';const [y,m,d]=v.split('-');return `${d}/${m}/${y}`;};
 
 // tamanho inicial das letras por modelo e formato (diminui sozinho se não couber)
-const S0={oferta:{story:1.15,feed:1,a4:1.1},plano:{story:1.22,feed:1,a4:1.2},aviso:{story:1.4,feed:1,a4:1.3}};
+const S0={oferta:{story:1.3,feed:1,a4:1.25},plano:{story:1.22,feed:1,a4:1.2},aviso:{story:1.4,feed:1,a4:1.3}};
 function render(canvas,d,scale){
   const F=Object.assign({},FORMATS[d.formato]),T=THEMES[d.tema]||THEMES.padrao,U=UNIDADES[d.unidade];
   canvas.width=F.W*scale;canvas.height=F.H*scale;const ctx=canvas.getContext('2d');ctx.setTransform(scale,0,0,scale,0,0);
@@ -506,9 +516,69 @@ function stale(){if(current){current=null;dl.disabled=true;$('prev-tag').textCon
 function showContato(){const U=UNIDADES[$('unidade').value];$('contato').textContent=`${U.marca} · ${U.end} · WhatsApp ${fmtZap(U.zap)}`;}
 function switchModel(){const m=radio('modelo');for(const k of ['oferta','plano','aviso'])$('sec-'+k).hidden=m!==k;$('camp-row').hidden=m==='aviso';campaignDefaults(false);}
 
-function photoInput(id,key){$(id).addEventListener('change',e=>{const file=e.target.files[0];if(!file)return;const r=new FileReader();
-  r.onload=()=>{const im=new Image();im.onload=()=>{photos[key]=im;$(id+'-thumb').src=r.result;$(id+'-thumb').hidden=false;$(id+'-txt').textContent=file.name;setErr(id,false);stale();preview();};im.src=r.result;};r.readAsDataURL(file);});}
-photoInput('o-foto','o');photoInput('p-foto','p');photoInput('a-foto','a');
+/* ----- fotos ----- */
+const RAW={o:null,p:null,a:null};
+// tira o fundo liso (branco ou de uma cor só) a partir das bordas da foto
+function removeBg(im){
+  const W0=DW(im),H0=DH(im),k=Math.min(1,1600/Math.max(W0,H0)),w=Math.round(W0*k),h=Math.round(H0*k);
+  const c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d',{willReadFrequently:true});x.drawImage(im,0,0,w,h);
+  let data;try{data=x.getImageData(0,0,w,h);}catch(_){return im;}
+  const p=data.data,N=w*h,border=[];
+  for(let i=0;i<w;i++){border.push(i,(h-1)*w+i);}for(let j=0;j<h;j++){border.push(j*w,j*w+w-1);}
+  let clear=0;for(const b of border)if(p[b*4+3]<20)clear++;
+  if(clear>border.length*0.5)return im; // já está sem fundo
+  const med=ch=>{const v=border.map(b=>p[b*4+ch]).sort((a,b)=>a-b);return v[v.length>>1];};
+  const br=med(0),bgc=med(1),bb=med(2),tol=40;
+  const dist=q=>{const i=q*4,a=p[i]-br,b=p[i+1]-bgc,c2=p[i+2]-bb;return Math.sqrt(a*a+b*b+c2*c2);};
+  const mask=new Uint8Array(N),queue=new Int32Array(N);let qh=0,qt=0;
+  for(const b of border)if(!mask[b]&&dist(b)<tol){mask[b]=1;queue[qt++]=b;}
+  while(qh<qt){const q=queue[qh++],cx_=q%w,cy_=(q/w)|0;
+    const nb=[cx_>0?q-1:-1,cx_<w-1?q+1:-1,cy_>0?q-w:-1,cy_<h-1?q+w:-1];
+    for(const n of nb)if(n>=0&&!mask[n]&&dist(n)<tol){mask[n]=1;queue[qt++]=n;}}
+  if(qt<N*0.03)return im; // quase nada para tirar
+  for(let q=0;q<N;q++){const i=q*4;if(mask[q]){p[i+3]=0;continue;}
+    const cx_=q%w,cy_=(q/w)|0;const edge=(cx_>0&&mask[q-1])||(cx_<w-1&&mask[q+1])||(cy_>0&&mask[q-w])||(cy_<h-1&&mask[q+w]);
+    if(edge){const a=Math.max(0.15,Math.min(1,(dist(q)-tol*0.5)/(tol*1.6)));p[i]=Math.min(255,Math.max(0,(p[i]-br*(1-a))/a));p[i+1]=Math.min(255,Math.max(0,(p[i+1]-bgc*(1-a))/a));p[i+2]=Math.min(255,Math.max(0,(p[i+2]-bb*(1-a))/a));p[i+3]=Math.round(p[i+3]*a);}}
+  x.putImageData(data,0,0);
+  let x0=w,y0=h,x1=0,y1=0;for(let q=0;q<N;q++)if(p[q*4+3]>12){const a=q%w,b=(q/w)|0;if(a<x0)x0=a;if(a>x1)x1=a;if(b<y0)y0=b;if(b>y1)y1=b;}
+  if(x1<=x0||y1<=y0)return im;
+  const o=document.createElement('canvas');o.width=x1-x0+1;o.height=y1-y0+1;o.getContext('2d').drawImage(c,x0,y0,o.width,o.height,0,0,o.width,o.height);return o;
+}
+const PHOTO_ID={o:'o-foto',p:'p-foto',a:'a-foto'},NOBG={o:'o-sem-fundo',a:'a-sem-fundo'};
+function applyPhoto(key){const raw=RAW[key];if(!raw)return;const id=PHOTO_ID[key];
+  const im=NOBG[key]&&$(NOBG[key]).checked?removeBg(raw):raw;photos[key]=im;
+  let thumb='';try{if(im instanceof HTMLCanvasElement)thumb=im.toDataURL('image/png');else{const t=document.createElement('canvas');t.width=DW(im);t.height=DH(im);t.getContext('2d').drawImage(im,0,0);thumb=t.toDataURL('image/png');}}catch(_){thumb=raw.src||'';}
+  $(id+'-thumb').src=thumb;$(id+'-thumb').hidden=false;setErr(id,false);stale();preview();}
+function setPhoto(key,im,label){RAW[key]=im;$(PHOTO_ID[key]+'-txt').textContent=label;applyPhoto(key);}
+function fromBlob(key,blob,label){const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>setPhoto(key,im,label);im.src=r.result;};r.readAsDataURL(blob);}
+function loadImg(src){return new Promise((ok,no)=>{const im=new Image();im.crossOrigin='anonymous';im.onload=()=>ok(im);im.onerror=no;im.src=src;});}
+async function fromUrl(key,url){
+  url=String(url||'').trim();if(!/^https?:\/\//i.test(url)){say('Isso não parece um link de imagem. Cole um endereço que comece com http.',true);return;}
+  try{const u=new URL(url);const inner=u.searchParams.get('imgurl')||u.searchParams.get('mediaurl');if(inner)url=inner;}catch(_){}
+  say('Buscando a imagem…');
+  const tries=[url,'https://images.weserv.nl/?url='+encodeURIComponent(url.replace(/^https?:\/\//,''))+'&output=png'];
+  for(const t of tries){try{const im=await loadImg(t);setPhoto(key,im,'Imagem da web');$(PHOTO_ID[key]+'-link').value='';say('Imagem carregada.');return;}catch(_){}}
+  say('Esse link não abriu aqui. Na página da imagem, clique com o botão direito, escolha "Copiar imagem" e cole no campo.',true);
+}
+for(const key of ['o','p','a']){const id=PHOTO_ID[key];
+  $(id).addEventListener('change',e=>{const file=e.target.files[0];if(file)fromBlob(key,file,file.name);});
+  const link=$(id+'-link');
+  link.addEventListener('paste',e=>{const items=[...(e.clipboardData&&e.clipboardData.items||[])];const it=items.find(i=>i.type.startsWith('image/'));
+    if(it){e.preventDefault();fromBlob(key,it.getAsFile(),'Imagem colada');return;}
+    const txt=e.clipboardData&&e.clipboardData.getData('text');if(txt&&/^https?:\/\//i.test(txt.trim())){e.preventDefault();link.value=txt.trim();fromUrl(key,txt);}});
+  link.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();fromUrl(key,link.value);}});
+  document.querySelector(`[data-photo="${key}"]`).addEventListener('click',()=>fromUrl(key,link.value));
+  const drop=$(id).closest('.f').querySelector('.drop');
+  drop.addEventListener('dragover',e=>{e.preventDefault();drop.classList.add('over');});
+  drop.addEventListener('dragleave',()=>drop.classList.remove('over'));
+  drop.addEventListener('drop',e=>{e.preventDefault();drop.classList.remove('over');const file=[...e.dataTransfer.files].find(f=>f.type.startsWith('image/'));
+    if(file){fromBlob(key,file,file.name);return;}const u=(e.dataTransfer.getData('text/uri-list')||e.dataTransfer.getData('text/plain')||'').split('\n')[0];if(u)fromUrl(key,u);});
+}
+for(const key in NOBG)$(NOBG[key]).addEventListener('change',()=>applyPhoto(key));
+// colar uma imagem em qualquer lugar da página vai para a foto do modelo aberto
+document.addEventListener('paste',e=>{if(e.defaultPrevented)return;const t=e.target;if(t&&(t.tagName==='TEXTAREA'||(t.tagName==='INPUT'&&t.type==='text')))return;
+  const it=[...(e.clipboardData&&e.clipboardData.items||[])].find(i=>i.type.startsWith('image/'));if(!it)return;e.preventDefault();
+  const key={oferta:'o',plano:'p',aviso:'a'}[radio('modelo')];fromBlob(key,it.getAsFile(),'Imagem colada');});
 $('c-nome').addEventListener('input',()=>{$('c-nome').dataset.touched='1';});
 $('c-chamada').addEventListener('input',()=>{$('c-nome').dataset.touched='1';});
 document.querySelectorAll('input[name=p-modo]').forEach(r=>r.addEventListener('change',()=>{const d=radio('p-modo')==='desconto';$('p-valor-lbl').innerHTML=(d?'Desconto (%)':'Preço (R$)')+' <span class="req">*</span>';$('p-valor').placeholder=d?'Ex.: 25':'Ex.: 1.700,00';$('p-valor').value=d?'25':'1.700,00';}));
@@ -516,10 +586,11 @@ $('form').addEventListener('change',e=>{
   if(e.target.name==='modelo')switchModel();
   if(e.target.id==='tema')campaignDefaults(false);
   if(e.target.id==='unidade')showContato();
+  if(e.target.type==='file'||e.target.type==='checkbox'||(e.target.id||'').endsWith('-link'))return;
   const viewOnly=e.target.name==='formato';
   if(viewOnly&&current){current=read();render(cv,current,1);return;}
   stale();preview();});
-$('form').addEventListener('input',e=>{if(e.target.type!=='file'&&e.target.type!=='radio'&&e.target.tagName!=='SELECT')stale();});
+$('form').addEventListener('input',e=>{if(e.target.type!=='file'&&e.target.type!=='radio'&&e.target.type!=='checkbox'&&e.target.tagName!=='SELECT'&&!(e.target.id||'').endsWith('-link'))stale();});
 
 $('form').addEventListener('submit',e=>{e.preventDefault();const d=read();const bad=validate(d);
   if(bad.length){say(`Faltam ${bad.length} ${bad.length>1?'campos obrigatórios':'campo obrigatório'}. Veja o que está em vermelho.`,true);const el=$(bad[0]);(el.type==='file'?el.closest('.f').querySelector('.drop'):el).scrollIntoView({block:'center',behavior:'smooth'});return;}

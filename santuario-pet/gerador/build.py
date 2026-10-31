@@ -1,8 +1,11 @@
-"""Monta o gerador: injeta o logo e cria a versão do site (index.html) e a do Artifact."""
+"""Monta o gerador: injeta os logos e cria a versão do site (index.html) e, se pedido, a do Artifact."""
 import base64, pathlib, sys
 here = pathlib.Path(__file__).parent
-logo = "data:image/png;base64," + base64.b64encode((here / "logo-emblema-380.png").read_bytes()).decode()
-src = (here / "gerador.src.html").read_text().replace("__LOGO__", logo)
+def uri(name):
+    return "data:image/png;base64," + base64.b64encode((here / name).read_bytes()).decode()
+src = (here / "gerador.src.html").read_text()
+for key, name in [("__LOGO_EMBLEMA__", "logo-emblema.png"), ("__LOGO_PETCENTER__", "logo-pet-center.png"), ("__LOGO_HOSPITAL__", "logo-hospital.png")]:
+    src = src.replace(key, uri(name))
 head = ('<!doctype html><html lang="pt-BR"><head><meta charset="utf-8">'
         '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
         '<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}'

@@ -1,0 +1,475 @@
+<title>Gerador de Cards Santuário Pet</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=Caveat:wght@700&display=swap">
+<style>
+/* Ferramenta: formulário à esquerda, prévia do card à direita (empilha no celular). */
+:root{
+  --bg:#F3F4EE; --surface:#FFFFFF; --fg:#16241C; --muted:#5A6860; --line:#D9E1DA;
+  --brand:#06603A; --brand-ink:#FFFFFF; --lime:#A9CF45; --soft:#E4EFE7; --danger:#B3261E;
+  --font:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F1712; --surface:#17221B; --fg:#E8EFE9; --muted:#9DB0A4; --line:#2A3A30;
+  --brand:#3FA36F; --brand-ink:#0B1A11; --lime:#B8DA5A; --soft:#1F3027; --danger:#F08A80; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1712; --surface:#17221B; --fg:#E8EFE9; --muted:#9DB0A4; --line:#2A3A30;
+  --brand:#3FA36F; --brand-ink:#0B1A11; --lime:#B8DA5A; --soft:#1F3027; --danger:#F08A80; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:15px;line-height:1.45}
+.wrap{max-width:1180px;margin:0 auto;padding-block:20px 48px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+header.top{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+header.top img{width:48px;height:48px}
+header.top h1{margin:0;font-size:22px;font-weight:800;letter-spacing:-.3px;text-wrap:balance}
+header.top p{margin:0;color:var(--muted);font-size:14px}
+.grid{display:grid;grid-template-columns:minmax(0,440px) minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:880px){.grid{grid-template-columns:minmax(0,1fr)}}
+form{display:flex;flex-direction:column;gap:16px;min-width:0}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.box h2{margin:0;font-size:13px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:var(--brand)}
+.seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:6px;background:var(--soft);padding:5px;border-radius:12px}
+.seg input{position:absolute;opacity:0;pointer-events:none}
+.seg label{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:48px;border-radius:9px;font-weight:700;cursor:pointer;text-align:center;font-size:14px;line-height:1.15;padding:6px}
+.seg label small{font-weight:500;color:var(--muted);font-size:11.5px}
+.seg input:checked+label{background:var(--surface);color:var(--brand);box-shadow:0 1px 3px rgba(0,0,0,.12)}
+.seg input:focus-visible+label{outline:2px solid var(--brand);outline-offset:2px}
+.f{display:flex;flex-direction:column;gap:6px;min-width:0}
+.f>label,.f>.lbl{font-weight:700;font-size:13.5px}
+.f .req{color:var(--danger)}
+.f .hint{font-size:12px;color:var(--muted)}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:420px){.row{grid-template-columns:1fr}}
+input[type=text],input[type=date],select,textarea{width:100%;font:inherit;color:var(--fg);background:var(--bg);border:1.5px solid var(--line);border-radius:10px;padding:11px 12px;min-height:46px}
+textarea{resize:vertical;min-height:72px}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--brand)}
+.f.err input,.f.err select,.f.err textarea,.f.err .drop{border-color:var(--danger)}
+.f .msg{display:none;color:var(--danger);font-size:12.5px;font-weight:600}
+.f.err .msg{display:block}
+.drop{display:flex;align-items:center;gap:12px;border:1.5px dashed var(--line);border-radius:12px;padding:12px;cursor:pointer;background:var(--bg)}
+.drop img{width:56px;height:56px;object-fit:contain;border-radius:8px;background:#fff}
+.drop span{font-weight:600;font-size:14px}
+.unit{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 12px;padding:12px;border:1px solid var(--line);border-radius:12px}
+.unit .uname{grid-column:1/-1;font-weight:800;font-size:14px}
+.unit .uname small{display:block;font-weight:600;color:var(--muted);font-size:11.5px;letter-spacing:.8px;text-transform:uppercase}
+.checks{display:flex;flex-wrap:wrap;gap:8px 18px}
+.checks label{display:flex;align-items:center;gap:8px;font-weight:600;min-height:32px}
+.checks input{width:20px;height:20px;accent-color:var(--brand)}
+.actions{display:flex;flex-direction:column;gap:10px;position:sticky;bottom:0;padding-block:12px calc(12px + env(safe-area-inset-bottom,0px));background:linear-gradient(transparent,var(--bg) 30%)}
+button{font:inherit;font-weight:800;border-radius:12px;min-height:52px;padding:0 18px;cursor:pointer;border:none}
+button:focus-visible{outline:3px solid var(--lime);outline-offset:2px}
+.btn-main{background:var(--brand);color:var(--brand-ink);font-size:16px}
+.btn-sec{background:var(--lime);color:#0A4D30;font-size:16px}
+.btn-sec:disabled{opacity:.45;cursor:not-allowed}
+.status{font-size:13.5px;font-weight:600;color:var(--muted);min-height:20px}
+.status.bad{color:var(--danger)}
+.prev{position:sticky;top:16px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.stage{background:repeating-conic-gradient(var(--soft) 0 25%,transparent 0 50%) 0 0/22px 22px;border:1px solid var(--line);border-radius:16px;padding:16px;display:flex;justify-content:center}
+.stage canvas{display:block;max-width:100%;max-height:78vh;width:auto;height:auto;border-radius:6px;box-shadow:0 10px 30px rgba(0,0,0,.18)}
+.tag{align-self:flex-start;font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase;background:var(--soft);color:var(--brand);padding:6px 12px;border-radius:999px}
+@media (max-width:880px){.prev{position:static}}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <img src="__LOGO__" alt="">
+    <div>
+      <h1>Gerador de Cards · Santuário Pet</h1>
+      <p>Preencha o formulário, toque em Gerar card e baixe a imagem pronta.</p>
+    </div>
+  </header>
+
+  <div class="grid">
+    <form id="form" novalidate>
+      <section class="box">
+        <h2>1 · Tipo de card</h2>
+        <div class="seg" role="radiogroup" aria-label="Tipo de card">
+          <input type="radio" name="modelo" id="m-oferta" value="oferta" checked><label for="m-oferta">Oferta<small>produto e preço</small></label>
+          <input type="radio" name="modelo" id="m-aviso" value="aviso"><label for="m-aviso">Aviso<small>feriado e horários</small></label>
+        </div>
+      </section>
+
+      <section class="box">
+        <h2>2 · Formato e visual</h2>
+        <div class="seg" role="radiogroup" aria-label="Formato">
+          <input type="radio" name="formato" id="fm-story" value="story" checked><label for="fm-story">Stories<small>1080×1920</small></label>
+          <input type="radio" name="formato" id="fm-feed" value="feed"><label for="fm-feed">Feed<small>1080×1350</small></label>
+          <input type="radio" name="formato" id="fm-a4" value="a4"><label for="fm-a4">A4<small>impressão</small></label>
+        </div>
+        <div class="f">
+          <label for="tema">Cores</label>
+          <select id="tema">
+            <optgroup label="Cores da marca">
+              <option value="classico">Creme e verde (padrão)</option>
+              <option value="verde">Verde intenso</option>
+              <option value="limao">Verde-limão claro</option>
+            </optgroup>
+            <optgroup label="Datas comemorativas">
+              <option value="natal">Natal</option>
+              <option value="halloween">Halloween</option>
+            </optgroup>
+          </select>
+        </div>
+      </section>
+
+      <!-- OFERTA -->
+      <section class="box" id="sec-oferta">
+        <h2>3 · Dados da oferta</h2>
+        <div class="row">
+          <div class="f"><label for="o-selo">Selo</label>
+            <select id="o-selo"><option>Oferta</option><option>Novidade</option><option>Lançamento</option><option>Últimas unidades</option><option value="">Sem selo</option></select></div>
+          <div class="f"><label for="o-campanha">Nome da campanha</label>
+            <input type="text" id="o-campanha" maxlength="32" placeholder="Ex.: Fecha Mês Santuário"></div>
+        </div>
+        <div class="f" data-req="Escreva o título do card."><label for="o-titulo">Título <span class="req">*</span></label>
+          <input type="text" id="o-titulo" maxlength="60" placeholder="Ex.: Preço especial pro seu pet"><span class="msg"></span></div>
+        <div class="f" data-req="Envie a foto do produto."><span class="lbl">Foto do produto <span class="req">*</span></span>
+          <label class="drop" for="o-foto"><img id="o-foto-thumb" alt="" hidden><span id="o-foto-txt">Escolher foto (de preferência sem fundo ou com fundo branco)</span></label>
+          <input type="file" id="o-foto" accept="image/*" hidden><span class="msg"></span></div>
+        <div class="f" data-req="Escreva o nome do produto."><label for="o-produto">Nome do produto <span class="req">*</span></label>
+          <input type="text" id="o-produto" maxlength="60" placeholder="Ex.: Ração Premier Gatos Castrados 1,5 kg"><span class="msg"></span></div>
+        <div class="f"><label for="o-desc">Descrição</label>
+          <textarea id="o-desc" maxlength="140" placeholder="Até 140 letras"></textarea></div>
+        <div class="row">
+          <div class="f"><label for="o-de">Preço de (R$)</label>
+            <input type="text" id="o-de" inputmode="decimal" placeholder="Opcional"></div>
+          <div class="f" data-req="Coloque o preço."><label for="o-por">Preço por (R$) <span class="req">*</span></label>
+            <input type="text" id="o-por" inputmode="decimal" placeholder="Ex.: 89,90"><span class="msg"></span></div>
+        </div>
+        <div class="row">
+          <div class="f"><label for="o-sufixo">Complemento do preço</label>
+            <input type="text" id="o-sufixo" maxlength="18" placeholder="Ex.: cada, o kg, à vista"></div>
+          <div class="f" data-req="Escolha até quando vale."><label for="o-validade">Válido até <span class="req">*</span></label>
+            <input type="date" id="o-validade"><span class="msg"></span></div>
+        </div>
+        <div class="f" data-req="Marque pelo menos uma unidade."><span class="lbl">Vale nas unidades <span class="req">*</span></span>
+          <div class="checks">
+            <label><input type="checkbox" id="o-u-nilo" checked> Nilo Peçanha</label>
+            <label><input type="checkbox" id="o-u-quintino" checked> Quintino Bocaiúva</label>
+          </div><span class="msg"></span></div>
+      </section>
+
+      <!-- AVISO -->
+      <section class="box" id="sec-aviso" hidden>
+        <h2>3 · Dados do aviso</h2>
+        <div class="f" data-req="Escreva o selo."><label for="a-selo">Selo <span class="req">*</span></label>
+          <input type="text" id="a-selo" maxlength="30" list="a-selo-sug" placeholder="Ex.: Feriado de Finados">
+          <datalist id="a-selo-sug"><option>Feriado</option><option>Novo horário</option><option>Aviso importante</option><option>Último dia</option></datalist><span class="msg"></span></div>
+        <div class="f" data-req="Escreva o título."><label for="a-titulo">Título <span class="req">*</span></label>
+          <input type="text" id="a-titulo" maxlength="50"><span class="msg"></span></div>
+        <div class="f"><label for="a-sub">Texto de apoio</label>
+          <textarea id="a-sub" maxlength="140"></textarea></div>
+        <div class="row">
+          <div class="f"><label for="a-rotulo">Dias da semana</label>
+            <input type="text" id="a-rotulo" maxlength="34" placeholder="Ex.: Domingo e segunda"></div>
+          <div class="f" data-req="Escreva as datas."><label for="a-datas">Datas <span class="req">*</span></label>
+            <input type="text" id="a-datas" maxlength="30" placeholder="Ex.: 01 e 02 de novembro"><span class="msg"></span></div>
+        </div>
+        <div class="f" data-req="Mostre pelo menos uma unidade."><span class="lbl">Funcionamento das unidades <span class="req">*</span></span>
+          <div id="a-units" style="display:flex;flex-direction:column;gap:10px"></div><span class="msg"></span></div>
+        <div class="row">
+          <div class="f"><label for="a-retorno">Quando volta ao normal</label>
+            <input type="text" id="a-retorno" maxlength="20" placeholder="Ex.: Terça, 03/11"></div>
+          <div class="f"><label for="a-retorno-txt">Frase do retorno</label>
+            <input type="text" id="a-retorno-txt" maxlength="40" placeholder="Ex.: Tudo volta ao horário normal."></div>
+        </div>
+      </section>
+
+      <section class="box">
+        <h2>4 · Chamada final</h2>
+        <div class="f"><label for="cta">Frase do rodapé</label>
+          <input type="text" id="cta" maxlength="44" value="Agende pelo WhatsApp · @santuariopet"></div>
+      </section>
+
+      <div class="actions">
+        <button type="submit" class="btn-main">Gerar card</button>
+        <button type="button" class="btn-sec" id="baixar" disabled>Baixar imagem</button>
+        <div class="status" id="status" role="status" aria-live="polite">O card ao lado é um exemplo. Preencha os campos e toque em Gerar card.</div>
+      </div>
+    </form>
+
+    <aside class="prev" aria-label="Prévia do card">
+      <span class="tag" id="prev-tag">Exemplo</span>
+      <div class="stage"><canvas id="cv" width="1080" height="1920" role="img" aria-label="Prévia do card gerado"></canvas></div>
+    </aside>
+  </div>
+</div>
+
+<script>
+(function(){
+const $=id=>document.getElementById(id);
+const LOGO=new Image(); LOGO.src="__LOGO__";
+
+const UNITS=[
+  {key:'quintino',tipo:'Loja',nome:'Quintino Bocaiúva',icon:'store',status:'fechado',horario:''},
+  {key:'nilo',tipo:'Loja',nome:'Nilo Peçanha',icon:'store',status:'reduzido',horario:'9h às 19h30'},
+  {key:'hospital',tipo:'Hospital Veterinário',nome:'Casemiro de Abreu',icon:'heart',status:'normal',horario:'Aberto 24h'}
+];
+const STATUS={normal:'Funciona normalmente',reduzido:'Horário reduzido',especial:'Horário especial',fechado:'Fechada',oculto:'Não mostrar no card'};
+
+const FORMATS={
+  story:{W:1080,H:1920,exp:1,pad:80,wm:52,wordTop:200,pillTop:385,footerH:400,blob:{ow:560,oh:465,iw:500,ih:415,logo:310,lr:90,lt:60}},
+  feed:{W:1080,H:1350,exp:1,pad:72,wm:46,wordTop:92,pillTop:196,footerH:250,blob:{ow:430,oh:318,iw:385,ih:280,logo:214,lr:68,lt:34}},
+  a4:{W:1240,H:1754,exp:2,pad:96,wm:58,wordTop:140,pillTop:320,footerH:320,blob:{ow:620,oh:440,iw:560,ih:395,logo:300,lr:100,lt:55}}
+};
+
+const BASE={bg:'#F7F6F0',brand:'#06603A',ink:'#0A4D30',text:'#3A4740',accent:'#0B6E45',primary:'#06603A',primary2:'#0B6E45',lime:'#A9CF45',limeInk:'#0A4D30',dark:'#0A4D30',card:'#FFFFFF',cardLine:'#D6E2D9',cardInk:'#0A4D30',cardSub:'#4E5E55',soft:'#E4EFE7',softInk:'#06603A',panel:'#FFFFFF',footer:'#06603A',footerInk:'#FFFFFF',footerSub:'#DCEBD5',footerAccent:'#A9CF45'};
+const THEMES={
+  classico:BASE,
+  verde:Object.assign({},BASE,{bg:'#06603A',brand:'#FFFFFF',ink:'#FFFFFF',text:'#DCEBD5',accent:'#A9CF45',primary:'#0A4D30',primary2:'#0B6E45',cardLine:'#0B6E45',footer:'#0A4D30'}),
+  limao:Object.assign({},BASE,{bg:'#EDF4DC',cardLine:'#CFDDB0'}),
+  natal:Object.assign({},BASE,{bg:'#FBF5EC',brand:'#0F5132',ink:'#7A1414',text:'#4A3A36',accent:'#B3261E',primary:'#0F5132',primary2:'#B3261E',lime:'#E3B04B',limeInk:'#4A1010',dark:'#7A1414',cardLine:'#EADBC8',cardInk:'#4A1010',cardSub:'#6B5A55',soft:'#F6E9D8',softInk:'#7A1414',footer:'#7A1414',footerSub:'#F3DCD6',footerAccent:'#E3B04B'}),
+  halloween:Object.assign({},BASE,{bg:'#1F1631',brand:'#FFFFFF',ink:'#FFFFFF',text:'#D8D0E8',accent:'#FF8A1F',primary:'#2E2148',primary2:'#FF8A1F',lime:'#FF8A1F',limeInk:'#1F1631',dark:'#120C1F',card:'#2A1F42',cardLine:'#43355F',cardInk:'#FFFFFF',cardSub:'#BFB4D6',soft:'#3A2C5A',softInk:'#FF8A1F',footer:'#120C1F',footerSub:'#D8D0E8',footerAccent:'#FF8A1F'})
+};
+
+const ICONS={
+  store:'M4 10l1.5-5h13L20 10M4 10v10h16V10M4 10h16M9 20v-5h6v5',
+  heart:'M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z M12 9v5M9.5 11.5h5',
+  cal:'M5 5h14a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2z M8 3v4M16 3v4M3 10h18',
+  tag:'M3 12V4h8l10 10-8 8z M7.5 8.5h.01'
+};
+
+let productImg=null, current=null;
+
+/* ---------- desenho ---------- */
+const FONT="'Plus Jakarta Sans', system-ui, sans-serif";
+const f=(w,px)=>`${w} ${Math.round(px)}px ${FONT}`;
+function spacing(ctx,px){ if('letterSpacing' in ctx) ctx.letterSpacing=px+'px'; }
+function rr(ctx,x,y,w,h,r){r=Math.min(r,w/2,h/2);ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+function icon(ctx,name,x,y,size,color,lw){ctx.save();ctx.translate(x,y);ctx.scale(size/24,size/24);ctx.strokeStyle=color;ctx.lineWidth=lw||2;ctx.lineCap='round';ctx.lineJoin='round';
+  if(name==='clock'){ctx.beginPath();ctx.arc(12,12,9,0,Math.PI*2);ctx.stroke();ctx.stroke(new Path2D('M12 7v5l3 2'));}
+  else ctx.stroke(new Path2D(ICONS[name]));ctx.restore();}
+
+// quebra o texto em linhas, respeitando a largura disponível em cada altura
+function wrap(ctx,text,{font,x,y,lh,max,widthAt,color,draw}){
+  ctx.font=font; const out=[]; let cy=y;
+  const paras=String(text||'').split('\n');
+  for(const p of paras){
+    const words=p.split(/\s+/).filter(Boolean); let line='';
+    for(let i=0;i<words.length;i++){
+      const test=line?line+' '+words[i]:words[i];
+      if(ctx.measureText(test).width>widthAt(cy,lh) && line){out.push({t:line,y:cy});cy+=lh;line=words[i];if(out.length>=max)break;}
+      else line=test;
+    }
+    if(out.length>=max)break;
+    if(line){out.push({t:line,y:cy});cy+=lh;}
+    if(out.length>=max)break;
+  }
+  if(out.length>=max){ // corta com reticências se sobrou texto
+    const all=paras.join(' ').split(/\s+/).filter(Boolean).length, used=out.map(o=>o.t).join(' ').split(/\s+/).length;
+    if(used<all){const l=out[out.length-1];let t=l.t;while(t.length>1&&ctx.measureText(t+'…').width>widthAt(l.y,lh))t=t.slice(0,-1);l.t=t.replace(/\s+\S*$/,'')+'…';}
+  }
+  if(draw){ctx.fillStyle=color;ctx.textBaseline='top';for(const l of out)ctx.fillText(l.t,x,l.y);}
+  return {y:cy,lines:out.length};
+}
+
+function pill(ctx,x,y,text,{size,bg,fg,padX,h,draw,ls}){
+  ctx.font=f(800,size); spacing(ctx,ls||0);
+  const w=ctx.measureText(text).width+padX*2;
+  if(draw){ctx.fillStyle=bg;rr(ctx,x,y,w,h,h/2);ctx.fill();ctx.fillStyle=fg;ctx.textBaseline='middle';ctx.fillText(text,x+padX,y+h/2+1);}
+  spacing(ctx,0); return w;
+}
+
+function frame(ctx,F,T){
+  const {W,H}=F,b=F.blob;
+  ctx.fillStyle=T.bg;ctx.fillRect(0,0,W,H);
+  const blob=(w,h,c)=>{const x0=W-w,r=Math.min(w*0.55,h);ctx.fillStyle=c;ctx.beginPath();ctx.moveTo(x0,0);ctx.lineTo(W,0);ctx.lineTo(W,h);ctx.lineTo(x0+r,h);ctx.arcTo(x0,h,x0,h-r,r);ctx.lineTo(x0,0);ctx.closePath();ctx.fill();};
+  blob(b.ow,b.oh,T.primary2); blob(b.iw,b.ih,T.primary);
+  if(LOGO.complete&&LOGO.naturalWidth){ctx.save();ctx.shadowColor='rgba(0,0,0,.28)';ctx.shadowBlur=26;ctx.shadowOffsetY=14;
+    const s=b.logo,ar=LOGO.naturalHeight/LOGO.naturalWidth;ctx.drawImage(LOGO,W-b.lr-s,b.lt,s,s*ar);ctx.restore();}
+  ctx.font=f(800,F.wm);spacing(ctx,-1);ctx.fillStyle=T.brand;ctx.textBaseline='top';ctx.fillText('Santuário Pet',F.pad,F.wordTop);spacing(ctx,0);
+  ctx.fillStyle=T.lime;rr(ctx,F.pad,F.wordTop+F.wm*1.22,F.wm*1.7,F.wm*0.135,4);ctx.fill();
+}
+
+function footer(ctx,F,T){
+  const {W,H}=F,top=H-F.footerH,sx=W/1080;
+  ctx.fillStyle=T.footer;ctx.beginPath();ctx.moveTo(0,top+42);ctx.bezierCurveTo(260*sx,top+4,580*sx,top+4,800*sx,top+26);ctx.bezierCurveTo(910*sx,top+38,1010*sx,top+34,W,top+14);ctx.lineTo(W,H);ctx.lineTo(0,H);ctx.closePath();ctx.fill();
+  return top;
+}
+
+const fmtMoney=v=>{v=String(v||'').trim().replace(/^R\$\s*/i,'');if(!v)return '';const n=Number(v.replace(/\./g,'').replace(',','.'));return isNaN(n)?v:n.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});};
+const fmtDate=v=>{if(!v)return '';const [y,m,d]=v.split('-');return `${d}/${m}`;};
+
+function widthFn(F,extra){return (y,h)=>{let w=F.W-F.pad*2;if(y<F.blob.oh+12)w=Math.min(w,F.W-F.blob.ow-40-F.pad);for(const o of extra||[])if(y+h>o.y0&&y<o.y1)w=Math.min(w,o.x0-F.pad-24);return w;};}
+
+/* ----- OFERTA ----- */
+function oferta(ctx,F,T,d,s,draw){
+  const x=F.pad,W=F.W,limit=F.H-F.footerH-20,full=widthFn(F);
+  let y=F.pillTop;
+  const ph=Math.round(62*s);
+  if(d.selo){pill(ctx,x,y,d.selo.toUpperCase(),{size:28*s,bg:T.lime,fg:T.limeInk,padX:28*s,h:ph,draw,ls:3});y+=ph+22*s;}
+  if(d.campanha){ctx.font=f(800,30*s);spacing(ctx,2.5);if(draw){ctx.fillStyle=T.accent;ctx.textBaseline='top';ctx.fillText(d.campanha.toUpperCase(),x,y);}spacing(ctx,0);y+=30*s*1.25+12*s;}
+  ctx.save();spacing(ctx,-2.5);
+  y=wrap(ctx,d.titulo,{font:f(800,86*s),x,y,lh:86*s*1.02,max:3,widthAt:full,color:T.ink,draw}).y;ctx.restore();
+  y+=28*s;
+  // mede o texto abaixo da foto
+  const nameH=wrap(ctx,d.produto,{font:f(800,48*s),x,y:9999,lh:48*s*1.12,max:2,widthAt:()=>W-F.pad*2}).y-9999;
+  const descH=d.desc?wrap(ctx,d.desc,{font:f(500,31*s),x,y:9999,lh:31*s*1.42,max:3,widthAt:()=>W-F.pad*2}).y-9999+10*s:0;
+  const photoTop=y, photoH=Math.min(limit-photoTop-26*s-nameH-descH,(W-F.pad*2)*0.95);
+  if(photoH<230*s) return limit+1;
+  const pw=W-F.pad*2;
+  if(draw){
+    ctx.save();ctx.shadowColor='rgba(0,0,0,.10)';ctx.shadowBlur=30;ctx.shadowOffsetY=10;ctx.fillStyle=T.panel;rr(ctx,x,photoTop,pw,photoH,36*s);ctx.fill();ctx.restore();
+    if(productImg){const pad=30*s,bw=pw-pad*2,bh=photoH-pad*2,r=Math.min(bw/productImg.naturalWidth,bh/productImg.naturalHeight);
+      const iw=productImg.naturalWidth*r,ih=productImg.naturalHeight*r;ctx.save();rr(ctx,x,photoTop,pw,photoH,36*s);ctx.clip();ctx.drawImage(productImg,x+(pw-iw)/2,photoTop+(photoH-ih)/2,iw,ih);ctx.restore();}
+    else{ctx.fillStyle='#9AA79F';ctx.font=f(700,30*s);ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('Foto do produto',x+pw/2,photoTop+photoH/2);ctx.textAlign='left';}
+    // selo de preço
+    const de=fmtMoney(d.de),por=fmtMoney(d.por),suf=d.sufixo||'';
+    const bp=34*s; ctx.font=f(800,84*s);const wPor=ctx.measureText('R$ '+por).width;
+    ctx.font=f(700,28*s);const wDe=de?ctx.measureText('de R$ '+de).width:0;const wSuf=suf?ctx.measureText(suf).width:0;
+    const bw=Math.max(wPor,wDe,wSuf+ctx.measureText('por ').width)+bp*2;
+    const bh=bp*2+(de?38*s:0)+28*s+84*s*0.95+(suf?34*s:0);
+    const bx=x+pw-bw-22*s,by=photoTop+photoH-bh-22*s;
+    ctx.save();ctx.translate(bx+bw/2,by+bh/2);ctx.rotate(-0.035);ctx.translate(-bw/2,-bh/2);
+    ctx.shadowColor='rgba(0,0,0,.25)';ctx.shadowBlur=24;ctx.shadowOffsetY=10;ctx.fillStyle=T.dark;rr(ctx,0,0,bw,bh,30*s);ctx.fill();ctx.shadowColor='transparent';
+    let cy=bp;ctx.textBaseline='top';
+    if(de){ctx.font=f(700,28*s);ctx.fillStyle=T.footerSub;const t='de R$ '+de;ctx.fillText(t,bp,cy);const tw=ctx.measureText(t).width;ctx.fillRect(bp+ctx.measureText('de ').width,cy+15*s,tw-ctx.measureText('de ').width,3*s);cy+=38*s;}
+    ctx.font=f(700,28*s);ctx.fillStyle=T.lime;ctx.fillText('por',bp,cy);cy+=28*s;
+    ctx.font=f(800,84*s);ctx.fillStyle='#FFFFFF';spacing(ctx,-2);ctx.fillText('R$ '+por,bp,cy);spacing(ctx,0);cy+=84*s*0.95;
+    if(suf){ctx.font=f(600,26*s);ctx.fillStyle=T.footerSub;ctx.fillText(suf,bp,cy+6*s);}
+    ctx.restore();
+  }
+  y=photoTop+photoH+26*s;
+  y=wrap(ctx,d.produto,{font:f(800,48*s),x,y,lh:48*s*1.12,max:2,widthAt:full,color:T.ink,draw}).y;
+  if(d.desc){y+=10*s;y=wrap(ctx,d.desc,{font:f(500,31*s),x,y,lh:31*s*1.42,max:3,widthAt:full,color:T.text,draw}).y;}
+  return y;
+}
+function ofertaFooter(ctx,F,T,d){
+  const top=footer(ctx,F,T),x=F.pad,k=F.footerH/400;let y=top+(F.footerH>300?96:74);
+  const sz=F.W/1080;
+  ctx.textBaseline='top';
+  ctx.font=f(800,40*sz);ctx.fillStyle=T.footerInk;ctx.fillText(d.validade?`Oferta válida até ${fmtDate(d.validade)}`:'Oferta por tempo limitado',x,y);y+=40*sz*1.25;
+  const un=d.unidades.length===2?'Unidades Nilo Peçanha e Quintino Bocaiúva':`Unidade ${d.unidades[0]||''}`;
+  ctx.font=f(600,26*sz);ctx.fillStyle=T.footerSub;ctx.fillText(`${un} · enquanto durarem os estoques.`,x,y,F.W-x*2);y+=26*sz*1.5;
+  if(d.cta){ctx.font=`700 ${Math.round(46*sz)}px 'Caveat', cursive`;ctx.fillStyle=T.footerAccent;ctx.save();ctx.translate(x,y+4);ctx.rotate(-0.025);ctx.fillText(d.cta,0,0,F.W-x*2);ctx.restore();}
+  ctx.font=f(500,19*sz);ctx.fillStyle=T.footerSub;ctx.globalAlpha=.75;ctx.textAlign='right';ctx.fillText('Imagens ilustrativas.',F.W-x,F.H-(F.footerH>300?48:30)*k-14);ctx.textAlign='left';ctx.globalAlpha=1;
+}
+
+/* ----- AVISO ----- */
+function aviso(ctx,F,T,d,s,draw){
+  const x=F.pad,W=F.W,full=widthFn(F);let y=F.pillTop;
+  const ph=Math.round(62*s);
+  if(d.selo){pill(ctx,x,y,d.selo.toUpperCase(),{size:28*s,bg:T.lime,fg:T.limeInk,padX:28*s,h:ph,draw,ls:3});y+=ph+26*s;}
+  ctx.save();spacing(ctx,-3);y=wrap(ctx,d.titulo,{font:f(800,94*s),x,y,lh:94*s*1.0,max:3,widthAt:full,color:T.ink,draw}).y;ctx.restore();
+  if(d.sub){y+=22*s;y=wrap(ctx,d.sub,{font:f(600,37*s),x,y,lh:37*s*1.35,max:3,widthAt:full,color:T.text,draw}).y;}
+  y+=40*s;
+  if(d.datas){const bh=(d.rotulo?118:92)*s;
+    if(draw){ctx.fillStyle=T.primary;rr(ctx,x,y,W-x*2,bh,28*s);ctx.fill();icon(ctx,'cal',x+34*s,y+bh/2-29*s,58*s,T.lime,2);
+      let ty=y+(bh-(d.rotulo?(30+8+40):40)*s)/2;ctx.textBaseline='top';
+      if(d.rotulo){ctx.font=f(700,28*s);spacing(ctx,2.5);ctx.fillStyle=T.lime;ctx.fillText(d.rotulo.toUpperCase(),x+114*s,ty,W-x*2-140*s);spacing(ctx,0);ty+=38*s;}
+      ctx.font=f(800,40*s);ctx.fillStyle='#FFFFFF';ctx.fillText(d.datas,x+114*s,ty,W-x*2-140*s);}
+    y+=bh+20*s;}
+  const ch=128*s;
+  for(const u of d.units){ if(u.status==='oculto')continue;
+    if(draw){const cw=W-x*2;ctx.fillStyle=T.card;rr(ctx,x,y,cw,ch,28*s);ctx.fill();ctx.strokeStyle=T.cardLine;ctx.lineWidth=2;ctx.stroke();
+      ctx.fillStyle=T.soft;ctx.beginPath();ctx.arc(x+30*s+42*s,y+ch/2,42*s,0,Math.PI*2);ctx.fill();
+      icon(ctx,u.status==='reduzido'||u.status==='especial'?'clock':u.icon,x+30*s+20*s,y+ch/2-22*s,44*s,T.softInk,2);
+      // selo de status
+      let lines,bg,fg;
+      if(u.status==='fechado'){lines=['Fechada'];bg=T.dark;fg='#FFFFFF';}
+      else if(u.status==='normal'){lines=u.horario?[u.horario,'normalmente']:['Funciona','normalmente'];bg=T.soft;fg=T.softInk;}
+      else{lines=[STATUS[u.status],u.horario].filter(Boolean);bg=T.lime;fg=T.limeInk;}
+      ctx.font=f(800,28*s);let sw=ctx.measureText(lines[0]).width;if(lines[1]){ctx.font=f(700,24*s);sw=Math.max(sw,ctx.measureText(lines[1]).width);}
+      const sh=lines[1]?92*s:60*s,spx=24*s,sx=x+cw-34*s-sw-spx*2,sy=y+(ch-sh)/2;
+      ctx.fillStyle=bg;rr(ctx,sx,sy,sw+spx*2,sh,sh/2);ctx.fill();ctx.fillStyle=fg;ctx.textAlign='center';ctx.textBaseline='top';
+      ctx.font=f(800,28*s);ctx.fillText(lines[0],sx+sw/2+spx,sy+(lines[1]?14:15)*s);if(lines[1]){ctx.font=f(700,24*s);ctx.fillText(lines[1],sx+sw/2+spx,sy+50*s);}ctx.textAlign='left';
+      const tx=x+30*s+84*s+30*s,maxT=sx-tx-16*s;
+      ctx.font=f(700,23*s);spacing(ctx,2.2);ctx.fillStyle=T.cardSub;ctx.fillText(u.tipo.toUpperCase(),tx,y+ch/2-40*s,maxT);spacing(ctx,0);
+      ctx.font=f(800,40*s);spacing(ctx,-.8);ctx.fillStyle=T.cardInk;ctx.fillText(u.nome,tx,y+ch/2-8*s,maxT);spacing(ctx,0);}
+    y+=ch+16*s;}
+  return y-16*s;
+}
+function avisoFooter(ctx,F,T,d){
+  const top=footer(ctx,F,T),x=F.pad,sz=F.W/1080;let y=top+(F.footerH>300?100:70);ctx.textBaseline='top';
+  if(d.retorno){pill(ctx,x,y,d.retorno.toUpperCase(),{size:27*sz,bg:T.footerAccent,fg:T.limeInk,padX:22*sz,h:54*sz,draw:true,ls:2});y+=54*sz+18*sz;}
+  if(d.retornoTxt){ctx.font=f(800,44*sz);spacing(ctx,-.8);ctx.fillStyle=T.footerInk;ctx.fillText(d.retornoTxt,x,y,F.W-x*2);spacing(ctx,0);y+=44*sz*1.3;}
+  if(d.cta){ctx.font=`700 ${Math.round(46*sz)}px 'Caveat', cursive`;ctx.fillStyle=T.footerAccent;ctx.save();ctx.translate(x,y+6);ctx.rotate(-0.025);ctx.fillText(d.cta,0,0,F.W-x*2);ctx.restore();}
+}
+
+function render(canvas,d,scale){
+  const F=FORMATS[d.formato],T=THEMES[d.tema]||BASE;
+  canvas.width=F.W*scale;canvas.height=F.H*scale;
+  const ctx=canvas.getContext('2d');ctx.setTransform(scale,0,0,scale,0,0);
+  const body=d.modelo==='oferta'?oferta:aviso,limit=F.H-F.footerH-20;
+  let s=1; // diminui as letras até tudo caber
+  while(s>0.62 && body(ctx,F,T,d,s,false)>limit) s-=0.04;
+  frame(ctx,F,T);
+  (d.modelo==='oferta'?ofertaFooter:avisoFooter)(ctx,F,T,d);
+  body(ctx,F,T,d,s,true);
+  return s;
+}
+
+/* ---------- formulário ---------- */
+const v=id=>$(id).value.trim();
+function read(){
+  const modelo=document.querySelector('input[name=modelo]:checked').value;
+  const d={modelo,formato:document.querySelector('input[name=formato]:checked').value,tema:$('tema').value,cta:v('cta')};
+  if(modelo==='oferta')Object.assign(d,{selo:$('o-selo').value,campanha:v('o-campanha'),titulo:v('o-titulo'),produto:v('o-produto'),desc:v('o-desc'),de:v('o-de'),por:v('o-por'),sufixo:v('o-sufixo'),validade:$('o-validade').value,
+    unidades:[$('o-u-nilo').checked&&'Nilo Peçanha',$('o-u-quintino').checked&&'Quintino Bocaiúva'].filter(Boolean)});
+  else Object.assign(d,{selo:v('a-selo'),titulo:v('a-titulo'),sub:v('a-sub'),rotulo:v('a-rotulo'),datas:v('a-datas'),retorno:v('a-retorno'),retornoTxt:v('a-retorno-txt'),
+    units:UNITS.map(u=>Object.assign({},u,{status:$('u-'+u.key+'-st').value,horario:$('u-'+u.key+'-h').value.trim()}))});
+  return d;
+}
+function setErr(id,on){const box=$(id).closest('.f');box.classList.toggle('err',on);box.querySelector('.msg').textContent=on?box.dataset.req:'';return on;}
+function validate(d){
+  document.querySelectorAll('.f.err').forEach(e=>e.classList.remove('err'));let bad=[];
+  const chk=(id,cond)=>{if(setErr(id,cond))bad.push(id);};
+  if(d.modelo==='oferta'){chk('o-titulo',!d.titulo);chk('o-foto',!productImg);chk('o-produto',!d.produto);chk('o-por',!d.por||isNaN(Number(fmtMoney(d.por).replace(/\./g,'').replace(',','.'))));chk('o-validade',!d.validade);chk('o-u-nilo',!d.unidades.length);}
+  else{chk('a-selo',!d.selo);chk('a-titulo',!d.titulo);chk('a-datas',!d.datas);chk('a-units',d.units.every(u=>u.status==='oculto'));}
+  return bad;
+}
+
+function buildUnits(){
+  $('a-units').innerHTML='';
+  for(const u of UNITS){
+    const el=document.createElement('div');el.className='unit';
+    el.innerHTML=`<div class="uname"><small></small><span></span></div>
+      <div class="f"><label for="u-${u.key}-st">Situação</label><select id="u-${u.key}-st"></select></div>
+      <div class="f"><label for="u-${u.key}-h">Horário</label><input type="text" id="u-${u.key}-h" maxlength="22" placeholder="Ex.: 9h às 18h"></div>`;
+    el.querySelector('small').textContent=u.tipo;el.querySelector('.uname span').textContent=u.nome;
+    const sel=el.querySelector('select');for(const k in STATUS){const o=document.createElement('option');o.value=k;o.textContent=STATUS[k];sel.appendChild(o);}
+    sel.value=u.status;el.querySelector('input').value=u.horario;$('a-units').appendChild(el);
+  }
+}
+
+function example(){
+  const t=new Date();t.setDate(t.getDate()+7);
+  $('o-campanha').value='Fecha Mês Santuário';$('o-titulo').value='Preço especial pro seu pet';
+  $('o-produto').value='Nome do produto aqui';$('o-desc').value='Descrição curta do produto, com o que ele tem de melhor.';
+  $('o-de').value='99,90';$('o-por').value='89,90';$('o-sufixo').value='cada';$('o-validade').value=t.toISOString().slice(0,10);
+  $('a-selo').value='Feriado de Finados';$('a-titulo').value='Seu pet pronto pro feriadão?';
+  $('a-sub').value='Garanta o banho e a reserva do seu pet antes do feriado.';$('a-rotulo').value='Domingo e segunda';$('a-datas').value='01 e 02 de novembro';
+  $('a-retorno').value='Terça, 03/11';$('a-retorno-txt').value='Tudo volta ao horário normal.';
+}
+
+const cv=$('cv'),status=$('status'),dl=$('baixar');
+function say(t,bad){status.textContent=t;status.classList.toggle('bad',!!bad);}
+function preview(isExample){const d=read();render(cv,d,1);$('prev-tag').textContent=isExample?'Exemplo':'Pronto para baixar';}
+function stale(){if(current){current=null;dl.disabled=true;$('prev-tag').textContent='Prévia (toque em Gerar card)';say('Você mudou o formulário. Toque em Gerar card de novo.');}}
+
+function switchModel(){const m=document.querySelector('input[name=modelo]:checked').value;$('sec-oferta').hidden=m!=='oferta';$('sec-aviso').hidden=m!=='aviso';
+  if($('cta').dataset.touched!=='1')$('cta').value=m==='oferta'?'Chama no WhatsApp · @santuariopet':'Agende pelo WhatsApp · @santuariopet';}
+
+$('o-foto').addEventListener('change',e=>{const file=e.target.files[0];if(!file)return;const r=new FileReader();
+  r.onload=()=>{const img=new Image();img.onload=()=>{productImg=img;$('o-foto-thumb').src=r.result;$('o-foto-thumb').hidden=false;$('o-foto-txt').textContent=file.name;setErr('o-foto',false);preview(false);stale();};img.src=r.result;};r.readAsDataURL(file);});
+$('cta').addEventListener('input',()=>{$('cta').dataset.touched='1';});
+document.querySelectorAll('input[name=modelo]').forEach(r=>r.addEventListener('change',()=>{switchModel();preview(true);stale();}));
+document.querySelectorAll('input[name=formato],#tema').forEach(r=>r.addEventListener('change',()=>{preview(!current);if(current){current=read();$('prev-tag').textContent='Pronto para baixar';}}));
+$('form').addEventListener('input',e=>{if(e.target.name==='formato'||e.target.id==='tema'||e.target.name==='modelo')return;stale();});
+
+$('form').addEventListener('submit',e=>{e.preventDefault();const d=read();const bad=validate(d);
+  if(bad.length){say(`Faltam ${bad.length} ${bad.length>1?'campos':'campo'} obrigatório${bad.length>1?'s':''}. Veja o que está em vermelho.`,true);const el=$(bad[0]);(el.type==='file'?el.closest('.f').querySelector('.drop'):el).scrollIntoView({block:'center',behavior:'smooth'});return;}
+  render(cv,d,1);current=d;dl.disabled=false;$('prev-tag').textContent='Pronto para baixar';say('Card gerado. Confira a prévia e toque em Baixar imagem.');
+  if(window.matchMedia('(max-width:880px)').matches)cv.scrollIntoView({block:'start',behavior:'smooth'});});
+
+dl.addEventListener('click',async()=>{if(!current)return;const F=FORMATS[current.formato];const out=document.createElement('canvas');render(out,current,F.exp);
+  const blob=await new Promise(r=>out.toBlob(r,'image/png'));const name=`santuario-${current.modelo}-${current.formato}-${new Date().toISOString().slice(0,10)}.png`;
+  let api=null;try{api=window.claude&&window.claude.use?await window.claude.use('downloads'):null;}catch(_){api=null;}
+  if(api){try{await api.save({filename:name,data:blob});say('Imagem salva.');}catch(err){say(err&&err.code==='declined'?'Download cancelado.':'Não deu para baixar aqui. Tente de novo.',err&&err.code!=='declined');}return;}
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);say('Imagem baixada.');});
+
+buildUnits();example();switchModel();
+const fontsReady=Promise.all(['500','600','700','800'].map(w=>document.fonts.load(`${w} 40px "Plus Jakarta Sans"`)).concat(document.fonts.load('700 40px "Caveat"'))).catch(()=>{});
+Promise.all([fontsReady,new Promise(r=>LOGO.complete?r():(LOGO.onload=LOGO.onerror=r))]).then(()=>preview(true));
+preview(true);
+})();
+</script>

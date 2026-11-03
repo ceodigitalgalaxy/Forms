@@ -1,0 +1,40 @@
+<html data-composition-variables='[{"id":"tagline","type":"string","label":"Assinatura","default":"Marketing digital para negócios que querem crescer."}]'>
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: "Inter", sans-serif; }
+    #end-ground { position: absolute; inset: 0; background: #13073b; clip-path: circle(0% at 50% 50%); overflow: hidden; }
+    #end-glow {
+      position: absolute; left: 50%; bottom: -520px; width: 1500px; height: 760px; margin-left: -750px;
+      border-radius: 50%; background: radial-gradient(closest-side, rgba(107,70,255,.55), rgba(91,63,224,0) 100%);
+      filter: blur(90px);
+    }
+    #end-stack { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 56px; }
+    #end-lockup { display: flex; align-items: center; gap: 32px; }
+    #end-symbol { width: 120px; height: 120px; }
+    #end-word-mask { overflow: hidden; height: 60px; }
+    #end-wordmark { height: 60px; width: auto; display: block; }
+    #end-tagline { color: #a7a2b8; font-size: 36px; font-weight: 400; letter-spacing: -0.01em; }
+  </style>
+  <div id="root" data-composition-id="endcard" data-width="1920" data-height="1080">
+    <div id="end-ground">
+      <div id="end-glow" data-layout-allow-overflow></div>
+      <div id="end-stack">
+        <div id="end-lockup">
+          <img id="end-symbol" src="assets/dg-symbol.png" alt="" />
+          <div id="end-word-mask"><img id="end-wordmark" src="assets/dg-wordmark.png" alt="Digital Galaxy" /></div>
+        </div>
+        <p id="end-tagline" data-var-text="tagline">Marketing digital para negócios que querem crescer.</p>
+      </div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#end-ground", { clipPath: "circle(0% at 50% 50%)" }, { clipPath: "circle(75% at 50% 50%)", duration: 0.6, ease: "power2.inOut" }, 0);
+    tl.fromTo("#end-glow", { opacity: 0, y: 120 }, { opacity: 1, y: 0, duration: 1.2, ease: "power2.out" }, 0.3);
+    tl.fromTo("#end-symbol", { opacity: 0, scale: 0.5, rotation: -90 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.8, ease: "expo.out" }, 0.35);
+    tl.fromTo("#end-wordmark", { clipPath: "inset(0% 100% 0% 0%)", x: -24 }, { clipPath: "inset(0% 0% 0% 0%)", x: 0, duration: 0.6, ease: "power3.out" }, 0.7);
+    tl.fromTo("#end-tagline", { opacity: 0, filter: "blur(8px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power4.out" }, 1.1);
+    window.__timelines["endcard"] = tl;
+  </script>
+</template>
+</html>

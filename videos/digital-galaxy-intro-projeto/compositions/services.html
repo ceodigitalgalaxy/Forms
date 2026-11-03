@@ -1,0 +1,43 @@
+<template>
+  <style>
+    #root { position: absolute; inset: 0; font-family: "Inter", sans-serif; }
+    #svc-ground { position: absolute; inset: 0; background: #ffffff; clip-path: inset(100% 0 0 0); }
+    #svc-wrap { position: absolute; left: 240px; right: 240px; top: 50%; transform: translateY(-50%); }
+    #svc-eyebrow { color: #6a48f0; font-size: 28px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 40px; }
+    .svc-row { display: flex; align-items: center; gap: 40px; padding: 30px 0; border-top: 1px solid #e5e2ec; }
+    .svc-row:last-child { border-bottom: 1px solid #e5e2ec; }
+    .svc-row svg { width: 72px; height: 72px; flex: none; fill: none; stroke: #7c5cff; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+    .svc-row svg .star { fill: #7c5cff; stroke: none; }
+    .svc-row h2 { color: #14121c; font-size: 88px; font-weight: 600; line-height: 1.1; letter-spacing: -0.03em; white-space: nowrap; }
+  </style>
+  <div id="root" data-composition-id="services" data-width="1920" data-height="1080">
+    <div id="svc-ground"></div>
+    <div id="svc-wrap">
+      <div id="svc-eyebrow">O que fazemos</div>
+      <div class="svc-row" id="svc-1">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><ellipse cx="12" cy="12" rx="3.6" ry="8.5"/><path d="M3.5 12h17"/></svg>
+        <h2 data-var-text="svc-1">Presença digital</h2>
+      </div>
+      <div class="svc-row" id="svc-2">
+        <svg viewBox="0 0 24 24"><path d="M4 10.5v3.5a1 1 0 0 0 1 1h2.5l6.5 4V6.5L7.5 10H5a1 1 0 0 0-1 .5z"/><path d="M7.5 15l1 4"/><path class="star" d="M19 5Q19 8 22 8Q19 8 19 11Q19 8 16 8Q19 8 19 5Z"/></svg>
+        <h2 data-var-text="svc-2">Anúncios online</h2>
+      </div>
+      <div class="svc-row" id="svc-3">
+        <svg viewBox="0 0 24 24"><path d="M5 4.5h14a2 2 0 0 1 2 2v8.5a2 2 0 0 1-2 2h-7.5L7 20.5V17H5a2 2 0 0 1-2-2V6.5a2 2 0 0 1 2-2z"/><path class="star" d="M12 7.4Q12 10.8 15.4 10.8Q12 10.8 12 14.2Q12 10.8 8.6 10.8Q12 10.8 12 7.4Z"/></svg>
+        <h2 data-var-text="svc-3">Conteúdo para redes</h2>
+      </div>
+    </div>
+  </div>
+  <script>
+    const tl = gsap.timeline({ paused: true });
+    tl.fromTo("#svc-ground", { clipPath: "inset(100% 0% 0% 0%)" }, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.5, ease: "power2.inOut" }, 0);
+    tl.fromTo("#svc-eyebrow", { opacity: 0, filter: "blur(6px)" }, { opacity: 1, filter: "blur(0px)", duration: 0.2, ease: "power4.out" }, 0.4);
+    ["#svc-1", "#svc-2", "#svc-3"].forEach((id, i) => {
+      const t = 0.55 + i * 0.4;
+      tl.fromTo(id, { borderTopColor: "rgba(229,226,236,0)" }, { borderTopColor: "rgba(229,226,236,1)", duration: 0.3, ease: "power2.out" }, t);
+      tl.fromTo(id + " svg", { opacity: 0, scale: 0.6, rotation: -20 }, { opacity: 1, scale: 1, rotation: 0, duration: 0.5, ease: "back.out(1.4)" }, t);
+      tl.fromTo(id + " h2", { opacity: 0, x: -40, filter: "blur(8px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.55, ease: "expo.out" }, t + 0.06);
+    });
+    window.__timelines["services"] = tl;
+  </script>
+</template>

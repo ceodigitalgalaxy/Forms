@@ -1,0 +1,44 @@
+<!doctype html>
+<html
+  lang="pt-BR"
+  data-composition-variables='[{"id":"ink","type":"color","label":"Fundo escuro","default":"#13073B"},{"id":"accent","type":"color","label":"Destaque","default":"#C9BCFF"}]'
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1920, height=1080" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      :root {
+        --ink: #13073b;
+        --accent: #c9bcff;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html, body {
+        width: 1920px;
+        height: 1080px;
+        overflow: hidden;
+        background: var(--ink);
+        font-family: "Inter", sans-serif;
+      }
+      #root { position: relative; width: 100%; height: 100%; }
+      #bg { position: absolute; inset: 0; background: var(--ink); }
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="10" data-width="1920" data-height="1080">
+      <div id="bg"></div>
+      <div id="intro" data-composition-id="intro" data-composition-src="compositions/intro.html"
+        data-start="0" data-duration="3.9" data-track-index="1" data-track-kind="graphics"
+        data-width="1920" data-height="1080" style="z-index:1"></div>
+      <div id="services" data-composition-id="services" data-composition-src="compositions/services.html"
+        data-start="3.4" data-duration="3.9" data-track-index="2" data-track-kind="graphics"
+        data-width="1920" data-height="1080" style="z-index:2"></div>
+      <div id="endcard" data-composition-id="endcard" data-composition-src="compositions/endcard.html"
+        data-start="6.8" data-duration="3.2" data-track-index="3" data-track-kind="graphics"
+        data-width="1920" data-height="1080" style="z-index:3"></div>
+    </div>
+    <script>
+      window.__timelines["main"] = gsap.timeline({ paused: true });
+    </script>
+  </body>
+</html>

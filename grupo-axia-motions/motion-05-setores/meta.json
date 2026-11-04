@@ -1,0 +1,12 @@
+{
+  "id": "motion-05-setores",
+  "name": "Motion 05 · Impacto por setor",
+  "duration": 3.0,
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "still": 2.3,
+  "slot": "00:52–01:12",
+  "uso": "Overlay transparente",
+  "fundoPadrao": false
+}

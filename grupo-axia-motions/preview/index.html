@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Grupo Axia · Prévia dos motions</title>
+    <style>
+      /* Interface de controle. NÃO faz parte do que é exportado. */
+      @font-face { font-family: "Alexandria"; src: url("../assets/fonts/alexandria-latin.woff2") format("woff2"); font-weight: 300 700; }
+      :root {
+        --bg: #0e1411; --panel: #151d19; --line: #26312c; --text: #e9efeb; --muted: #93a29a;
+        --accent: #a0e493; --brand: #033223;
+      }
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body { background: var(--bg); color: var(--text); font: 14px/1.45 "Alexandria", system-ui, sans-serif; min-height: 100vh; }
+      button, select, input { font: inherit; color: inherit; }
+      .app { display: grid; grid-template-columns: 320px 1fr; min-height: 100vh; }
+      aside { border-right: 1px solid var(--line); padding: 24px 20px; display: flex; flex-direction: column; gap: 20px; }
+      .brand { display: flex; align-items: center; gap: 12px; }
+      .brand img { width: 72px; }
+      .brand small { color: var(--muted); display: block; font-size: 12px; }
+      h2 { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+      .list { display: flex; flex-direction: column; gap: 6px; }
+      .item { text-align: left; background: none; border: 1px solid transparent; border-radius: 10px; padding: 10px 12px; cursor: pointer; display: grid; grid-template-columns: 28px 1fr auto; gap: 2px 8px; align-items: baseline; }
+      .item:hover { background: var(--panel); }
+      .item.on { background: var(--panel); border-color: var(--line); }
+      .item .n { color: var(--accent); font-weight: 600; }
+      .item .t { font-weight: 600; }
+      .item .d { color: var(--muted); font-variant-numeric: tabular-nums; }
+      .item .s { grid-column: 2 / 4; color: var(--muted); font-size: 12px; }
+      main { display: grid; grid-template-rows: auto 1fr auto; min-width: 0; }
+      .top { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; padding: 16px 24px; border-bottom: 1px solid var(--line); }
+      .top h1 { font-size: 18px; font-weight: 600; }
+      .top .meta { color: var(--muted); }
+      .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 999px; padding: 3px; }
+      .seg button { background: none; border: 0; padding: 6px 12px; border-radius: 999px; cursor: pointer; color: var(--muted); }
+      .seg button.on { background: var(--panel); color: var(--text); }
+      .viewport { position: relative; display: flex; align-items: center; justify-content: center; padding: 24px; min-height: 0; overflow: hidden; }
+      .frame { position: relative; overflow: hidden; border-radius: 6px; box-shadow: 0 0 0 1px var(--line); flex: none; }
+      .frame.checker { background: repeating-conic-gradient(#3a403d 0 25%, #2c322f 0 50%) 0 0 / 24px 24px; }
+      .frame iframe { position: absolute; left: 0; top: 0; width: 1080px; height: 1920px; border: 0; transform-origin: 0 0; background: transparent; }
+      .grid { display: grid; grid-template-columns: repeat(6, auto); gap: 16px; align-items: start; }
+      .grid figcaption { color: var(--muted); font-size: 12px; margin-top: 6px; }
+      .controls { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; padding: 14px 24px; border-top: 1px solid var(--line); }
+      .btn { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 8px 14px; cursor: pointer; }
+      .btn.primary { background: var(--accent); color: var(--brand); border-color: var(--accent); font-weight: 600; min-width: 96px; }
+      .scrub { flex: 1; min-width: 200px; accent-color: var(--accent); }
+      .time { font-variant-numeric: tabular-nums; color: var(--muted); min-width: 150px; text-align: right; }
+      label.chk { display: inline-flex; gap: 6px; align-items: center; color: var(--muted); cursor: pointer; }
+      .export { display: flex; flex-direction: column; gap: 8px; }
+      .export a { color: var(--accent); text-decoration: none; }
+      .export a.missing { color: var(--muted); pointer-events: none; text-decoration: line-through; }
+      .export code { display: block; background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 8px 10px; font: 12px/1.4 ui-monospace, Menlo, monospace; white-space: pre-wrap; word-break: break-all; }
+      .export .row { display: flex; justify-content: space-between; gap: 8px; }
+      .export .row span { color: var(--muted); font-size: 12px; }
+      .range-row { display: flex; gap: 8px; align-items: center; color: var(--muted); }
+      .range-row input { flex: 1; accent-color: var(--accent); }
+      .hint { color: var(--muted); font-size: 12px; }
+      @media (max-width: 900px) {
+        .app { grid-template-columns: 1fr; }
+        aside { border-right: 0; border-bottom: 1px solid var(--line); }
+        .grid { grid-template-columns: repeat(3, auto); }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="app">
+      <aside>
+        <div class="brand">
+          <img src="../assets/axia-logo-white.svg" alt="Grupo Axia" />
+          <div><strong>Motions · Escala 6×1</strong><small>1080×1920 · 30 fps · sem áudio</small></div>
+        </div>
+        <div>
+          <h2>Motions</h2>
+          <div class="list" id="list"></div>
+        </div>
+        <div class="export">
+          <h2>Exportar este motion</h2>
+          <div id="files"></div>
+          <code id="cmd"></code>
+          <p class="hint">O navegador não grava vídeo: a exportação roda no terminal com o comando acima (veja o README).</p>
+        </div>
+      </aside>
+      <main>
+        <div class="top">
+          <div>
+            <h1 id="title">—</h1>
+            <div class="meta" id="meta"></div>
+          </div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+            <div class="seg" id="view">
+              <button data-v="one" class="on">Um motion</button>
+              <button data-v="all">Os seis</button>
+            </div>
+            <div class="seg" id="mode">
+              <button data-m="1">Tela cheia</button>
+              <button data-m="0">Overlay (transparente)</button>
+            </div>
+          </div>
+        </div>
+        <div class="viewport" id="viewport"></div>
+        <div class="controls">
+          <button class="btn primary" id="play">Reproduzir</button>
+          <button class="btn" id="restart">Reiniciar</button>
+          <input class="scrub" id="scrub" type="range" min="0" max="1000" value="0" aria-label="Linha do tempo" />
+          <span class="time" id="time">0,00 s / 0,00 s</span>
+          <label class="chk"><input type="checkbox" id="loop" checked /> Repetir</label>
+          <div class="range-row" id="ywrap" style="min-width:260px">
+            <span>Altura do overlay</span><input type="range" id="oy" min="500" max="1500" step="10" /><span id="oyv"></span>
+          </div>
+        </div>
+      </main>
+    </div>
+    <script>
+      const MOTIONS = [
+        { id: "motion-01-abertura", n: "01", t: "Abertura", slot: "00:00–00:03", dur: 2.5, fundo: true, y: 960 },
+        { id: "motion-02-jornada", n: "02", t: "Redução da jornada", slot: "00:12–00:18", dur: 2.0, fundo: false, y: 1320 },
+        { id: "motion-03-descanso", n: "03", t: "Dois dias de descanso", slot: "00:19–00:25", dur: 2.5, fundo: false, y: 1300 },
+        { id: "motion-04-custos", n: "04", t: "Impacto nos custos", slot: "00:39–00:49", dur: 2.3, fundo: false, y: 1300 },
+        { id: "motion-05-setores", n: "05", t: "Impacto por setor", slot: "00:52–01:12", dur: 3.0, fundo: false, y: 1290 },
+        { id: "motion-06-planejamento", n: "06", t: "Planejamento empresarial", slot: "01:22–01:41", dur: 3.0, fundo: true, y: 1240 },
+      ];
+      const $ = (s) => document.querySelector(s);
+      const fmt = (x) => x.toFixed(2).replace(".", ",") + " s";
+      const state = { cur: 0, view: "one", fundo: MOTIONS[0].fundo, y: MOTIONS[0].y, playing: false, t: 0, last: 0, frames: [] };
+
+      function buildList() {
+        $("#list").innerHTML = MOTIONS.map((m, i) =>
+          `<button class="item${i === state.cur ? " on" : ""}" data-i="${i}"><span class="n">${m.n}</span><span class="t">${m.t}</span><span class="d">${fmt(m.dur)}</span><span class="s">${m.slot} · ${m.fundo ? "tela cheia" : "overlay"}</span></button>`).join("");
+        $("#list").querySelectorAll(".item").forEach((b) => (b.onclick = () => select(+b.dataset.i)));
+      }
+      function src(m, fundo, y) { return `../${m.id}/index.html?fundo=${fundo ? 1 : 0}&overlayY=${y}`; }
+
+      function makeFrame(m, fundo, y, h) {
+        const scale = h / 1920;
+        const box = document.createElement("div");
+        box.className = "frame" + (fundo ? "" : " checker");
+        box.style.width = 1080 * scale + "px";
+        box.style.height = h + "px";
+        const f = document.createElement("iframe");
+        f.style.transform = `scale(${scale})`;
+        f.setAttribute("scrolling", "no");
+        f.src = src(m, fundo, y);
+        const rec = { m, f, tl: null };
+        f.onload = () => {
+          const w = f.contentWindow;
+          const ready = () => {
+            if (w.__timelines && w.__timelines.main) { rec.tl = w.__timelines.main; rec.tl.pause(); rec.tl.seek(Math.min(state.t, m.dur - 1 / 30), false); }
+            else setTimeout(ready, 30);
+          };
+          (w.document.fonts ? w.document.fonts.ready : Promise.resolve()).then(ready);
+        };
+        box.appendChild(f);
+        return { box, rec };
+      }
+
+      function render() {
+        const vp = $("#viewport");
+        vp.innerHTML = "";
+        state.frames = [];
+        const h = Math.max(320, vp.clientHeight - 48 || window.innerHeight - 200);
+        if (state.view === "one") {
+          const m = MOTIONS[state.cur];
+          const { box, rec } = makeFrame(m, state.fundo, state.y, h);
+          vp.appendChild(box);
+          state.frames.push(rec);
+        } else {
+          const grid = document.createElement("div");
+          grid.className = "grid";
+          const gh = Math.min(h, (vp.clientWidth - 140) / 6 / 0.5625);
+          MOTIONS.forEach((m) => {
+            const fig = document.createElement("figure");
+            const { box, rec } = makeFrame(m, m.fundo, m.y, gh);
+            fig.appendChild(box);
+            const cap = document.createElement("figcaption");
+            cap.textContent = `${m.n} · ${m.t}`;
+            fig.appendChild(cap);
+            grid.appendChild(fig);
+            state.frames.push(rec);
+          });
+          vp.appendChild(grid);
+        }
+        updateHeader();
+      }
+
+      function duration() { return state.view === "one" ? MOTIONS[state.cur].dur : Math.max(...MOTIONS.map((m) => m.dur)); }
+
+      function seekAll(t) {
+        state.t = t;
+        state.frames.forEach((r) => { if (r.tl) r.tl.seek(Math.min(t, r.m.dur - 1 / 30), false); });
+        const d = duration();
+        $("#scrub").value = Math.round((t / d) * 1000);
+        $("#time").textContent = `${fmt(t)} / ${fmt(d)} · quadro ${Math.min(Math.round(t * 30), Math.round(d * 30) - 1)}`;
+      }
+
+      function tick(now) {
+        if (!state.playing) return;
+        const dt = (now - state.last) / 1000;
+        state.last = now;
+        let t = state.t + dt;
+        const d = duration();
+        if (t >= d) {
+          if ($("#loop").checked) t = 0;
+          else { t = d - 1 / 30; setPlaying(false); }
+        }
+        seekAll(t);
+        requestAnimationFrame(tick);
+      }
+      function setPlaying(p) {
+        state.playing = p;
+        $("#play").textContent = p ? "Pausar" : "Reproduzir";
+        if (p) { state.last = performance.now(); requestAnimationFrame(tick); }
+      }
+
+      function updateHeader() {
+        const m = MOTIONS[state.cur];
+        if (state.view === "one") {
+          $("#title").textContent = `${m.n} · ${m.t}`;
+          $("#meta").textContent = `Duração ${fmt(m.dur)} · ${Math.round(m.dur * 30)} quadros · sugerido em ${m.slot}`;
+        } else {
+          $("#title").textContent = "Os seis motions";
+          $("#meta").textContent = "Cada um no seu modo padrão, sincronizados";
+        }
+        document.querySelectorAll("#mode button").forEach((b) => b.classList.toggle("on", (b.dataset.m === "1") === state.fundo));
+        document.querySelectorAll("#view button").forEach((b) => b.classList.toggle("on", b.dataset.v === state.view));
+        $("#mode").style.visibility = state.view === "one" ? "visible" : "hidden";
+        $("#ywrap").style.visibility = state.view === "one" && !state.fundo ? "visible" : "hidden";
+        $("#oy").value = state.y;
+        $("#oyv").textContent = state.y + " px";
+        $("#cmd").textContent = `./scripts/render.sh ${m.id}`;
+        const files = [
+          [`${m.id}.mp4`, "MP4 · fundo sólido"],
+          [`${m.id}-alpha.webm`, "WebM · alpha"],
+          [`${m.id}-alpha.mov`, "MOV ProRes 4444 · alpha"],
+          [`${m.id}-fundo.png`, "PNG · fundo sólido"],
+          [`${m.id}-alpha.png`, "PNG · alpha"],
+        ];
+        $("#files").innerHTML = files.map(([f, l]) => `<div class="row"><a href="../exports/${f}" download title="${f}">${l}</a><span>${f.split(".").pop().toUpperCase()}</span></div>`).join("");
+        $("#files").querySelectorAll("a").forEach((a) =>
+          fetch(a.getAttribute("href"), { method: "HEAD" }).then((r) => { if (!r.ok) a.classList.add("missing"); }).catch(() => a.classList.add("missing")));
+      }
+
+      function select(i) {
+        state.cur = i;
+        state.fundo = MOTIONS[i].fundo;
+        state.y = MOTIONS[i].y;
+        state.view = "one";
+        buildList();
+        render();
+        seekAll(0);
+        setPlaying(true);
+      }
+
+      $("#play").onclick = () => setPlaying(!state.playing);
+      $("#restart").onclick = () => { seekAll(0); setPlaying(true); };
+      $("#scrub").oninput = (e) => { setPlaying(false); seekAll((e.target.value / 1000) * duration()); };
+      document.querySelectorAll("#mode button").forEach((b) => (b.onclick = () => { state.fundo = b.dataset.m === "1"; render(); }));
+      document.querySelectorAll("#view button").forEach((b) => (b.onclick = () => { state.view = b.dataset.v; render(); seekAll(0); setPlaying(true); }));
+      $("#oy").onchange = (e) => { state.y = +e.target.value; render(); };
+      $("#oy").oninput = (e) => { $("#oyv").textContent = e.target.value + " px"; };
+      document.addEventListener("keydown", (e) => { if (e.code === "Space" && e.target.tagName !== "INPUT") { e.preventDefault(); setPlaying(!state.playing); } });
+      let rz; window.addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(render, 200); });
+
+      buildList();
+      select(0);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,12 @@
+{
+  "id": "motion-03-descanso",
+  "name": "Motion 03 · Dois dias de descanso",
+  "duration": 2.5,
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "still": 2.1,
+  "slot": "00:19–00:25",
+  "uso": "Overlay transparente",
+  "fundoPadrao": false
+}

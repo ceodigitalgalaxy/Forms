@@ -1,0 +1,12 @@
+{
+  "id": "motion-01-abertura",
+  "name": "Motion 01 · Abertura",
+  "duration": 2.5,
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "still": 1.8,
+  "slot": "00:00–00:03",
+  "uso": "Insert de tela cheia",
+  "fundoPadrao": true
+}

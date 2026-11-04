@@ -1,0 +1,78 @@
+/* ============================================================
+   Grupo Axia · identidade visual central dos motions
+   Fonte: https://grupoaxia.co/ (assets/css/global.css), lida em 04/11/2026.
+   Edite SÓ este arquivo e rode `npm run sync` para copiar para os 6 motions.
+   ============================================================ */
+@font-face {
+  font-family: "Alexandria";
+  src: url("fonts/alexandria-latin.woff2") format("woff2");
+  font-weight: 300 700;
+  font-style: normal;
+  font-display: block;
+}
+:root {
+  /* paleta oficial (nomes iguais aos do site) */
+  --brand-900: #033223;   /* verde principal / fundo inverso */
+  --brand-850: #033228;   /* títulos de seção */
+  --brand-800: #02553b;
+  --brand-700: #0b6347;   /* botão primário */
+  --brand-600: #469d49;
+  --brand-400: #608958;   /* bordas */
+  --brand-200: #a0e493;   /* acento */
+  --brand-deep: #003f2b;
+  --brand-black: #000c08; /* início do degradê do ícone oficial */
+  --ink-soft: #c7d1cb;
+  --white: #ffffff;
+  --hair: rgba(255, 255, 255, 0.14);
+  --hair-accent: rgba(160, 228, 147, 0.28);
+
+  --font: "Alexandria", ui-sans-serif, system-ui, sans-serif;
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1); /* mesma curva do site */
+
+  /* grade vertical 1080 × 1920 */
+  --safe-x: 90px;
+  --panel-pad: 56px;
+  --panel-radius: 28px;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 1080px; height: 1920px; overflow: hidden; background: transparent; }
+#root {
+  position: relative; width: 1080px; height: 1920px; overflow: hidden;
+  font-family: var(--font); color: var(--white);
+  -webkit-font-smoothing: antialiased; text-rendering: geometricPrecision;
+}
+
+/* ---------- fundo (só no modo tela cheia) ---------- */
+#bg { position: absolute; inset: 0; background: var(--brand-900); }
+.mode-overlay #bg { display: none; }
+.bg-logo { position: absolute; left: var(--safe-x); top: 210px; width: 168px; height: auto; }
+.bg-rule { position: absolute; left: var(--safe-x); right: var(--safe-x); height: 1px; background: var(--hair); transform-origin: left center; }
+.bg-rule.top { top: 300px; }
+.bg-rule.bottom { top: 1620px; }
+
+/* ---------- palco e painel ---------- */
+#stage { position: absolute; inset: 0; }
+.anchor {
+  position: absolute; left: var(--safe-x); right: var(--safe-x);
+  top: var(--overlay-y, 1320px); transform: translateY(-50%);
+}
+.mode-full .anchor { top: 960px; }
+.panel {
+  position: relative; width: 100%;
+  background: var(--brand-900);
+  border: 1px solid var(--hair-accent);
+  border-radius: var(--panel-radius);
+  padding: var(--panel-pad);
+}
+.mode-full .panel { background: transparent; border-color: transparent; padding-left: 0; padding-right: 0; }
+
+/* ---------- tipografia ---------- */
+.eyebrow { font-size: 30px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--brand-200); line-height: 1.3; }
+.title { font-weight: 600; letter-spacing: -0.02em; line-height: 1.04; text-transform: uppercase; }
+.accent { color: var(--brand-200); }
+.soft { color: var(--ink-soft); }
+.note { font-size: 28px; font-weight: 400; color: var(--ink-soft); line-height: 1.4; }
+.mask { overflow: hidden; display: block; padding-bottom: 0.06em; }
+.mask > span { display: inline-block; }
+.rule { height: 1px; background: var(--hair); transform-origin: left center; }
+svg.line-icon { fill: none; stroke: var(--brand-200); stroke-linecap: round; stroke-linejoin: round; }

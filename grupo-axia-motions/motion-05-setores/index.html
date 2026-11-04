@@ -1,0 +1,75 @@
+<!doctype html>
+<!-- Grupo Axia · Motion 05 · Impacto por setor · 3.0s · 1080×1920 · 30 fps -->
+<html lang="pt-BR" data-composition-variables='[{"id": "fundo", "type": "boolean", "label": "Fundo sólido (insert de tela cheia)", "default": false}, {"id": "overlayY", "type": "number", "label": "Overlay: centro vertical do painel", "default": 1290, "min": 500, "max": 1500, "step": 10, "unit": "px"}]'>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <title>Motion 05 · Impacto por setor</title>
+    <script src="assets/vendor/gsap.min.js"></script>
+    <link rel="stylesheet" href="assets/brand.css" />
+    <style>
+
+      #m5-title { font-size: 64px; }
+      #m5-sub { margin-top: 14px; margin-bottom: 40px; }
+      #m5-list { display: flex; flex-direction: column; gap: 16px; }
+      .m5-card { display: flex; align-items: center; gap: 28px; height: 128px; padding: 0 32px; border-radius: 18px;
+        border: 1px solid var(--hair); background: rgba(255,255,255,0.035); }
+      .m5-icon { width: 60px; height: 60px; stroke-width: 1.5; flex: none; }
+      .m5-label { font-size: 40px; font-weight: 600; letter-spacing: -0.005em; text-transform: uppercase; white-space: nowrap; }
+      .mode-full .m5-card { padding: 0 36px; }
+
+    </style>
+  </head>
+  <body>
+    <div id="root" data-composition-id="main" data-start="0" data-duration="3.0" data-width="1080" data-height="1920">
+      <div id="bg" class="clip" data-start="0" data-duration="3.0" data-track-index="0">
+        <img class="bg-logo" src="assets/axia-logo-white.svg" alt="Grupo Axia" />
+        <div class="bg-rule top"></div>
+        <div class="bg-rule bottom"></div>
+      </div>
+      <div id="stage" class="clip" data-start="0" data-duration="3.0" data-track-index="1">
+        <div class="anchor"><div class="panel" id="m5-panel">
+          <h2 class="title" id="m5-title"><span class="mask"><span id="m5-t">Impacto por <span class="accent">setor</span></span></span></h2>
+          <p class="note" id="m5-sub">Os efeitos variam conforme a operação.</p>
+          <div id="m5-list">
+            <div class="m5-card" id="m5-c1">
+              <svg class="line-icon m5-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 9.5L4.6 4h14.8L21 9.5" pathLength="1"/><path d="M3 9.5a2.25 2.25 0 0 0 4.5 0a2.25 2.25 0 0 0 4.5 0a2.25 2.25 0 0 0 4.5 0a2.25 2.25 0 0 0 4.5 0" pathLength="1"/><path d="M5 12.5V20h14v-7.5" pathLength="1"/><path d="M10 20v-4.5h4V20" pathLength="1"/></svg>
+              <span class="m5-label">Varejo</span>
+            </div>
+            <div class="m5-card" id="m5-c2">
+              <svg class="line-icon m5-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7.5 3v5.5c0 4.6-3.2 8.3-7.5 9.5c-4.3-1.2-7.5-4.9-7.5-9.5V6z" pathLength="1"/><path d="M9 12.2l2.1 2.1L15.2 10" pathLength="1"/></svg>
+              <span class="m5-label">Vigilância e segurança</span>
+            </div>
+            <div class="m5-card" id="m5-c3">
+              <svg class="line-icon m5-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 21V4.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 .5.5V21" pathLength="1"/><path d="M15 9.5h3.5a.5.5 0 0 1 .5.5v11" pathLength="1"/><path d="M3 21h18" pathLength="1"/><path d="M8.5 8h3M8.5 12h3M8.5 16h3" pathLength="1"/></svg>
+              <span class="m5-label">Serviços</span>
+            </div>
+          </div>
+        </div></div>
+      </div>
+    </div>
+    <script src="assets/axia-kit.js"></script>
+    <script>
+      const V = AxiaKit.setup({ fundo: false, overlayY: 1290 });
+      const tl = gsap.timeline({ paused: true });
+
+      if (V.fundo) AxiaKit.bgIn(tl, 0);
+      // 0,0–0,5 · título
+      tl.fromTo("#m5-panel", { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.35, ease: "expo.out" }, 0);
+      tl.fromTo("#m5-t", { yPercent: 110 }, { yPercent: 0, duration: 0.45, ease: "expo.out" }, 0.05);
+      tl.fromTo("#m5-sub", { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" }, 0.25);
+      // 0,5 / 1,0 / 1,5 · cards em stagger, com ícone desenhado
+      ["#m5-c1", "#m5-c2", "#m5-c3"].forEach((id, i) => {
+        const t = 0.5 + i * 0.5;
+        tl.fromTo(id, { opacity: 0, y: 28 }, { opacity: 1, y: 0, duration: 0.45, ease: "expo.out" }, t);
+        tl.fromTo(id + " path", { strokeDasharray: 1, strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 0.45, ease: "power2.inOut", stagger: 0.04 }, t + 0.05);
+      });
+      // 2,0–2,6 · estável · 2,6–3,0 · saída sincronizada
+      tl.to(["#m5-t", "#m5-sub", "#m5-c1", "#m5-c2", "#m5-c3"], { opacity: 0, y: -16, duration: 0.25, ease: "power2.in" }, 2.6);
+      tl.to("#m5-panel", { opacity: 0, duration: 0.2, ease: "power2.in" }, 2.72);
+      if (V.fundo) tl.to("#bg .bg-rule", { scaleX: 0, duration: 0.25, ease: "power2.in" }, 2.6);
+
+      window.__timelines["main"] = tl;
+    </script>
+  </body>
+</html>

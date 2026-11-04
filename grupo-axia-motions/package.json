@@ -1,0 +1,16 @@
+{
+  "name": "grupo-axia-motions",
+  "private": true,
+  "type": "module",
+  "description": "Seis motions verticais (1080×1920, 30 fps) do Grupo Axia sobre o fim da escala 6×1.",
+  "scripts": {
+    "preview": "node scripts/serve.mjs 5173",
+    "sync": "bash scripts/sync-assets.sh",
+    "check": "for d in motion-*/; do (cd $d && npx --yes hyperframes@0.9.9 check) || exit 1; done",
+    "render": "bash scripts/render.sh",
+    "render:mp4": "FORMATS=mp4 bash scripts/render.sh",
+    "render:alpha": "FORMATS='webm mov' bash scripts/render.sh",
+    "render:png": "FORMATS=png bash scripts/render.sh"
+  },
+  "engines": { "node": ">=22" }
+}

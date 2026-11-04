@@ -1,0 +1,12 @@
+{
+  "id": "motion-02-jornada",
+  "name": "Motion 02 · Redução da jornada",
+  "duration": 2.0,
+  "fps": 30,
+  "width": 1080,
+  "height": 1920,
+  "still": 1.5,
+  "slot": "00:12–00:18",
+  "uso": "Overlay transparente",
+  "fundoPadrao": false
+}

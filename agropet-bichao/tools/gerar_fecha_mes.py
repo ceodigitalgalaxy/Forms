@@ -2,7 +2,8 @@
 
 Sistema visual:
 - Fundo azul royal da marca com luz suave; laranja e verde da logo como destaque.
-- Tipografia única (Poppins), com hierarquia por peso e tamanho.
+- Manual da marca (IV Bichão): azul #00238B, laranja #FFA800, amarelo #FFD56F, verde #A9CF45.
+- Títulos e preços em Alfa Slab One (fonte da marca); textos em Poppins.
 - Slide de produto: embalagem sem fundo como protagonista, sobre um círculo laranja;
   cartão branco com nome, descrição, peso e preço alinhados em grade.
 
@@ -26,6 +27,9 @@ def data_uri(path):
 
 
 LOGO = data_uri(ROOT / "brand/logo-agropet-bichao-sem-fundo.png")
+LOGO_H = data_uri(ROOT / "brand/logo-horizontal.png")
+LOGO_HS = data_uri(ROOT / "brand/logo-horizontal-slogan.png")
+INSTA = "@agropetbichao"
 
 
 def foto(slug):
@@ -41,6 +45,7 @@ ICON = {
     "store": '<path d="M4 10v10h16V10"/><path d="M3 10l2-6h14l2 6"/><path d="M3 10c0 1.7 1.3 3 3 3s3-1.3 3-3c0 1.7 1.3 3 3 3s3-1.3 3-3c0 1.7 1.3 3 3 3s3-1.3 3-3"/><path d="M10 20v-5h4v5"/>',
     "clock": '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>',
     "arrow": '<path d="M5 12h14M13 6l6 6-6 6"/>',
+    "insta": '<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".6"/>',
 }
 
 
@@ -50,13 +55,14 @@ def icon(name, size, color="currentColor", sw=2.2):
 
 
 CSS = """
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800;900&display=block');
-:root{--azul:#0A2588;--azul-esc:#06175E;--laranja:#FAAA30;--laranja-esc:#E8901A;
-  --verde:#AACF51;--vermelho:#E2231A;--tinta:#0B1A4A;--cinza:#5B6483}
+@import url('https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Poppins:wght@500;600;700;800;900&display=block');
+:root{--azul:#00238B;--azul-esc:#00185F;--laranja:#FFA800;--laranja-esc:#DB8F00;--amarelo:#FFD56F;
+  --verde:#A9CF45;--vermelho:#E2231A;--tinta:#0B1A4A;--cinza:#5B6483}
+.slab{font-family:'Alfa Slab One',serif;font-weight:400}
 *{box-sizing:border-box;margin:0;padding:0}
 body{width:1080px;height:1350px;overflow:hidden;font-family:'Poppins',sans-serif;-webkit-font-smoothing:antialiased}
 .slide{position:relative;width:1080px;height:1350px;overflow:hidden;color:#fff;
-  background:radial-gradient(1100px 900px at 50% 38%,#1B3CC0 0%,var(--azul) 45%,var(--azul-esc) 100%)}
+  background:radial-gradient(1100px 900px at 50% 38%,#0B36B8 0%,var(--azul) 48%,var(--azul-esc) 100%)}
 .abs{position:absolute}
 
 /* assinatura da campanha */
@@ -75,7 +81,7 @@ body{width:1080px;height:1350px;overflow:hidden;font-family:'Poppins',sans-serif
 /* palco do produto */
 .palco{position:absolute;left:50%;transform:translateX(-50%);border-radius:50%}
 .palco.anel{border:2px solid rgba(255,255,255,.14)}
-.palco.disco{background:radial-gradient(circle at 50% 40%,#FFC15C 0%,var(--laranja) 55%,var(--laranja-esc) 100%);
+.palco.disco{background:radial-gradient(circle at 50% 40%,var(--amarelo) 0%,var(--laranja) 55%,var(--laranja-esc) 100%);
   box-shadow:0 30px 80px rgba(3,10,50,.45)}
 .chao{position:absolute;left:50%;transform:translateX(-50%);height:46px;border-radius:50%;
   background:radial-gradient(closest-side,rgba(4,12,50,.55),rgba(4,12,50,0))}
@@ -89,7 +95,7 @@ body{width:1080px;height:1350px;overflow:hidden;font-family:'Poppins',sans-serif
 .cartao{position:absolute;left:48px;right:48px;background:#fff;border-radius:36px;display:flex;align-items:stretch;
   box-shadow:0 24px 60px rgba(3,10,50,.45);overflow:hidden}
 .cartao .info{flex:1;padding:34px 30px 34px 46px;display:flex;flex-direction:column;justify-content:center;color:var(--tinta)}
-.cartao .marca{text-wrap:balance;font-weight:800;font-size:52px;line-height:1.05;letter-spacing:-1px;color:var(--azul)}
+.cartao .marca{text-wrap:balance;font-family:'Alfa Slab One',serif;font-weight:400;font-size:48px;line-height:1.08;color:var(--azul)}
 .cartao .marca::after{content:"";display:block;width:64px;height:6px;border-radius:3px;background:var(--laranja);margin-top:16px}
 .cartao .desc{font-weight:500;font-size:25px;line-height:1.45;color:var(--cinza);margin-top:14px;text-wrap:pretty}
 .cartao .chips{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap}
@@ -99,11 +105,11 @@ body{width:1080px;height:1350px;overflow:hidden;font-family:'Poppins',sans-serif
 .chip.vermelho{background:#FDE7E6;color:var(--vermelho)}
 .cartao .preco{flex:none;width:392px;background:linear-gradient(160deg,#F2352B 0%,var(--vermelho) 45%,#B3131B 100%);
   display:flex;flex-direction:column;justify-content:center;align-items:center;padding:20px 14px;color:#fff}
-.preco .rot{font-weight:800;font-size:26px;letter-spacing:3px;text-transform:uppercase;color:#FFD45C}
-.preco .val{display:flex;align-items:flex-start;font-weight:800;line-height:1;margin-top:2px;letter-spacing:-4px;text-shadow:0 4px 0 rgba(90,0,0,.25)}
-.preco .rs{font-size:38px;margin-top:18px;margin-right:8px;letter-spacing:0}
-.preco .int{font-size:128px}
-.preco .cent{font-size:52px;margin-top:14px;letter-spacing:-1px}
+.preco .rot{font-weight:800;font-size:26px;letter-spacing:3px;text-transform:uppercase;color:var(--amarelo)}
+.preco .val{display:flex;align-items:flex-start;font-family:'Alfa Slab One',serif;font-weight:400;line-height:1;margin-top:6px;letter-spacing:-2px;text-shadow:0 4px 0 rgba(90,0,0,.25)}
+.preco .rs{font-size:34px;margin-top:16px;margin-right:8px;letter-spacing:0}
+.preco .int{font-size:108px}
+.preco .cent{font-size:46px;margin-top:12px;letter-spacing:-1px}
 
 .rodape{position:absolute;left:48px;right:48px;bottom:34px;display:flex;align-items:center;justify-content:center;gap:14px;
   font-weight:600;font-size:27px;color:rgba(255,255,255,.92)}
@@ -116,14 +122,13 @@ def page(body):
     return f'<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><style>{CSS}</style></head><body>{body}</body></html>'
 
 
-def lockup(size=50):
-    return (f'<div class="lockup"><img src="{LOGO}" alt="Agropet Bichão">'
-            f'<div class="txt" style="font-size:{size}px"><span>Fecha mês</span><span class="b">Bichão</span></div></div>')
+def lockup():
+    return f'<img src="{LOGO_H}" style="height:112px;display:block;filter:drop-shadow(0 6px 14px rgba(0,0,0,.3))" alt="Agropet Bichão">'
 
 
 def rodape():
     return (f'<div class="rodape">{icon("wa", 34, "#fff")}<b>{WHATS}</b><span class="sep"></span>'
-            f'<span>Tele-entrega grátis: consulte condições</span></div>')
+            f'{icon("insta", 32, "#fff")}<b>{INSTA}</b></div>')
 
 
 def preco(valor, rotulo):
@@ -139,8 +144,9 @@ def produto(n, total, p):
     body = f"""
 <div class="slide">
   <div class="abs" style="left:48px;top:44px">{lockup()}</div>
-  <div class="abs" style="right:48px;top:80px;display:flex;align-items:center">
-    <span class="pill contorno" style="font-size:24px;padding:12px 24px">{icon("clock", 22, "#fff")}Válido até {VALIDADE}</span>
+  <div class="abs" style="right:48px;top:46px;display:flex;flex-direction:column;align-items:flex-end;gap:12px">
+    <span class="slab" style="font-size:44px;line-height:1;color:var(--laranja)">FECHA MÊS</span>
+    <span class="pill contorno" style="font-size:22px;padding:10px 20px">{icon("clock", 20, "#fff")}Válido até {VALIDADE}</span>
   </div>
   <div class="abs" style="left:48px;top:212px"><span class="pill verde">{p["cat"]}</span></div>
 
@@ -170,11 +176,11 @@ def capa(total, publico, destaques):
     body = f"""
 <div class="slide">
   <div class="abs" style="left:0;right:0;top:48px;display:flex;justify-content:center">
-    <img src="{LOGO}" style="height:190px;filter:drop-shadow(0 8px 18px rgba(0,0,0,.35))" alt="Agropet Bichão"></div>
-  <div class="abs" style="left:0;right:0;top:262px;text-align:center;font-weight:900;text-transform:uppercase;line-height:1">
-    <div style="font-size:150px;letter-spacing:-5px">Fecha mês</div>
-    <div style="display:inline-block;margin-top:14px;background:var(--laranja);color:var(--azul-esc);font-size:112px;
-      letter-spacing:-3px;padding:8px 40px 14px;border-radius:22px;transform:rotate(-2deg);box-shadow:0 14px 0 var(--laranja-esc)">Bichão</div>
+    <img src="{LOGO_HS}" style="width:490px;filter:drop-shadow(0 8px 18px rgba(0,0,0,.35))" alt="Agropet Bichão"></div>
+  <div class="abs slab" style="left:0;right:0;top:262px;text-align:center;text-transform:uppercase;line-height:1">
+    <div style="font-size:140px;letter-spacing:-1px">Fecha mês</div>
+    <div style="display:inline-block;margin-top:14px;background:var(--laranja);color:var(--azul);font-size:104px;
+      padding:10px 44px 18px;border-radius:22px;transform:rotate(-2deg);box-shadow:0 14px 0 var(--laranja-esc)">Bichão</div>
   </div>
   <div class="abs" style="left:0;right:0;top:600px;display:flex;justify-content:center;gap:14px">
     <span class="pill verde" style="font-size:26px;padding:12px 26px">Ofertas {publico}</span>
@@ -204,16 +210,16 @@ def cta(total):
     body = f"""
 <div class="slide">
   <div class="abs" style="left:0;right:0;top:56px;display:flex;justify-content:center">
-    <img src="{LOGO}" style="height:170px;filter:drop-shadow(0 8px 18px rgba(0,0,0,.35))" alt="Agropet Bichão"></div>
+    <img src="{LOGO_HS}" style="width:510px;filter:drop-shadow(0 8px 18px rgba(0,0,0,.35))" alt="Agropet Bichão"></div>
   <div class="abs" style="left:64px;right:64px;top:258px;text-align:center">
     <span class="pill vermelho" style="font-size:24px">Poucas unidades</span>
-    <div style="font-weight:900;font-size:96px;line-height:1;letter-spacing:-3px;margin-top:26px;text-transform:uppercase">
+    <div class="slab" style="font-size:88px;line-height:1.05;margin-top:26px;text-transform:uppercase">
       Garanta antes<br><span style="color:var(--laranja)">que acabe!</span></div>
     <p style="font-weight:500;font-size:32px;line-height:1.35;margin-top:24px;opacity:.92">
       Chame no WhatsApp, separe seus produtos<br>e receba em casa.</p>
   </div>
   <div class="abs" style="left:0;right:0;top:690px;display:flex;justify-content:center">
-    <div style="display:flex;align-items:center;gap:20px;background:var(--laranja);color:var(--azul-esc);font-weight:800;font-size:62px;
+    <div style="display:flex;align-items:center;gap:20px;background:var(--laranja);color:var(--azul);font-weight:800;font-size:62px;
       letter-spacing:-1px;padding:22px 48px;border-radius:999px;box-shadow:0 12px 0 var(--laranja-esc)">
       {icon("wa", 64, "#06175E", 2.4)}{WHATS}</div></div>
   <div class="abs" style="left:64px;right:64px;top:850px;display:flex;flex-direction:column;gap:16px">{cards}</div>

@@ -66,7 +66,7 @@ export const StarImpulse: React.FC<{ f: number }> = ({ f }) => {
 /** Flash of light on the monumental impulses (kept short and brand-coloured). */
 export const impulseFlash = (f: number) => {
   let a = 0;
-  for (const e of IMPULSES) { const d = f - e.frame; if (d >= 0 && d < 12 && e.intensity >= 1.2) a = Math.max(a, (1 - d / 12) * 0.75); }
+  for (const e of IMPULSES) { const d = f - e.frame; if (d >= 0 && d < 12 && e.intensity >= 1.2) a = Math.max(a, (1 - d / 12) * 0.4); }
   return a;
 };
 

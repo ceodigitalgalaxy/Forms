@@ -12,6 +12,7 @@ const VERT = /* glsl */ `
   varying float vCol; varying float vAlpha; varying float vDepth;
   void main() {
     vec3 p = position;
+    float swallow = 1.0;
     if (uDisk > 0.5) {
       float r = aData.x;
       float lag = clamp(r / uRMax, 0.0, 1.0) * 0.45;          // far matter falls later
@@ -22,13 +23,14 @@ const VERT = /* glsl */ `
       float wave = uWaveA * exp(-d * d * 1.4);                 // STAR IMPULSE front
       rr += wave * 0.9;
       p = vec3(cos(ang) * rr, sin(ang) * rr, aLift * (1.0 - k) + wave * 0.35);
+      swallow = 1.0 - pow(k, 3.0); // matter reaching the star is absorbed by it
     }
     vec4 mv = modelViewMatrix * vec4(p, 1.0);
     gl_Position = projectionMatrix * mv;
     float s = aData.z * uProj / max(0.1, -mv.z);
     gl_PointSize = clamp(s, 1.6, 90.0);
     vCol = aData.w; vDepth = -mv.z;
-    vAlpha = uBright * clamp(s / 3.0, 0.35, 1.0);
+    vAlpha = uBright * clamp(s / 3.0, 0.35, 1.0) * swallow;
   }`;
 const FRAG = /* glsl */ `
   varying float vCol; varying float vAlpha; varying float vDepth;

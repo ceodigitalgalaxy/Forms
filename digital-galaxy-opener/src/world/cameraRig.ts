@@ -177,6 +177,7 @@ export function applyCam(pc: THREE.PerspectiveCamera, c: Cam) {
   pc.lookAt(c.target);
   pc.rotateZ((c.roll * Math.PI) / 180);
   pc.fov = c.fov;
+  pc.aspect = WIDTH / HEIGHT; // never trust the canvas' initial size: an aspect mismatch shears rolled shots
   pc.updateProjectionMatrix();
   pc.updateMatrixWorld(true);
 }

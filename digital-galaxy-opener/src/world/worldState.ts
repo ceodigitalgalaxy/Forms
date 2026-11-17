@@ -110,7 +110,7 @@ export function planetPosition(i: number, f: number): THREE.Vector3 {
 }
 /** Scale factor of planet i (compressed during the fall, born again with the expansion). */
 export function planetScale(i: number, f: number) {
-  if (f >= K.contraction[0] && f < K.expansion) return 1 - 0.85 * gravityPull(driftPos(i, K.freeze).length(), f);
+  if (f >= K.contraction[0] && f < K.expansion) return Math.pow(1 - gravityPull(driftPos(i, K.freeze).length(), f), 1.5); // swallowed by the star
   if (f >= K.expansion && f < K.expansion + 50) return ease.outBack(prog(f, K.expansion + i * 3, K.expansion + 34 + i * 3), 1.8);
   const absorb = ease.inExpo(prog(f, K.align[1] - 16, K.logoLock));
   return 1 - absorb;

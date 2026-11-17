@@ -33,7 +33,7 @@ const Scene: React.FC = () => {
     <>
       <CameraDriver cam={cam} />
       <fog attach="fog" args={['#13073B', 22, 90]} />
-      <GalaxyParticles g={g} time={f / 60} collapse={galaxyCollapse(f)} wave={energyWave(f)} proj={proj} bright={diskBright} fieldBright={0.9} />
+      <GalaxyParticles g={g} time={f / 60} collapse={galaxyCollapse(f)} wave={energyWave(f)} proj={proj} bright={diskBright * (1 - 0.8 * Math.pow(galaxyCollapse(f), 2))} fieldBright={0.9} />
       <Universe f={f} cam={cam} vel={vel} ringOpacity={ringOpacity} />
     </>
   );

@@ -4,7 +4,8 @@ import * as THREE from 'three';
 import { K } from '../timeline/timeline';
 import { clamp, ease, lerp, prog } from '../lib/easing';
 import { rnd } from '../lib/random';
-import { type Cam } from './cameraRig';
+import { applyCam, type Cam } from './cameraRig';
+import { WIDTH, HEIGHT } from '../timeline/timeline';
 import {
   CHECKPOINT_ANGLES, FRAGMENTS, ORBITS, PLANE_NORMAL, R_LOGO, TUNNEL,
   energyWave, fragmentState, orbitDraw, orbitQuat, orbitRadius, orbitWorldPoint, planetAngle, planetPosition, planetScale,
@@ -145,7 +146,7 @@ const Planets: React.FC<{ f: number; env: THREE.Texture; focus?: number }> = ({ 
 // ---------------------------------------------------------------------------
 const Core: React.FC<{ f: number; env: THREE.Texture; cam: Cam; ringOpacity: number }> = ({ f, env, cam, ringOpacity }) => {
   const g = useMemo(() => ({
-    star: extrude(starShape(), 0.16, 0.025),
+    star: extrude(starShape(), 0.03, 0.006), // thin plate: silhouette stays the official star at any distance
     ring: extrude(ringShape(), 0.22, 0.03),
     starMat: new THREE.MeshStandardMaterial({ color: C.white, emissive: C.white, emissiveIntensity: 1, roughness: 0.3, metalness: 0 }),
     ringMat: new THREE.MeshPhysicalMaterial({ color: C.white, roughness: 0.26, metalness: 0.12, clearcoat: 1, clearcoatRoughness: 0.1, envMap: env, envMapIntensity: 1.1, emissive: C.lilac, emissiveIntensity: 0.12, transparent: true }),
@@ -156,19 +157,27 @@ const Core: React.FC<{ f: number; env: THREE.Texture; cam: Cam; ringOpacity: num
   const e = starEnergy(f), s = starScale(f), rf = ringFormation(f);
   const calm = logoCalm(f); // the mark must read crisply: glare steps back
   const dist = cam.pos.length();
+  const near = Math.min(1, dist / 5); // glare stays tasteful in macro close-ups
   g.starMat.emissiveIntensity = (0.85 + e * 0.6) * (1 - calm * 0.5);
-  g.halo.opacity = (0.55 + e * 0.3) * (1 - calm * 0.55); g.hot.opacity = Math.min(1, 0.5 + e * 0.5) * (1 - calm * 0.9); g.flare.opacity = Math.min(1, 0.25 + e * 0.6) * (1 - calm * 0.95);
-  const hotSize = Math.max(2.2 * s * (1 + e), dist * 0.035), flareSize = Math.max(5.5 * s * (1 + e * 0.6), dist * 0.09);
+  g.halo.opacity = Math.min(0.75, 0.5 + e * 0.15) * (1 - calm * 0.55); g.hot.opacity = Math.min(0.4, 0.3 + e * 0.1) * (1 - calm * 0.9) * (0.3 + 0.7 * near); // never fill the star's concave sides g.flare.opacity = Math.min(0.7, 0.25 + e * 0.35) * (1 - calm * 0.95) * (0.35 + 0.65 * near);
+  const hotSize = Math.max(Math.min(1.6 * s * (1 + e * 0.25), 1.4), dist * 0.035), flareSize = Math.max(Math.min(5.5 * s * (1 + e * 0.3), 6), dist * 0.09);
   g.ringMat.opacity = ringOpacity;
   // billboard: the star always faces the camera so its silhouette stays the original
   const q = new THREE.Quaternion().setFromRotationMatrix(new THREE.Matrix4().lookAt(cam.pos, cam.target, cam.up));
   const facing = f >= K.expansion ? new THREE.Quaternion() : q;
+  // align the 4-point flare with the star's real arms on screen (camera roll + orientation)
+  const pc = new THREE.PerspectiveCamera(cam.fov, WIDTH / HEIGHT, 0.05, 400); applyCam(pc, cam);
+  const c0 = new THREE.Vector3(0, 0, 0).project(pc), c1 = new THREE.Vector3(0, 0.5, 0).applyQuaternion(facing).project(pc);
+  const armAngle = Math.atan2((c1.y - c0.y) / (WIDTH / HEIGHT), c1.x - c0.x) - Math.PI / 2;
+  g.flare.rotation = armAngle;
+  const behind = cam.target.clone().sub(cam.pos).normalize().multiplyScalar(0.45);
   return (
     <group>
       <pointLight position={[0, 0, 0.6]} color={C.lilac} intensity={(40 + e * 70) * Math.max(0.2, s)} distance={40} decay={1.6} />
-      <sprite material={g.halo} scale={[7 * s * (1 + e * 0.4), 7 * s * (1 + e * 0.4), 1]} />
-      <sprite material={g.hot} scale={[hotSize, hotSize, 1]} />
-      <sprite material={g.flare} scale={[flareSize, flareSize, 1]} />
+      {/* glows sit BEHIND the star along the view axis: they light the space around it, never fill its concave sides */}
+      <sprite material={g.halo} position={behind} scale={[7 * s * (1 + e * 0.4), 7 * s * (1 + e * 0.4), 1]} />
+      <sprite material={g.hot} position={behind} scale={[hotSize, hotSize, 1]} />
+      <sprite material={g.flare} position={behind} scale={[flareSize, flareSize, 1]} />
       <mesh geometry={g.star} material={g.starMat} scale={s} quaternion={facing} />
       {rf > 0 && ringOpacity > 0 && (
         <mesh geometry={g.ring} material={g.ringMat} scale={[rf, rf, Math.max(0.05, rf)]} rotation={[0, 0, (1 - rf) * -2.2]} />

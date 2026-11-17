@@ -1,0 +1,30 @@
+{
+  "name": "digital-galaxy-opener",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Digital Galaxy \u2014 cinematic brand opener (Remotion, 3840x2160, 60fps, 30s)",
+  "scripts": {
+    "studio": "remotion studio",
+    "preview": "remotion render DigitalGalaxyOpener out/preview-1080p.mp4 --scale=0.5 --crf=20",
+    "render": "remotion render DigitalGalaxyOpener out/digital-galaxy-brand-opener.mp4",
+    "stills": "node scripts/stills.mjs",
+    "validate": "node scripts/stills.mjs --every 6 --scale 0.1 --out out/validate",
+    "audio": "node scripts/export-cues.mjs && python3 scripts/audio/score.py public/audio/cues.json public/audio/score.wav",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@remotion/bundler": "4.0.539",
+    "@remotion/cli": "4.0.539",
+    "@remotion/fonts": "4.0.539",
+    "@remotion/renderer": "4.0.539",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "remotion": "4.0.539"
+  },
+  "devDependencies": {
+    "@types/react": "19.1.8",
+    "@types/react-dom": "19.1.6",
+    "typescript": "5.8.3"
+  },
+  "type": "module"
+}

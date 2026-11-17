@@ -12,6 +12,7 @@ const opt = (k, d) => { const i = args.indexOf(k); return i >= 0 ? args.splice(i
 const every = Number(opt('--every', 0));
 const scale = Number(opt('--scale', 0.25));
 const outDir = opt('--out', 'out/stills');
+const compId = opt('--comp', 'DigitalGalaxyOpener');
 let frames = args.map(Number);
 if (every) frames = Array.from({ length: Math.ceil(1800 / every) }, (_, i) => i * every).concat([1799]);
 if (!frames.length) frames = [30, 60, 100, 140, 175, 200, 260, 340, 400, 440, 500, 560, 615, 660, 760, 840, 900, 950, 1000, 1040, 1100, 1190, 1270, 1360, 1400, 1450, 1520, 1600, 1650, 1700, 1760, 1799];
@@ -19,13 +20,14 @@ if (!frames.length) frames = [30, 60, 100, 140, 175, 200, 260, 340, 400, 440, 50
 fs.mkdirSync(outDir, { recursive: true });
 const inputProps = { validate: true, muted: true };
 const serveUrl = await bundle({ entryPoint: path.resolve('src/index.ts') });
-const browser = await openBrowser('chrome');
-const composition = await selectComposition({ serveUrl, id: 'DigitalGalaxyOpener', inputProps, puppeteerInstance: browser });
+const chromiumOptions = { gl: 'swangle' };
+const browser = await openBrowser('chrome', { chromiumOptions });
+const composition = await selectComposition({ serveUrl, id: compId, inputProps, puppeteerInstance: browser, chromiumOptions });
 const failures = [];
 for (const frame of frames) {
   const output = path.join(outDir, `f${String(frame).padStart(4, '0')}.jpg`);
   try {
-    await renderStill({ composition, serveUrl, frame, output, imageFormat: 'jpeg', jpegQuality: 88, scale, inputProps, puppeteerInstance: browser });
+    await renderStill({ composition, serveUrl, frame, output, imageFormat: 'jpeg', jpegQuality: 88, scale, inputProps, puppeteerInstance: browser, chromiumOptions });
   } catch (e) {
     const msg = String(e?.message ?? e).split('\n')[0];
     failures.push(`frame ${frame}: ${msg}`);

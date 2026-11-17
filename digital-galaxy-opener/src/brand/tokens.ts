@@ -29,7 +29,12 @@ export const THEMES = {
   white: { bg: COLORS.white, fg: COLORS.space, ac: COLORS.violet, line: COLORS.space, dark: false },
 } satisfies Record<string, Theme>;
 
+/** Font stacks — identical to the site's CSS variables. */
 export const FONTS = {
-  display: 'Inter',
-  mono: 'JetBrains Mono',
+  display: 'Galaxy, Sora', //  --font-display (titles): Orbitron 600, tildes in Sora
+  brand: 'Orbitron, Sora', //  --font-brand  (brand name, indexes)
+  body: 'Sora', //             --font-body   (subtitles, eyebrows)
+  mono: 'JetBrains Mono', //   HUD codes only
 } as const;
+/** Title metrics from the site: weight 600, letter-spacing -0.01em, line-height 1.1–1.15. */
+export const TITLE = { weight: 600, tracking: -0.01, lineHeight: 1.12 } as const;

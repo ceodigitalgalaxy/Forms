@@ -1,413 +1,868 @@
 {
  "fps": 60,
  "durationInFrames": 1800,
+ "beatFrames": 28,
+ "bpm": 128.57142857142858,
  "scenes": {
   "signal": {
    "from": 0,
-   "dur": 180
+   "dur": 168
   },
   "chaos": {
-   "from": 180,
-   "dur": 240
+   "from": 168,
+   "dur": 252
   },
   "center": {
    "from": 420,
-   "dur": 180
+   "dur": 168
   },
   "reveal": {
-   "from": 600,
-   "dur": 180
+   "from": 588,
+   "dur": 196
   },
   "process": {
-   "from": 780,
-   "dur": 180
+   "from": 784,
+   "dur": 168
   },
   "pillars": {
-   "from": 960,
+   "from": 952,
    "dur": 420
   },
   "promise": {
-   "from": 1380,
-   "dur": 240
+   "from": 1372,
+   "dur": 252
   },
   "final": {
-   "from": 1620,
-   "dur": 180
+   "from": 1624,
+   "dur": 176
   }
  },
- "cues": [
+ "keys": {
+  "light": 0,
+  "starReveal": 28,
+  "signalLines": [
+   56,
+   84,
+   112
+  ],
+  "signalStack": 126,
+  "compress": [
+   148,
+   168
+  ],
+  "chaosCut": 28,
+  "chaosPhrases": [
+   168,
+   280
+  ],
+  "chaosLine": [
+   4,
+   18,
+   32
+  ],
+  "freeze": 420,
+  "centerText": [
+   434,
+   448
+  ],
+  "starActivate": 476,
+  "contraction": [
+   476,
+   588
+  ],
+  "expansion": 588,
+  "planetLock": [
+   612,
+   620,
+   628,
+   636,
+   644
+  ],
+  "ringThrough": 662,
+  "logoAligned": 700,
+  "brandName": 702,
+  "brandSub": 728,
+  "orbitalWipe": [
+   764,
+   784
+  ],
+  "checkpoints": [
+   812,
+   854,
+   896,
+   938
+  ],
+  "pillar": [
+   952,
+   1036,
+   1120,
+   1204,
+   1288
+  ],
+  "pillarLen": 84,
+  "slingshot": 16,
+  "lens": [
+   1352,
+   1372
+  ],
+  "promise": [
+   1372,
+   1428,
+   1484
+  ],
+  "promiseStack": [
+   1540,
+   1554,
+   1568
+  ],
+  "promisePull": [
+   1596,
+   1624
+  ],
+  "pullback": [
+   1624,
+   1690
+  ],
+  "align": [
+   1690,
+   1740
+  ],
+  "alignTicks": [
+   1700,
+   1708,
+   1716,
+   1724,
+   1732
+  ],
+  "logoLock": 1740,
+  "cta": 1748,
+  "handles": 1770
+ },
+ "events": [
   {
-   "frame": 4,
-   "type": "starPulse",
-   "gain": 0.8
+   "id": "light",
+   "frame": 0,
+   "dur": 40,
+   "motion": "stellarPulse",
+   "sound": "stellarPulse",
+   "intensity": 0.35
   },
   {
-   "frame": 32,
-   "type": "swish",
-   "dur": 10
+   "id": "star-reveal",
+   "frame": 28,
+   "dur": 40,
+   "motion": "stellarPulse",
+   "sound": "stellarPulse",
+   "intensity": 0.7,
+   "pitch": 0
   },
   {
-   "frame": 42,
-   "type": "impact",
-   "gain": 1
+   "id": "signal-line-0",
+   "frame": 56,
+   "pre": 10,
+   "motion": "gravityType",
+   "sound": "typeHit",
+   "intensity": 0.7
   },
   {
-   "frame": 74,
-   "type": "swish",
-   "dur": 10
-  },
-  {
+   "id": "signal-line-1",
    "frame": 84,
-   "type": "impact",
-   "gain": 1
+   "pre": 10,
+   "motion": "gravityType",
+   "sound": "typeHit",
+   "intensity": 0.82
   },
   {
-   "frame": 110,
-   "type": "swish",
-   "dur": 10
+   "id": "signal-line-2",
+   "frame": 112,
+   "pre": 10,
+   "motion": "gravityType",
+   "sound": "typeHit",
+   "intensity": 0.94
   },
   {
-   "frame": 120,
-   "type": "impact",
-   "gain": 1
+   "id": "signal-stack",
+   "frame": 126,
+   "motion": "gravityType",
+   "sound": "typeHit",
+   "intensity": 0.55
   },
   {
-   "frame": 150,
-   "type": "impact",
-   "gain": 0.7
+   "id": "compression",
+   "frame": 168,
+   "pre": 20,
+   "motion": "compression",
+   "sound": "compression",
+   "intensity": 1
   },
   {
-   "frame": 160,
-   "type": "whoosh",
-   "dur": 20
+   "id": "chaos-cut-0",
+   "frame": 168,
+   "motion": "cut",
+   "sound": "cutHit",
+   "intensity": 0.9,
+   "pan": [
+    -0.35,
+    -0.35
+   ]
   },
   {
-   "frame": 180,
-   "type": "cut",
-   "gain": 1
+   "id": "chaos-0-0",
+   "frame": 172,
+   "motion": "gravityType",
+   "sound": "typeHit",
+   "intensity": 0.6
   },
   {
-   "frame": 184,
-   "type": "impact",
-   "gain": 0.75
+   "id": "chaos-0-1",
+   "frame": 186,
+   "motion": "gravityType",
+   "sound": "typeHit",
+   "intensity": 0.6
   },
   {
-   "frame": 206,
-   "type": "impact",
-   "gain": 0.75
+   "id": "chaos-cut-1",
+   "frame": 196,
+   "motion": "cut",
+   "sound": "cutHit",
+   "intensity": 0.5,
+   "pan": [
+    0.35,
+    0.35
+   ]
   },
   {
-   "frame": 210,
-   "type": "cut",
-   "gain": 0.45
+   "id": "chaos-0-2",
+   "frame": 200,
+   "motion": "gravityType",
+   "sound": "typeHit",
+   "intensity": 0.95
   },
   {
-   "frame": 226,
-   "type": "impact",
-   "gain": 1
+   "id": "chaos-cut-2",
+   "frame": 224,
+   "motion": "cut",
+   "sound": "cutHit",
+   "intensity": 0.5,
+   "pan": [
+    -0.35,
+    -0.35
+   ]
   },
   {
-   "frame": 240,
-   "type": "cut",
-   "gain": 0.45
+   "id": "chaos-pass-a",
+   "frame": 238,
+   "pre": 16,
+   "dur": 16,
+   "motion": "orbitPass",
+   "sound": "orbitalPass",
+   "intensity": 0.8,
+   "pan": [
+    -0.8,
+    0.8
+   ]
   },
   {
-   "frame": 270,
-   "type": "cut",
-   "gain": 0.45
+   "id": "chaos-cut-3",
+   "frame": 252,
+   "motion": "cut",
+   "sound": "cutHit",
+   "intensity": 0.5,
+   "pan": [
+    0.35,
+    0.35
+   ]
   },
   {
-   "frame": 300,
-   "type": "cut",
-   "gain": 1
+   "id": "chaos-cut-4",
+   "frame": 280,
+   "motion": "cut",
+   "sound": "cutHit",
+   "intensity": 0.9,
+   "pan": [
+    -0.35,
+    -0.35
+   ]
   },
   {
-   "frame": 304,
-   "type": "impact",
-   "gain": 0.75
+   "id": "chaos-1-0",
+   "frame": 284,
+   "motion": "gravityType",
+   "sound": "typeHit",
+   "intensity": 0.6
   },
   {
-   "frame": 326,
-   "type": "impact",
-   "gain": 0.75
+   "id": "chaos-1-1",
+   "frame": 298,
+   "motion": "gravityType",
+   "sound": "typeHit",
+   "intensity": 0.6
   },
   {
-   "frame": 330,
-   "type": "cut",
-   "gain": 0.45
+   "id": "chaos-cut-5",
+   "frame": 308,
+   "motion": "cut",
+   "sound": "cutHit",
+   "intensity": 0.5,
+   "pan": [
+    0.35,
+    0.35
+   ]
   },
   {
-   "frame": 346,
-   "type": "impact",
-   "gain": 1
+   "id": "chaos-1-2",
+   "frame": 312,
+   "motion": "gravityType",
+   "sound": "typeHit",
+   "intensity": 0.95
   },
   {
-   "frame": 360,
-   "type": "cut",
-   "gain": 0.45
+   "id": "chaos-cut-6",
+   "frame": 336,
+   "motion": "cut",
+   "sound": "cutHit",
+   "intensity": 0.5,
+   "pan": [
+    -0.35,
+    -0.35
+   ]
   },
   {
-   "frame": 390,
-   "type": "cut",
-   "gain": 0.45
+   "id": "chaos-pass-b",
+   "frame": 350,
+   "pre": 16,
+   "dur": 16,
+   "motion": "orbitPass",
+   "sound": "orbitalPass",
+   "intensity": 0.8,
+   "pan": [
+    0.8,
+    -0.8
+   ]
   },
   {
-   "frame": 398,
-   "type": "whoosh",
-   "dur": 22
+   "id": "chaos-cut-7",
+   "frame": 364,
+   "motion": "cut",
+   "sound": "cutHit",
+   "intensity": 0.5,
+   "pan": [
+    0.35,
+    0.35
+   ]
   },
   {
+   "id": "chaos-cut-8",
+   "frame": 392,
+   "motion": "cut",
+   "sound": "cutHit",
+   "intensity": 0.9,
+   "pan": [
+    -0.35,
+    -0.35
+   ]
+  },
+  {
+   "id": "freeze",
    "frame": 420,
-   "type": "freeze"
+   "dur": 30,
+   "motion": "freeze",
+   "sound": "freeze",
+   "intensity": 1
   },
   {
-   "frame": 426,
-   "type": "impact",
-   "gain": 0.9
+   "id": "center-text-0",
+   "frame": 434,
+   "motion": "gravityType",
+   "sound": "typeHit",
+   "intensity": 0.6
   },
   {
+   "id": "center-text-1",
    "frame": 448,
-   "type": "impact",
-   "gain": 1.1
+   "motion": "gravityType",
+   "sound": "typeHit",
+   "intensity": 0.8999999999999999
   },
   {
-   "frame": 480,
-   "type": "starPulse",
-   "gain": 1
+   "id": "star-activate",
+   "frame": 476,
+   "dur": 50,
+   "motion": "stellarPulse",
+   "sound": "stellarPulse",
+   "intensity": 1,
+   "pitch": 2
   },
   {
-   "frame": 492,
-   "type": "starPulse",
-   "gain": 0.7
+   "id": "contraction",
+   "frame": 588,
+   "pre": 112,
+   "motion": "contraction",
+   "sound": "contraction",
+   "intensity": 1.2
   },
   {
-   "frame": 504,
-   "type": "riser",
-   "dur": 96
+   "id": "expansion",
+   "frame": 588,
+   "dur": 90,
+   "motion": "expansion",
+   "sound": "expansion",
+   "intensity": 1.5
   },
   {
-   "frame": 600,
-   "type": "drop"
+   "id": "logo-born",
+   "frame": 588,
+   "dur": 60,
+   "motion": "stellarPulse",
+   "sound": "gravityImpact",
+   "intensity": 1.5
   },
   {
-   "frame": 660,
-   "type": "impact",
-   "gain": 0.8
+   "id": "lock-0",
+   "frame": 612,
+   "motion": "alignment",
+   "sound": "alignTick",
+   "intensity": 0.5,
+   "pitch": 0,
+   "pan": [
+    -0.6,
+    -0.6
+   ]
   },
   {
-   "frame": 674,
-   "type": "impact",
-   "gain": 0.8
+   "id": "lock-1",
+   "frame": 620,
+   "motion": "alignment",
+   "sound": "alignTick",
+   "intensity": 0.56,
+   "pitch": 2,
+   "pan": [
+    0.5,
+    0.5
+   ]
   },
   {
-   "frame": 698,
-   "type": "shimmer"
+   "id": "lock-2",
+   "frame": 628,
+   "motion": "alignment",
+   "sound": "alignTick",
+   "intensity": 0.62,
+   "pitch": 4,
+   "pan": [
+    -0.3,
+    -0.3
+   ]
   },
   {
-   "frame": 758,
-   "type": "whoosh",
-   "dur": 22
+   "id": "lock-3",
+   "frame": 636,
+   "motion": "alignment",
+   "sound": "alignTick",
+   "intensity": 0.6799999999999999,
+   "pitch": 6,
+   "pan": [
+    0.7,
+    0.7
+   ]
   },
   {
-   "frame": 780,
-   "type": "impact",
-   "gain": 0.8
+   "id": "lock-4",
+   "frame": 644,
+   "motion": "alignment",
+   "sound": "alignTick",
+   "intensity": 0.74,
+   "pitch": 8,
+   "pan": [
+    0,
+    0
+   ]
   },
   {
-   "frame": 788,
-   "type": "swish",
-   "dur": 28
+   "id": "ring-through",
+   "frame": 662,
+   "pre": 22,
+   "dur": 18,
+   "motion": "orbitPass",
+   "sound": "orbitalPass",
+   "intensity": 1,
+   "pan": [
+    -0.9,
+    0.9
+   ]
   },
   {
-   "frame": 820,
-   "type": "checkpoint"
+   "id": "logo-aligned",
+   "frame": 700,
+   "motion": "logoLock",
+   "sound": "gravityImpact",
+   "intensity": 0.9
   },
   {
-   "frame": 830,
-   "type": "swish",
-   "dur": 28
+   "id": "brand-sub",
+   "frame": 728,
+   "motion": "gravityType",
+   "sound": "shimmer",
+   "intensity": 0.5
   },
   {
-   "frame": 862,
-   "type": "checkpoint"
+   "id": "orbital-wipe",
+   "frame": 784,
+   "pre": 20,
+   "motion": "orbitalWipe",
+   "sound": "orbitalWipe",
+   "intensity": 1,
+   "pan": [
+    0.6,
+    -0.6
+   ]
   },
   {
-   "frame": 872,
-   "type": "swish",
-   "dur": 28
+   "id": "cp-travel-0",
+   "frame": 812,
+   "pre": 26,
+   "motion": "orbitPass",
+   "sound": "orbitalPass",
+   "intensity": 0.45,
+   "pan": [
+    0.7,
+    -0.7
+   ]
   },
   {
-   "frame": 904,
-   "type": "checkpoint"
+   "id": "cp-0",
+   "frame": 812,
+   "dur": 36,
+   "motion": "checkpoint",
+   "sound": "checkpoint",
+   "intensity": 0.55,
+   "pitch": 0
   },
   {
-   "frame": 908,
-   "type": "swish",
-   "dur": 28
+   "id": "cp-travel-1",
+   "frame": 854,
+   "pre": 26,
+   "motion": "orbitPass",
+   "sound": "orbitalPass",
+   "intensity": 0.45,
+   "pan": [
+    0.7,
+    -0.7
+   ]
   },
   {
-   "frame": 940,
-   "type": "checkpoint"
+   "id": "cp-1",
+   "frame": 854,
+   "dur": 36,
+   "motion": "checkpoint",
+   "sound": "checkpoint",
+   "intensity": 0.65,
+   "pitch": 3
   },
   {
-   "frame": 960,
-   "type": "impact",
-   "gain": 1
+   "id": "cp-travel-2",
+   "frame": 896,
+   "pre": 26,
+   "motion": "orbitPass",
+   "sound": "orbitalPass",
+   "intensity": 0.45,
+   "pan": [
+    0.7,
+    -0.7
+   ]
   },
   {
-   "frame": 1002,
-   "type": "cut",
-   "gain": 0.6
+   "id": "cp-2",
+   "frame": 896,
+   "dur": 36,
+   "motion": "checkpoint",
+   "sound": "checkpoint",
+   "intensity": 0.75,
+   "pitch": 5
   },
   {
-   "frame": 1028,
-   "type": "swish",
-   "dur": 16
+   "id": "cp-travel-3",
+   "frame": 938,
+   "pre": 26,
+   "motion": "orbitPass",
+   "sound": "orbitalPass",
+   "intensity": 0.45,
+   "pan": [
+    0.7,
+    -0.7
+   ]
   },
   {
-   "frame": 1028,
-   "type": "tick"
+   "id": "cp-3",
+   "frame": 938,
+   "dur": 36,
+   "motion": "checkpoint",
+   "sound": "checkpoint",
+   "intensity": 0.8500000000000001,
+   "pitch": 7
   },
   {
-   "frame": 1044,
-   "type": "impact",
-   "gain": 1
+   "id": "pillar-0",
+   "frame": 952,
+   "motion": "gravityType",
+   "sound": "gravityImpact",
+   "intensity": 0.8
   },
   {
-   "frame": 1086,
-   "type": "cut",
-   "gain": 0.6
+   "id": "pillar-pulse-0",
+   "frame": 994,
+   "motion": "stellarPulse",
+   "sound": "stellarPulse",
+   "intensity": 0.3,
+   "pitch": 0
   },
   {
-   "frame": 1112,
-   "type": "swish",
-   "dur": 16
+   "id": "slingshot-1",
+   "frame": 1036,
+   "pre": 16,
+   "motion": "slingshot",
+   "sound": "slingshot",
+   "intensity": 0.85,
+   "pan": [
+    -0.8,
+    0.8
+   ]
   },
   {
-   "frame": 1112,
-   "type": "tick"
+   "id": "pillar-1",
+   "frame": 1036,
+   "motion": "gravityType",
+   "sound": "gravityImpact",
+   "intensity": 0.8400000000000001
   },
   {
-   "frame": 1128,
-   "type": "impact",
-   "gain": 1
+   "id": "pillar-pulse-1",
+   "frame": 1078,
+   "motion": "stellarPulse",
+   "sound": "stellarPulse",
+   "intensity": 0.3,
+   "pitch": 1
   },
   {
-   "frame": 1170,
-   "type": "cut",
-   "gain": 0.6
+   "id": "slingshot-2",
+   "frame": 1120,
+   "pre": 16,
+   "motion": "slingshot",
+   "sound": "slingshot",
+   "intensity": 0.85,
+   "pan": [
+    0.8,
+    -0.8
+   ]
   },
   {
-   "frame": 1196,
-   "type": "swish",
-   "dur": 16
+   "id": "pillar-2",
+   "frame": 1120,
+   "motion": "gravityType",
+   "sound": "gravityImpact",
+   "intensity": 0.88
   },
   {
-   "frame": 1196,
-   "type": "tick"
+   "id": "pillar-pulse-2",
+   "frame": 1162,
+   "motion": "stellarPulse",
+   "sound": "stellarPulse",
+   "intensity": 0.3,
+   "pitch": 2
   },
   {
-   "frame": 1212,
-   "type": "impact",
-   "gain": 1
+   "id": "slingshot-3",
+   "frame": 1204,
+   "pre": 16,
+   "motion": "slingshot",
+   "sound": "slingshot",
+   "intensity": 0.85,
+   "pan": [
+    -0.8,
+    0.8
+   ]
   },
   {
-   "frame": 1254,
-   "type": "cut",
-   "gain": 0.6
+   "id": "pillar-3",
+   "frame": 1204,
+   "motion": "gravityType",
+   "sound": "gravityImpact",
+   "intensity": 0.92
   },
   {
-   "frame": 1280,
-   "type": "swish",
-   "dur": 16
+   "id": "pillar-pulse-3",
+   "frame": 1246,
+   "motion": "stellarPulse",
+   "sound": "stellarPulse",
+   "intensity": 0.3,
+   "pitch": 3
   },
   {
-   "frame": 1280,
-   "type": "tick"
+   "id": "slingshot-4",
+   "frame": 1288,
+   "pre": 16,
+   "motion": "slingshot",
+   "sound": "slingshot",
+   "intensity": 0.85,
+   "pan": [
+    0.8,
+    -0.8
+   ]
   },
   {
-   "frame": 1296,
-   "type": "impact",
-   "gain": 1
+   "id": "pillar-4",
+   "frame": 1288,
+   "motion": "gravityType",
+   "sound": "gravityImpact",
+   "intensity": 0.9600000000000001
   },
   {
-   "frame": 1338,
-   "type": "cut",
-   "gain": 0.6
+   "id": "pillar-pulse-4",
+   "frame": 1330,
+   "motion": "stellarPulse",
+   "sound": "stellarPulse",
+   "intensity": 0.3,
+   "pitch": 4
   },
   {
-   "frame": 1358,
-   "type": "whoosh",
-   "dur": 22
+   "id": "lens",
+   "frame": 1372,
+   "pre": 20,
+   "motion": "lens",
+   "sound": "lens",
+   "intensity": 1
   },
   {
-   "frame": 1380,
-   "type": "impact",
-   "gain": 1.1
+   "id": "promise-0",
+   "frame": 1372,
+   "motion": "gravityType",
+   "sound": "gravityImpact",
+   "intensity": 1
   },
   {
-   "frame": 1410,
-   "type": "cut",
-   "gain": 0.8
+   "id": "promise-1",
+   "frame": 1428,
+   "motion": "gravityType",
+   "sound": "gravityImpact",
+   "intensity": 1.1
   },
   {
-   "frame": 1440,
-   "type": "impact",
-   "gain": 1.1
+   "id": "promise-2",
+   "frame": 1484,
+   "motion": "gravityType",
+   "sound": "gravityImpact",
+   "intensity": 1.2
   },
   {
-   "frame": 1470,
-   "type": "cut",
-   "gain": 0.8
+   "id": "promise-stack-0",
+   "frame": 1540,
+   "motion": "gravityType",
+   "sound": "typeHit",
+   "intensity": 0.6
   },
   {
-   "frame": 1500,
-   "type": "impact",
-   "gain": 1.1
+   "id": "promise-stack-1",
+   "frame": 1554,
+   "motion": "gravityType",
+   "sound": "typeHit",
+   "intensity": 0.75
   },
   {
-   "frame": 1530,
-   "type": "cut",
-   "gain": 0.8
+   "id": "promise-stack-2",
+   "frame": 1568,
+   "motion": "gravityType",
+   "sound": "typeHit",
+   "intensity": 0.8999999999999999
   },
   {
-   "frame": 1560,
-   "type": "impact",
-   "gain": 0.7
+   "id": "promise-pull",
+   "frame": 1624,
+   "pre": 28,
+   "motion": "contraction",
+   "sound": "contraction",
+   "intensity": 0.8
   },
   {
-   "frame": 1574,
-   "type": "impact",
-   "gain": 0.8999999999999999
+   "id": "final-expansion",
+   "frame": 1624,
+   "dur": 70,
+   "motion": "expansion",
+   "sound": "expansion",
+   "intensity": 1.1
   },
   {
-   "frame": 1588,
-   "type": "impact",
-   "gain": 1.1
+   "id": "final-pass",
+   "frame": 1654,
+   "pre": 20,
+   "dur": 30,
+   "motion": "orbitPass",
+   "sound": "orbitalPass",
+   "intensity": 0.7,
+   "pan": [
+    0.9,
+    -0.9
+   ]
   },
   {
-   "frame": 1602,
-   "type": "riser",
-   "dur": 18
+   "id": "align-0",
+   "frame": 1700,
+   "motion": "alignment",
+   "sound": "alignTick",
+   "intensity": 0.45,
+   "pitch": 0
   },
   {
-   "frame": 1620,
-   "type": "impact",
-   "gain": 1
+   "id": "align-1",
+   "frame": 1708,
+   "motion": "alignment",
+   "sound": "alignTick",
+   "intensity": 0.53,
+   "pitch": 2
   },
   {
-   "frame": 1620,
-   "type": "whoosh",
-   "dur": 64
+   "id": "align-2",
+   "frame": 1716,
+   "motion": "alignment",
+   "sound": "alignTick",
+   "intensity": 0.61,
+   "pitch": 3
   },
   {
-   "frame": 1682,
-   "type": "riser",
-   "dur": 50
+   "id": "align-3",
+   "frame": 1724,
+   "motion": "alignment",
+   "sound": "alignTick",
+   "intensity": 0.69,
+   "pitch": 5
   },
   {
+   "id": "align-4",
    "frame": 1732,
-   "type": "final"
+   "motion": "alignment",
+   "sound": "alignTick",
+   "intensity": 0.77,
+   "pitch": 7
+  },
+  {
+   "id": "logo-lock",
+   "frame": 1740,
+   "dur": 60,
+   "motion": "logoLock",
+   "sound": "sonicLogo",
+   "intensity": 1.5
+  },
+  {
+   "id": "cta",
+   "frame": 1748,
+   "motion": "gravityType",
+   "sound": "typeHit",
+   "intensity": 0.35
+  },
+  {
+   "id": "end",
+   "frame": 1800,
+   "motion": "end",
+   "sound": "shimmer",
+   "intensity": 0
   }
  ]
 }

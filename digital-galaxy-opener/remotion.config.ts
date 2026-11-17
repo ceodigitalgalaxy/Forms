@@ -8,3 +8,6 @@ Config.setCrf(16);
 Config.setPixelFormat('yuv420p');
 Config.setConcurrency(4);
 Config.setOverwriteOutput(true);
+
+// WebGL (Three.js) in headless Chrome without a GPU: ANGLE over SwiftShader.
+Config.setChromiumOpenGlRenderer('swangle');

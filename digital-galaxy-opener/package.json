@@ -9,21 +9,25 @@
     "render": "remotion render DigitalGalaxyOpener out/digital-galaxy-brand-opener.mp4",
     "stills": "node scripts/stills.mjs",
     "validate": "node scripts/stills.mjs --every 6 --scale 0.1 --out out/validate",
-    "audio": "node scripts/export-cues.mjs && python3 scripts/audio/score.py public/audio/cues.json public/audio/score.wav",
+    "audio": "node scripts/export-cues.mjs && python3 scripts/audio/score.py public/audio/cues.json out/score_raw.wav && python3 scripts/audio/master.py out/score_raw.wav public/audio/score.wav",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@react-three/fiber": "9.8.2",
     "@remotion/bundler": "4.0.539",
     "@remotion/cli": "4.0.539",
     "@remotion/fonts": "4.0.539",
     "@remotion/renderer": "4.0.539",
+    "@remotion/three": "4.0.539",
     "react": "19.1.0",
     "react-dom": "19.1.0",
-    "remotion": "4.0.539"
+    "remotion": "4.0.539",
+    "three": "0.186.1"
   },
   "devDependencies": {
     "@types/react": "19.1.8",
     "@types/react-dom": "19.1.6",
+    "@types/three": "0.186.0",
     "typescript": "5.8.3"
   },
   "type": "module"

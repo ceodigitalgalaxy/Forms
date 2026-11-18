@@ -82,6 +82,8 @@ body{width:1080px;overflow:hidden;font-family:'Nunito Sans',sans-serif;-webkit-f
   padding:.45em .7em;border-radius:.5em;white-space:nowrap}
 .serv{display:flex;align-items:center;gap:.55em;font-weight:900;text-transform:uppercase;letter-spacing:.16em;color:#fff;line-height:1}
 .serv i{display:block;width:2.2em;height:.18em;background:var(--lime)}
+.porte{position:absolute;left:.8em;bottom:.8em;z-index:4;background:var(--k);color:var(--lime);font-weight:900;
+  letter-spacing:.14em;text-transform:uppercase;padding:.5em .8em;border-radius:.5em;line-height:1}
 .rodl{position:relative;z-index:6;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--lime)}
 .strike{display:inline-block;color:rgba(245,247,239,.42);text-decoration:line-through;text-decoration-color:var(--lime);text-decoration-thickness:.055em}
 """
@@ -205,51 +207,60 @@ def creche2(f):
   </div>{faixa('Oferta até 30/11 • Vagas limitadas', 150)}""", FP)
 
 
+def dupla(gap, raio, fs):
+    def um(nome, pos, rot):
+        return (f'<div style="flex:1;position:relative;display:flex">{ph(nome, pos, f"flex:1;border-radius:{raio}px")}'
+                f'<span class="porte" style="font-size:{fs}px">{rot}</span></div>')
+    return (f'<div class="row" style="gap:{gap}px;flex:1;min-height:0">'
+            + um('creche-pequeno', '45% 45%', 'Porte pequeno') + um('creche-grande', '50% 40%', 'Porte grande') + '</div>')
+
+
 def creche3(f):
     if f == "story":
         return page(1920, f"""{topo(90)}{bf(86, 40)}
   <div class="ser it" style="font-size:68px;margin-top:47px;color:var(--gl)">Porte diferente.</div>
   <div class="imp" style="font-size:140px;margin-top:10px">Mesmo preço<br><span class="lime">especial.</span></div>
-  <div class="row" style="flex:1;gap:36px;margin-top:57px;min-height:470px">
-    {ph('creche-grupo', '50% 55%', 'width:540px;border-radius:270px 270px 24px 24px')}
-    <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end">
-      <div class="sup" style="font-size:29px">Aproveita a Black Friday antecipada e conhece a condição do plano de <b>60 diárias</b> da creche Santuário.</div>
-    </div>
-  </div>
-  {cta('Fala com a equipe', 30, 36)}
-  {tape('Contratações até 30/11 • Vagas limitadas', 38, 46)}""", SP)
+  <div style="display:flex;flex:1;margin-top:44px;min-height:470px">{dupla(20, 26, 24)}</div>
+  <div class="sup" style="font-size:28px;margin-top:30px">Aproveita a Black Friday antecipada e conhece a condição do plano de <b>60 diárias</b> da creche Santuário.</div>
+  {cta('Fala com a equipe', 30)}""", SP)
     return page(1350, f"""{topo(92)}
-  <div class="row" style="flex:1;gap:40px;margin-top:44px">
-    <div style="flex:1;display:flex;flex-direction:column">
+  <div class="row" style="flex:1;gap:36px;margin-top:40px">
+    <div style="width:470px;display:flex;flex-direction:column">
       {bf(78)}
-      <div class="ser it" style="font-size:62px;margin-top:47px;color:var(--gl)">Porte diferente.</div>
-      <div class="imp" style="font-size:132px;margin-top:10px">Mesmo<br>preço<br><span class="lime">especial.</span></div>
+      <div class="ser it" style="font-size:58px;margin-top:44px;color:var(--gl)">Porte diferente.</div>
+      <div class="imp" style="font-size:124px;margin-top:10px">Mesmo<br>preço<br><span class="lime">especial.</span></div>
     </div>
-    {ph('creche-grupo', '50% 55%', 'width:400px;border-radius:200px 200px 22px 22px')}
+    <div style="flex:1;display:flex">{dupla(14, 22, 18).replace('class="row"', 'class="row" style="flex-direction:column;gap:14px;flex:1"', 1)}</div>
   </div>
-  <div class="sup" style="font-size:26px;margin-top:47px">Aproveita a Black Friday antecipada e conhece a condição do plano de <b>60 diárias</b> da creche Santuário.</div>
-  {tape('Contratações até 30/11 • Vagas limitadas', 28, 30, 26)}
+  <div class="sup" style="font-size:25px;margin-top:34px">Aproveita a Black Friday antecipada e conhece a condição do plano de <b>60 diárias</b> da creche Santuário.</div>
   {cta('Fala com a equipe', 25)}""", FP)
 
 
 # ======================================================== BANHO
 def banho1(f):
+    card = "border-radius:28px;box-shadow:16px 16px 0 var(--lime)"
     if f == "story":
         return page(1920, f"""{topo(90)}{bf(86, 40)}
-  {ph('banho-shihtzu', '50% 36%', 'height:620px;margin:40px -92px 0', '<div class="fade-t" style="height:120px"></div><div class="fade-b" style="height:200px"></div>')}
-  <div class="ser it" style="font-size:84px;margin-top:-40px;position:relative;z-index:3;color:var(--gl)">Vocês pediram.</div>
-  <div class="imp lime" style="font-size:200px;margin-top:6px">Ele voltou.</div>
-  <div class="ser" style="font-size:42px;font-weight:500;line-height:1.2;margin-top:44px">O plano de <b style="font-weight:700;color:var(--lime)">12 banhos</b> está de volta na Black Friday antecipada da Santuário Pet!</div>
+  <div class="row" style="gap:40px;margin-top:50px;align-items:flex-end">
+    {ph('banho-shihtzu-bandana', '50% 50%', 'width:450px;height:600px;flex:none;' + card)}
+    <div style="flex:1;padding-bottom:6px">
+      <div class="ser it" style="font-size:60px;color:var(--gl);line-height:1.05">Vocês<br>pediram.</div>
+    </div>
+  </div>
+  <div class="imp lime" style="font-size:196px;margin-top:72px">Ele voltou.</div>
+  <div class="ser" style="font-size:40px;font-weight:500;line-height:1.22;margin-top:26px">O plano de <b style="font-weight:700;color:var(--lime)">12 banhos</b> está de volta na Black Friday antecipada da Santuário Pet!</div>
   <div style="flex:1"></div>
-  {tape('Condições especiais • Somente até 30/11', 38, 0, 40)}
   {cta('Conheça a oferta', 30)}""", SP)
-    return page(1350, f"""{topo(92)}{bf(76, 26)}
-  {ph('banho-shihtzu', '50% 36%', 'height:470px;margin:28px -80px 0', '<div class="fade-t" style="height:90px"></div><div class="fade-b" style="height:150px"></div>')}
-  <div class="ser it" style="font-size:58px;color:var(--gl);margin-top:-40px;position:relative;z-index:3">Vocês pediram.</div>
-  <div class="imp lime" style="font-size:150px;margin-top:6px">Ele voltou.</div>
-  <div class="ser" style="font-size:34px;font-weight:500;line-height:1.22;margin-top:29px">O plano de <b style="font-weight:700;color:var(--lime)">12 banhos</b> está de volta na Black Friday antecipada da Santuário Pet!</div>
-  <div style="flex:1"></div>
-  {tape('Condições especiais • Somente até 30/11', 28, 0, 30)}
+    return page(1350, f"""{topo(92)}
+  <div class="row" style="flex:1;gap:48px;margin-top:36px">
+    <div style="flex:1;display:flex;flex-direction:column">
+      {bf(76)}
+      <div class="ser it" style="font-size:56px;color:var(--gl);margin-top:46px">Vocês pediram.</div>
+      <div class="imp lime" style="font-size:150px;margin-top:6px;line-height:.92">Ele<br>voltou.</div>
+      <div class="ser" style="font-size:30px;font-weight:500;line-height:1.25;margin-top:28px">O plano de <b style="font-weight:700;color:var(--lime)">12 banhos</b> está de volta na Black Friday antecipada da Santuário Pet!</div>
+    </div>
+    <div style="display:flex;align-items:center;padding-right:16px">{ph('banho-shihtzu-bandana', '50% 50%', 'width:390px;height:520px;' + card)}</div>
+  </div>
   {cta('Conheça a oferta', 25)}""", FP)
 
 

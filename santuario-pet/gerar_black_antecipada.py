@@ -73,6 +73,13 @@ body{width:1080px;overflow:hidden;font-family:'Nunito Sans',sans-serif;-webkit-f
 .cta{display:flex;align-items:center;gap:.5em;font-weight:900;color:#fff}
 .cta svg{color:var(--lime)}
 .end{font-weight:700;color:#8E9C92;letter-spacing:.5px}
+.oferta{background:var(--lime);color:var(--k);border-radius:20px;padding:.26em .34em .3em;position:relative;z-index:6;
+  box-shadow:0 16px 40px rgba(0,0,0,.35)}
+.oferta .k{font-weight:900;font-size:.3em;letter-spacing:.12em;text-transform:uppercase;line-height:1.25}
+.oferta .r{display:flex;align-items:center;justify-content:space-between;gap:.25em;flex-wrap:wrap;margin-top:.1em}
+.oferta .b{font-family:'Anton';text-transform:uppercase;line-height:1;letter-spacing:.01em}
+.oferta .t{background:var(--k);color:var(--lime);font-weight:900;font-size:.24em;letter-spacing:.14em;text-transform:uppercase;
+  padding:.45em .7em;border-radius:.5em;white-space:nowrap}
 .rodl{position:relative;z-index:6;font-weight:800;letter-spacing:3px;text-transform:uppercase;color:var(--lime)}
 .strike{display:inline-block;color:rgba(245,247,239,.42);text-decoration:line-through;text-decoration-color:var(--lime);text-decoration-thickness:.055em}
 """
@@ -94,26 +101,49 @@ def bf(size, mt=0):
             f'<div class="ant" style="font-size:{round(size * .42)}px">Antecipada</div></div>')
 
 
-def tape(txt, size, mt=0, mb=0, rot=0):
-    """Linha de condição: caixa-alta espaçada em verde-limão (padrão do card aprovado)."""
-    mt = max(mt, 0) if mt >= 0 else 24
-    return (f'<div class="rodl" style="font-size:{round(size * .62)}px;margin-top:{mt}px;margin-bottom:{mb}px">'
-            f'{txt}</div>')
+def tape(*a, **k):
+    return ""
 
 
 def ph(nome, pos, extra="", fades=""):
     return f'<div class="foto" style="background-image:url({foto(nome)});background-position:{pos};{extra}">{fades}</div>'
 
 
+CUR = {"nome": ""}
+OFERTAS = {
+    "01-creche-60-diarias": ("Mesmo preço para todos os portes", "Só até 30/11", "Vagas limitadas"),
+    "02-creche-nao-veio-para-brincar": ("60 diárias com condição especial", "Só até 30/11", "Vagas limitadas"),
+    "03-creche-mesmo-preco-especial": ("Plano de 60 diárias", "Contrate até 30/11", "Vagas limitadas"),
+    "04-banho-ele-voltou": ("Plano de 12 banhos · condições especiais", "Só até 30/11", "Black Friday"),
+    "05-banho-12-banhos": ("Condição especial de Black Friday", "Só até 30/11", "12 banhos"),
+    "06-banho-nao-e-1-nao-sao-6": ("Plano de 12 banhos · condições especiais", "Só até 30/11", "Black Friday"),
+    "07-hotel-fim-de-ano-destino": ("Hospedagem com valor de baixa temporada", "Reserve até 30/11", "Vagas limitadas"),
+    "08-hotel-baixa-temporada": ("Hospedagem de fim de ano", "Só até 30/11", "Vagas limitadas"),
+    "09-hotel-viagem-pode-esperar": ("Valor de baixa temporada", "Reserve até 30/11", "Vagas limitadas"),
+}
+
+
+def oferta(size, mt):
+    k, b, t = OFERTAS[CUR["nome"]]
+    return (f'<div class="oferta" style="font-size:{size}px;margin-top:{mt}px"><div class="k">{k}</div>'
+            f'<div class="r"><div class="b">{b}</div><div class="t">{t}</div></div></div>')
+
+
 def cta(txt, size, mt=0):
-    return f'<div class="cta" style="font-size:{size}px;margin-top:{mt}px">{txt} {SETA}</div>'
+    big = 92 if size >= 30 else 64
+    return (oferta(big, max(mt, 26)) +
+            f'<div class="cta" style="font-size:{size}px;margin-top:22px">{txt} {SETA}</div>')
 
 
 SP = "150px 72px 250px"
 FP = "56px 64px 60px"
 
 
-def faixa(txt, bottom, left=64, width=520):
+def faixa(*a, **k):
+    return ""
+
+
+def _faixa_old(txt, bottom, left=64, width=520):
     return f'<div class="rodl" style="position:absolute;left:{left}px;width:{width}px;bottom:{bottom - 40}px;z-index:6;font-size:20px">{txt}</div>'
 
 
@@ -146,8 +176,8 @@ def creche1(f):
 def creche2(f):
     if f == "story":
         return page(1920, f"""{topo(104)}
-  <div class="imp" style="font-size:132px;margin-top:56px;line-height:.95">A <span class="lime">Black Friday</span><br>da creche não<br>veio para</div>
-  <div class="ser it lime" style="font-size:200px;line-height:.95;font-weight:700;margin-top:4px;letter-spacing:-3px">brincar.</div>
+  <div class="imp" style="font-size:112px;margin-top:50px;line-height:.95">A <span class="lime">Black Friday</span><br>da creche não<br>veio para</div>
+  <div class="ser it lime" style="font-size:168px;line-height:.95;font-weight:700;margin-top:4px;letter-spacing:-3px">brincar.</div>
   <div class="ser" style="font-size:42px;font-weight:700;margin-top:26px">60 diárias com uma condição especial.</div>
   {ph('creche-brincando', '50% 52%', 'flex:1;margin:34px -72px 0;min-height:300px', '<div class="fade-t" style="height:140px"></div><div class="fade-b" style="height:120px"></div>')}
   {tape('Oferta até 30/11 • Vagas limitadas', 40, -50)}
@@ -167,15 +197,15 @@ def creche2(f):
 def creche3(f):
     if f == "story":
         return page(1920, f"""{topo(104)}{bf(110, 46)}
-  <div class="ser it" style="font-size:84px;margin-top:44px;color:var(--gl)">Porte diferente.</div>
-  <div class="imp" style="font-size:176px;margin-top:10px">Mesmo preço<br><span class="lime">especial.</span></div>
+  <div class="ser it" style="font-size:68px;margin-top:36px;color:var(--gl)">Porte diferente.</div>
+  <div class="imp" style="font-size:140px;margin-top:8px">Mesmo preço<br><span class="lime">especial.</span></div>
   <div class="row" style="flex:1;gap:36px;margin-top:44px;min-height:300px">
     {ph('creche-grupo', '50% 55%', 'width:540px;border-radius:270px 270px 24px 24px')}
     <div style="flex:1;display:flex;flex-direction:column;justify-content:flex-end">
       <div class="sup" style="font-size:29px">Aproveita a Black Friday antecipada e conhece a condição do plano de <b>60 diárias</b> da creche Santuário.</div>
-      {cta('Fala com a equipe', 30, 26)}
     </div>
   </div>
+  {cta('Fala com a equipe', 30, 36)}
   {tape('Contratações até 30/11 • Vagas limitadas', 38, 46)}""", SP)
     return page(1350, f"""{topo(92)}
   <div class="row" style="flex:1;gap:40px;margin-top:34px">
@@ -241,20 +271,20 @@ def banho2(f):
 def banho3(f):
     if f == "story":
         return page(1920, f"""{topo(104)}{bf(110, 46)}
-  <div class="imp" style="font-size:112px;margin-top:44px;line-height:1.05"><span class="strike">Não é 1.</span><br><span class="strike">Não são 6.</span></div>
+  <div class="imp" style="font-size:88px;margin-top:36px;line-height:1.08"><span class="strike">Não são 4.</span><br><span class="strike">Não são 8.</span></div>
   <div class="row" style="align-items:flex-end;gap:26px;margin-top:22px">
-    <div class="imp" style="font-size:130px;padding-bottom:12px">São</div>
-    <div class="imp lime" style="font-size:380px;line-height:.78;letter-spacing:-10px">12</div>
+    <div class="imp" style="font-size:110px;padding-bottom:10px">São</div>
+    <div class="imp lime" style="font-size:300px;line-height:.78;letter-spacing:-10px">12</div>
   </div>
-  <div class="imp" style="font-size:130px;margin-top:12px">banhos!</div>
-  {ph('banho-golden', '50% 24%', 'flex:1;margin:30px -72px 0;min-height:340px', '<div class="fade-t" style="height:140px"></div><div class="fade-b" style="height:110px"></div>')}
+  <div class="imp" style="font-size:110px;margin-top:12px">banhos!</div>
+  {ph('banho-golden', '50% 30%', 'flex:1;margin:26px -72px 0;min-height:200px', '<div class="fade-t" style="height:140px"></div><div class="fade-b" style="height:110px"></div>')}
   {tape('Somente até 30/11', 40, -50)}
   <div class="sup" style="font-size:29px;margin-top:40px">O plano tão pedido voltou com condições especiais na Black Friday Santuário.</div>
   {cta('Chama no WhatsApp', 30, 22)}""", SP)
     return page(1350, f"""{ph('banho-golden', '50% 45%', 'position:absolute;right:0;top:0;width:420px;height:1350px', '<div class="fade-l" style="width:180px"></div>')}
   <div style="position:relative;z-index:3;width:680px;display:flex;flex-direction:column;height:100%">
     {topo(92)}{bf(80, 30)}
-    <div class="imp" style="font-size:118px;margin-top:40px;line-height:1"><span class="strike">Não é 1.</span><br><span class="strike">Não são 6.</span></div>
+    <div class="imp" style="font-size:118px;margin-top:40px;line-height:1"><span class="strike">Não são 4.</span><br><span class="strike">Não são 8.</span></div>
     <div class="row" style="align-items:flex-end;gap:20px;margin-top:16px">
       <div class="imp" style="font-size:112px;padding-bottom:10px">São</div>
       <div class="imp lime" style="font-size:330px;line-height:.78;letter-spacing:-8px">12</div>
@@ -269,8 +299,8 @@ def banho3(f):
 def hotel1(f):
     if f == "story":
         return page(1920, f"""{topo(104)}{bf(110, 46)}
-  <div class="ser" style="font-size:96px;font-weight:700;line-height:1.02;margin-top:52px;letter-spacing:-1px">Teu fim de ano<br>já tem destino?</div>
-  <div class="ser it lime" style="font-size:70px;font-weight:500;margin-top:16px">O dele também pode ter.</div>
+  <div class="ser" style="font-size:80px;font-weight:700;line-height:1.04;margin-top:44px;letter-spacing:-1px">Teu fim de ano<br>já tem destino?</div>
+  <div class="ser it lime" style="font-size:58px;font-weight:500;margin-top:16px">O dele também pode ter.</div>
   {ph('hotel-descanso', '50% 62%', 'flex:1;margin:44px -72px 0;min-height:300px', '<div class="fade-t" style="height:150px"></div><div class="fade-b" style="height:120px"></div>')}
   {tape('Reserve até 30/11 • Vagas limitadas', 40, -50)}
   <div class="sup" style="font-size:29px;margin-top:40px">Garante a hospedagem do teu pet para o fim de ano com valor de <b>baixa temporada</b>.</div>
@@ -318,10 +348,10 @@ def hotel2(f):
 def hotel3(f):
     if f == "story":
         return page(1920, f"""{topo(104)}{bf(110, 46)}
-  <div class="imp" style="font-size:138px;margin-top:46px">Tua viagem<br>pode esperar.</div>
+  <div class="imp" style="font-size:116px;margin-top:40px">Tua viagem<br>pode esperar.</div>
   {ph('hotel-pastor', '50% 32%', 'flex:1;margin-top:40px;border-radius:26px;min-height:300px')}
   {tape('Vagas limitadas • Hotel Pet Santuário', 38, -40)}
-  <div class="ser it lime" style="font-size:76px;font-weight:700;line-height:1.04;margin-top:40px">A reserva dele,<br>melhor não.</div>
+  <div class="ser it lime" style="font-size:64px;font-weight:700;line-height:1.04;margin-top:34px">A reserva dele,<br>melhor não.</div>
   <div class="sup" style="font-size:28px;margin-top:18px">Planeja a hospedagem de fim de ano e aproveita o valor de <b>baixa temporada</b> para reservas realizadas até 30/11.</div>
   {cta('Garanta a vaga pelo WhatsApp', 30, 20)}
   <div class="end" style="font-size:21px;margin-top:12px">{HOTEL}</div>""", SP)
@@ -335,7 +365,7 @@ def hotel3(f):
       <div class="end" style="font-size:18px;margin-top:10px">{HOTEL}</div>
     </div>
     {ph('hotel-pastor', '50% 35%', 'width:400px;border-radius:24px')}
-  </div>{faixa('Vagas limitadas • Hotel Pet Santuário', 210, 64, 540).replace('font-size:20px','font-size:17px')}""", FP)
+  </div>""", FP)
 
 
 PECAS = [("01-creche-60-diarias", creche1), ("02-creche-nao-veio-para-brincar", creche2),
@@ -353,6 +383,7 @@ def main():
             jobs = []
             for nome, fn in PECAS:
                 src = pathlib.Path(tmp) / f"{fmt}-{nome}.html"
+                CUR["nome"] = nome
                 src.write_text(fn("story" if fmt == "stories" else "feed"), encoding="utf-8")
                 jobs.append(f"{src}|{d / (nome + '.png')}")
             subprocess.run(["node", str(RENDER), *jobs], check=True, env={**os.environ, "H": str(h)},

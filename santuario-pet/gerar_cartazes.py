@@ -48,57 +48,52 @@ ROUPA = """
 </svg>"""
 
 CSS = """
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800;900&display=block');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@600;700;800;900&display=block');
 @page{size:A4;margin:0}
-:root{--verde:#0C6E45;--verde-esc:#06462B;--verde-claro:#1E8A5C;--amarelo:#FFD24A;--preto:#0B0B0F}
+:root{--verde:#0C6E45;--verde-vivo:#1FC27A;--preto:#0A0A0A}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:794px;height:1123px;overflow:hidden;font-family:'Poppins',sans-serif;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .a4{position:relative;width:794px;height:1123px;overflow:hidden;color:#fff;
-  background:radial-gradient(900px 800px at 50% 42%,var(--verde-claro) 0%,var(--verde) 45%,var(--verde-esc) 100%)}
+  background:radial-gradient(700px 520px at 50% 62%,rgba(31,194,122,.22) 0%,rgba(31,194,122,0) 70%),var(--preto)}
 .abs{position:absolute}
-.pata{position:absolute;fill:#fff;opacity:.06}
-.faixa{position:absolute;left:-40px;right:-40px;top:44px;height:96px;background:var(--preto);transform:rotate(-3deg);
-  display:flex;align-items:center;justify-content:center;gap:22px;box-shadow:0 10px 24px rgba(0,0,0,.35)}
-.faixa b{font-weight:900;font-size:64px;letter-spacing:2px;line-height:1}
-.faixa b span{color:var(--amarelo)}
-.logo{position:absolute;left:50%;transform:translateX(-50%);top:168px;width:150px;height:150px;border-radius:50%;
-  border:7px solid #fff;box-shadow:0 12px 28px rgba(0,0,0,.35);background:var(--verde)}
+.listra{position:absolute;left:0;right:0;height:14px;
+  background:repeating-linear-gradient(-45deg,var(--verde-vivo) 0 18px,var(--preto) 18px 36px)}
+.topo{position:absolute;left:56px;right:56px;top:64px;display:flex;align-items:center;justify-content:space-between}
+.logo{width:118px;height:118px;border-radius:50%;border:5px solid var(--verde-vivo);background:var(--verde);flex:none}
 .logo img{width:100%;height:100%;border-radius:50%;display:block}
-.cat{position:absolute;left:40px;right:40px;top:340px;text-align:center;font-weight:900;font-size:62px;line-height:1.02;
-  text-transform:uppercase;letter-spacing:-1px}
-.oferta{position:absolute;left:0;right:0;text-align:center}
-.oferta .ate{font-weight:800;font-size:36px;letter-spacing:6px;text-transform:uppercase;color:var(--amarelo)}
-.oferta .num{display:flex;justify-content:center;align-items:flex-start;line-height:.82;font-weight:900;color:var(--amarelo);
-  text-shadow:0 10px 0 rgba(0,0,0,.18)}
-.oferta .num b{font-size:260px;letter-spacing:-12px}
-.oferta .num span{font-size:130px;margin-top:18px;margin-left:8px}
-.oferta .de{display:inline-block;margin-top:18px;background:#fff;color:var(--verde-esc);font-weight:900;font-size:40px;
-  letter-spacing:2px;text-transform:uppercase;padding:10px 34px;border-radius:999px}
-.ilustra{position:absolute;left:50%;transform:translateX(-50%);width:250px}
-.rod{position:absolute;left:0;right:0;bottom:34px;text-align:center;font-weight:600;font-size:17px;opacity:.85}
+.selo{text-align:right;line-height:.9;font-weight:900;text-transform:uppercase}
+.selo .l1{font-size:64px;letter-spacing:-1px}
+.selo .l2{display:inline-block;margin-top:8px;background:var(--verde-vivo);color:var(--preto);font-size:40px;letter-spacing:6px;padding:6px 16px 8px}
+.cat{position:absolute;left:56px;right:56px;top:262px;font-weight:900;font-size:66px;line-height:1;text-transform:uppercase;letter-spacing:-1px}
+.cat::after{content:"";display:block;width:110px;height:10px;background:var(--verde-vivo);margin-top:22px}
+.oferta{position:absolute;left:0;right:0;top:470px;text-align:center}
+.oferta .ate{font-weight:900;font-size:58px;letter-spacing:10px;text-transform:uppercase;color:#fff}
+.oferta .num{display:flex;justify-content:center;align-items:flex-start;line-height:.8;font-weight:900;color:var(--verde-vivo);
+  margin-top:6px;text-shadow:0 0 60px rgba(31,194,122,.35)}
+.oferta .num b{font-size:400px;letter-spacing:-22px;margin-left:-20px}
+.oferta .num span{font-size:190px;margin-top:26px;margin-left:12px}
+.oferta .de{display:inline-block;margin-top:26px;background:#fff;color:var(--preto);font-weight:900;font-size:54px;
+  letter-spacing:4px;text-transform:uppercase;padding:10px 40px 12px}
+.rod{position:absolute;left:0;right:0;bottom:56px;text-align:center;font-weight:600;font-size:17px;color:#bdbdbd}
 """
 
 
-def patas():
-    pos = [(30, 380, 90, -20), (680, 420, 80, 18), (40, 900, 70, 12), (690, 940, 90, -14), (610, 200, 60, 20)]
-    return "".join(f'<svg class="pata" viewBox="0 0 100 100" style="left:{x}px;top:{y}px;width:{w}px;transform:rotate({r}deg)">{PATA}</svg>'
-                   for x, y, w, r in pos)
-
-
-def cartaz(categoria, ilustra):
+def cartaz(categoria, _ilustra=None):
     return f"""<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><style>{CSS}</style></head><body>
 <div class="a4">
-  {patas()}
-  <div class="faixa"><b>PRÉ <span>BLACK</span></b></div>
-  <div class="logo"><img src="{LOGO}" alt="Santuário Pet Center"></div>
+  <div class="listra" style="top:0"></div>
+  <div class="topo">
+    <div class="logo"><img src="{LOGO}" alt="Santuário Pet Center"></div>
+    <div class="selo"><div class="l1">Pré Black</div><div class="l2">Friday</div></div>
+  </div>
   <div class="cat">{categoria}</div>
-  <div class="oferta" style="top:478px">
-    <div class="ate">com até</div>
+  <div class="oferta">
+    <div class="ate">Até</div>
     <div class="num"><b>60</b><span>%</span></div>
     <div class="de">de desconto</div>
   </div>
-  <div class="ilustra" style="top:870px">{ilustra}</div>
   <div class="rod">Consulte os produtos participantes.</div>
+  <div class="listra" style="bottom:0"></div>
 </div></body></html>"""
 
 

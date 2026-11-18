@@ -101,7 +101,8 @@ def main():
     out = ROOT / "cartazes"
     out.mkdir(exist_ok=True)
     for nome, cat, il in [("pre-black-bolsas-de-transporte", "Bolsas de<br>transporte", BOLSA),
-                          ("pre-black-roupinhas-de-verao", "Roupinhas<br>de verão", ROUPA)]:
+                          ("pre-black-roupinhas-de-verao", "Roupinhas<br>de verão", ROUPA),
+                          ("pre-black-camas-pet", "Camas<br>pet", None)]:
         with tempfile.TemporaryDirectory() as tmp:
             src = pathlib.Path(tmp) / "c.html"
             src.write_text(cartaz(cat, il), encoding="utf-8")

@@ -212,7 +212,7 @@ def dupla(gap, raio, fs):
         return (f'<div style="flex:1;position:relative;display:flex">{ph(nome, pos, f"flex:1;border-radius:{raio}px")}'
                 f'<span class="porte" style="font-size:{fs}px">{rot}</span></div>')
     return (f'<div class="row" style="gap:{gap}px;flex:1;min-height:0">'
-            + um('creche-pequeno', '45% 45%', 'Porte pequeno') + um('creche-grande', '50% 40%', 'Porte grande') + '</div>')
+            + um('creche-pequeno', '30% 55%', 'Porte pequeno') + um('creche-grande', '50% 50%', 'Porte grande') + '</div>')
 
 
 def creche3(f):
@@ -242,7 +242,7 @@ def banho1(f):
     if f == "story":
         return page(1920, f"""{topo(90)}{bf(86, 40)}
   <div class="row" style="gap:40px;margin-top:50px;align-items:flex-end">
-    {ph('banho-shihtzu-bandana', '50% 50%', 'width:450px;height:600px;flex:none;' + card)}
+    {ph('banho-lulu-toalha', '50% 12%', 'width:470px;height:640px;flex:none;' + card)}
     <div style="flex:1;padding-bottom:6px">
       <div class="ser it" style="font-size:60px;color:var(--gl);line-height:1.05">Vocês<br>pediram.</div>
     </div>
@@ -259,7 +259,7 @@ def banho1(f):
       <div class="imp lime" style="font-size:150px;margin-top:6px;line-height:.92">Ele<br>voltou.</div>
       <div class="ser" style="font-size:30px;font-weight:500;line-height:1.25;margin-top:28px">O plano de <b style="font-weight:700;color:var(--lime)">12 banhos</b> está de volta na Black Friday antecipada da Santuário Pet!</div>
     </div>
-    <div style="display:flex;align-items:center;padding-right:16px">{ph('banho-shihtzu-bandana', '50% 50%', 'width:390px;height:520px;' + card)}</div>
+    <div style="display:flex;align-items:center;padding-right:16px">{ph('banho-lulu-toalha', '50% 10%', 'width:390px;height:540px;' + card)}</div>
   </div>
   {cta('Conheça a oferta', 25)}""", FP)
 
@@ -269,7 +269,7 @@ def banho2(f):
         return page(1920, f"""{topo(90)}{bf(86, 40)}
   <div class="row" style="gap:28px;margin-top:52px;height:620px">
     <div class="imp lime" style="font-size:640px;line-height:.78;letter-spacing:-14px">12</div>
-    {ph('banho-toalha', '50% 30%', 'flex:1;border-radius:24px')}
+    {ph('banho-golden-lingua', '45% 40%', 'flex:1;border-radius:24px')}
   </div>
   <div class="imp" style="font-size:190px;margin-top:26px">Banhos</div>
   <div class="ser it" style="font-size:58px;color:var(--gl);margin-top:18px">Uma condição imperdível.</div>
@@ -277,44 +277,52 @@ def banho2(f):
   <div style="flex:1"></div>
   {tape('Black Friday antecipada • Até 30/11', 38, 0, 40)}
   {cta('Consulte os valores', 30)}""", SP)
-    return page(1350, f"""<div class="row" style="flex:1;gap:40px">
-    <div style="width:560px;display:flex;flex-direction:column">
-      {topo(92)}{bf(80, 30)}
-      <div class="imp lime" style="font-size:470px;line-height:.78;letter-spacing:-10px;margin-top:52px">12</div>
-      <div class="imp" style="font-size:150px;margin-top:13px">Banhos</div>
-      <div class="ser it" style="font-size:46px;color:var(--gl);margin-top:16px">Uma condição imperdível.</div>
-      <div class="sup" style="font-size:24px;margin-top:18px">Planeja os banhos do teu pet com uma condição especial de Black Friday.</div>
-      <div style="flex:1"></div>{cta('Consulte os valores', 25)}
+    return page(1350, f"""{topo(92)}
+  <div class="row" style="flex:1;gap:44px;margin-top:30px">
+    <div style="flex:1;display:flex;flex-direction:column">
+      {bf(76)}
+      <div class="imp lime" style="font-size:400px;line-height:.78;letter-spacing:-10px;margin-top:44px">12</div>
+      <div class="imp" style="font-size:138px;margin-top:14px">Banhos</div>
+      <div class="ser it" style="font-size:42px;color:var(--gl);margin-top:14px">Uma condição imperdível.</div>
     </div>
-    {ph('banho-toalha', '50% 40%', 'flex:1;margin:-68px -80px -68px 0', '<div class="fade-l" style="width:100px"></div>')}
-  </div>{faixa('Black Friday antecipada • Até 30/11', 150)}""", FP)
+    <div style="display:flex;align-items:center;padding-right:14px">{ph('banho-golden-lingua', '45% 45%', 'width:420px;height:600px;border-radius:26px;box-shadow:14px 14px 0 var(--lime)')}</div>
+  </div>
+  <div class="sup" style="font-size:25px;margin-top:26px">Planeja os banhos do teu pet com uma condição especial de Black Friday.</div>
+  {cta('Consulte os valores', 25)}""", FP)
 
 
 def banho3(f):
+    card = "border-radius:26px;box-shadow:14px 14px 0 var(--lime)"
     if f == "story":
         return page(1920, f"""{topo(90)}{bf(86, 40)}
-  <div class="imp" style="font-size:72px;margin-top:40px;line-height:1.08"><span class="strike">Não são 4.</span><br><span class="strike">Não são 8.</span></div>
-  <div class="row" style="align-items:flex-end;gap:26px;margin-top:29px">
-    <div class="imp" style="font-size:92px;padding-bottom:8px">São</div>
-    <div class="imp lime" style="font-size:250px;line-height:.78;letter-spacing:-8px">12</div>
-  </div>
-  <div class="imp" style="font-size:92px;margin-top:14px">banhos!</div>
-  {ph('banho-golden', '50% 30%', 'flex:1;margin:26px -92px 0;min-height:470px', '<div class="fade-t" style="height:80px"></div><div class="fade-b" style="height:70px"></div>')}
-  {tape('Somente até 30/11', 40, -50)}
-  <div class="sup" style="font-size:29px;margin-top:52px">O plano tão pedido voltou com condições especiais na Black Friday Santuário.</div>
-  {cta('Chama no WhatsApp', 30, 22)}""", SP)
-    return page(1350, f"""{ph('banho-golden', '50% 45%', 'position:absolute;right:0;top:0;width:420px;height:1350px', '<div class="fade-l" style="width:180px"></div>')}
-  <div style="position:relative;z-index:3;width:680px;display:flex;flex-direction:column;height:100%">
-    {topo(92)}{bf(80, 30)}
-    <div class="imp" style="font-size:118px;margin-top:52px;line-height:1"><span class="strike">Não são 4.</span><br><span class="strike">Não são 8.</span></div>
-    <div class="row" style="align-items:flex-end;gap:20px;margin-top:21px">
-      <div class="imp" style="font-size:112px;padding-bottom:10px">São</div>
-      <div class="imp lime" style="font-size:330px;line-height:.78;letter-spacing:-8px">12</div>
+  <div class="row" style="gap:36px;margin-top:50px;align-items:center">
+    <div style="flex:1">
+      <div class="imp" style="font-size:78px;line-height:1.08"><span class="strike">Não são 4.</span><br><span class="strike">Não são 8.</span></div>
+      <div class="row" style="align-items:flex-end;gap:20px;margin-top:22px">
+        <div class="imp" style="font-size:96px;padding-bottom:8px">São</div>
+        <div class="imp lime" style="font-size:300px;line-height:.78;letter-spacing:-8px">12</div>
+      </div>
+      <div class="imp" style="font-size:96px;margin-top:16px">banhos!</div>
     </div>
-    <div class="imp" style="font-size:112px;margin-top:13px">banhos!</div>
-    <div class="sup" style="font-size:24px;margin-top:23px;width:560px">O plano tão pedido voltou com condições especiais na Black Friday Santuário.</div>
-    <div style="flex:1"></div>{cta('Chama no WhatsApp', 25)}
-  </div>{faixa('Somente até 30/11', 150)}""", FP)
+    {ph('banho-golden-focinho', '50% 40%', 'width:480px;height:640px;flex:none;' + card)}
+  </div>
+  <div class="sup" style="font-size:30px;margin-top:64px">O plano tão pedido voltou com condições especiais na Black Friday Santuário.</div>
+  {cta('Chama no WhatsApp', 30)}""", SP)
+    return page(1350, f"""{topo(92)}
+  <div class="row" style="flex:1;gap:44px;margin-top:36px">
+    <div style="flex:1;display:flex;flex-direction:column">
+      {bf(76)}
+      <div class="imp" style="font-size:84px;margin-top:44px;line-height:1.06"><span class="strike">Não são 4.</span><br><span class="strike">Não são 8.</span></div>
+      <div class="row" style="align-items:flex-end;gap:18px;margin-top:40px">
+        <div class="imp" style="font-size:88px;padding-bottom:8px">São</div>
+        <div class="imp lime" style="font-size:310px;line-height:.78;letter-spacing:-8px">12</div>
+      </div>
+      <div class="imp" style="font-size:88px;margin-top:12px">banhos!</div>
+    </div>
+    <div style="display:flex;align-items:center;padding-right:14px">{ph('banho-golden-focinho', '50% 40%', 'width:430px;height:580px;' + card)}</div>
+  </div>
+  <div class="sup" style="font-size:25px;margin-top:30px">O plano tão pedido voltou com condições especiais na Black Friday Santuário.</div>
+  {cta('Chama no WhatsApp', 25)}""", FP)
 
 
 # ======================================================== HOTEL

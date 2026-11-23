@@ -197,10 +197,10 @@ def aumiau():
     fundo = (f"radial-gradient(circle,rgba(255,240,200,.5) 0 3px,transparent 4px) 0 0/44px 44px,"
              f"radial-gradient(circle,rgba(255,255,255,.25) 0 2px,transparent 3px) 22px 22px/44px 44px,"
              f"radial-gradient(700px 520px at 72% 22%,#13704A,#0A4A30 55%,#05301F)")
-    col = "left:486px;width:476px"
-    logo = (f'<img class="a" src="{LOGO}" style="left:40px;top:36px;width:92px;height:92px;border-radius:50%;'
+    col = "left:46px;width:470px"
+    logo = (f'<img class="a" src="{LOGO}" style="right:40px;top:36px;width:92px;height:92px;border-radius:50%;'
             f'box-shadow:0 0 0 5px #fff,0 8px 18px rgba(0,0,0,.35);z-index:4">')
-    dupla = f'<img class="a pet" src="{pet("dupla")}" style="left:-8px;bottom:{1134 - 660}px;width:470px;z-index:2">'
+    dupla = f'<img class="a pet" src="{pet("dupla")}" style="right:-8px;bottom:{1134 - 660}px;width:470px;z-index:2;transform:scaleX(-1)">'
     sombra = "text-shadow:0 6px 16px rgba(0,0,0,.35)"
     tag = (f'display:inline-block;line-height:.9;color:#fff;background:{C["red"]};border-radius:14px;'
            f'padding:4px 14px 8px 12px;font-style:italic;box-shadow:0 8px 18px rgba(0,0,0,.35)')

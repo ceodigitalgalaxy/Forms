@@ -169,16 +169,19 @@ VARIACOES_GOLDEN = [
 
 def natau():
     fundo = FUNDOS["verde_esc_neve"]
-    logo = (f'<img class="a" src="{LOGO}" style="left:46px;top:40px;width:104px;height:104px;border-radius:50%;'
-            f'box-shadow:0 0 0 6px #fff,0 8px 18px rgba(0,0,0,.35);z-index:4">')
-    dupla = (f'<img class="a pet" src="{pet("golden")}" style="left:18px;bottom:{1134 - 658}px;width:390px">'
-             f'<img class="a pet" src="{pet("gato")}" style="left:285px;bottom:{1134 - 658}px;width:290px;z-index:3">')
-    au = f'<span style="color:#fff;-webkit-text-stroke:14px {C["red"]};paint-order:stroke fill">AU</span>'
-    tit = (f'<div class="a tit" style="right:40px;top:150px;width:470px;text-align:center">'
-           f'<div class="script" style="font-size:80px;color:{C["red"]}">Feliz</div>'
-           f'<div class="serif" style="font-size:132px;color:{C["red"]};margin-top:-26px;white-space:nowrap">Nat{au}!</div></div>')
-    msg = (f'<div class="copy" style="right:40px;top:410px;width:400px;color:#fff;font-size:31px;'
-           f'background:rgba(4,30,18,.6);border-radius:20px;padding:18px 22px;text-shadow:none">'
+    col = "left:548px;width:410px"
+    logo = (f'<img class="a" src="{LOGO}" style="left:46px;top:40px;width:96px;height:96px;border-radius:50%;'
+            f'box-shadow:0 0 0 5px #fff,0 8px 18px rgba(0,0,0,.35);z-index:4">')
+    dupla = (f'<img class="a pet" src="{pet("golden")}" style="left:24px;bottom:{1134 - 658}px;width:340px">'
+             f'<img class="a pet" src="{pet("gato")}" style="left:268px;bottom:{1134 - 658}px;width:250px;z-index:3">')
+    au = (f'<span style="color:#fff;-webkit-text-stroke:12px {C["red"]};paint-order:stroke fill;'
+          f'letter-spacing:2px;margin:0 4px">AU</span>')
+    tit = (f'<div class="a" style="{col};top:120px;text-align:center;line-height:1;z-index:3">'
+           f'<div class="script" style="font-size:72px;color:{C["red"]}">Feliz</div>'
+           f'<div class="serif" style="font-size:118px;color:{C["red"]};letter-spacing:1px;margin-top:-6px;white-space:nowrap">Nat{au}!</div></div>')
+    msg = (f'<div class="a" style="{col};top:402px;z-index:3;box-sizing:border-box;background:rgba(4,30,18,.62);'
+           f'border-radius:20px;padding:22px 26px;font-family:Fraunces,serif;font-style:italic;font-weight:600;'
+           f'font-size:30px;line-height:1.35;letter-spacing:.3px;color:#fff;text-align:center;text-wrap:balance">'
            f'Muitos <span style="color:#FFE7A3">lambeijos</span>, ronrons e petiscos para o teu melhor amigo!</div>')
     return (f'<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><style>{CSS}</style></head><body><div class="c">'
             f'<div class="topo" style="background:{fundo}"></div>{logo}{dupla}{tit}{msg}'

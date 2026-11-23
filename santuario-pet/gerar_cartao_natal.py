@@ -225,6 +225,11 @@ def main():
             src.write_text(fn(), encoding="utf-8")
             jobs.append(f"{src}|{OUT / nome}")
         subprocess.run(["node", str(js), *jobs], check=True)
+    # PDF final a partir do PNG em 300 dpi (85 x 96 mm): idêntico à arte em qualquer programa/gráfica
+    from PIL import Image
+    for nome, _ in CARTOES:
+        im = Image.open(OUT / f"{nome}.png").convert("RGB")
+        im.save(OUT / f"{nome}.pdf", "PDF", resolution=300.0)
 
 
 if __name__ == "__main__":

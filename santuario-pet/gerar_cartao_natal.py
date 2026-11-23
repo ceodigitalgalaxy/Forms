@@ -167,8 +167,27 @@ VARIACOES_GOLDEN = [
                                                        "listra_dourada", (C["red"], "#fff"))),
 ]
 
+def natau():
+    fundo = FUNDOS["verde_esc_neve"]
+    logo = (f'<div class="a" style="left:0;right:0;top:34px;display:flex;flex-direction:column;align-items:center;gap:10px;z-index:4">'
+            f'<img src="{LOGO}" style="width:112px;height:112px;border-radius:50%;box-shadow:0 0 0 6px #fff,0 8px 18px rgba(0,0,0,.35)">'
+            f'</div>')
+    tit = (f'<div class="a tit" style="left:0;right:0;top:168px;text-align:center">'
+           f'<div class="script" style="font-size:74px;color:{C["red"]}">Feliz</div>'
+           f'<div class="serif" style="font-size:150px;color:{C["red"]};margin-top:-26px;white-space:nowrap">Nat'
+           f'<span style="color:{C["ouro"]};-webkit-text-stroke:14px {C["red_esc"]};font-size:1.08em">AU</span>!</div></div>')
+    pets = (f'<img class="a pet" src="{pet("golden")}" style="left:26px;bottom:{1134 - 658}px;width:330px">'
+            f'<img class="a pet" src="{pet("gato")}" style="right:26px;bottom:{1134 - 658}px;width:300px">')
+    msg = (f'<div class="copy" style="left:300px;right:300px;top:470px;color:#fff;text-align:center;font-size:29px;'
+           f'background:rgba(4,30,18,.6);border-radius:18px;padding:14px 16px">'
+           f'Muitos <span style="color:#FFE7A3">lambeijos</span>, ronrons e petiscos para vocês!</div>')
+    return (f'<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><style>{CSS}</style></head><body><div class="c">'
+            f'<div class="topo" style="background:{fundo}"></div>{logo}{tit}{pets}{msg}'
+            f'{borda(C["ouro"], "#fff")}<div class="meio" style="background:{PETISCO["listra_vermelha"]}"></div></div></body></html>')
+
+
 CARTOES = [("cartao-natal-1-golden", v1), ("cartao-natal-2-gato", v2),
-           ("cartao-natal-3-shihtzu", v3), ("cartao-natal-4-beagle", v4)] + VARIACOES_GOLDEN
+           ("cartao-natal-3-shihtzu", v3), ("cartao-natal-4-beagle", v4)] + VARIACOES_GOLDEN + [("cartao-natal-5-natau", natau)]
 
 JS = """
 const { chromium } = require('playwright');

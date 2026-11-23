@@ -168,24 +168,27 @@ VARIACOES_GOLDEN = [
 ]
 
 def natau():
-    fundo = FUNDOS["verde_esc_neve"]
-    col = "left:548px;width:410px"
-    logo = (f'<img class="a" src="{LOGO}" style="left:46px;top:40px;width:96px;height:96px;border-radius:50%;'
+    fundo = (f"radial-gradient(circle,rgba(255,240,200,.55) 0 3px,transparent 4px) 0 0/44px 44px,"
+             f"radial-gradient(circle,rgba(255,255,255,.28) 0 2px,transparent 3px) 22px 22px/44px 44px,"
+             f"radial-gradient(700px 520px at 70% 25%,#13704A,#0A4A30 55%,#05301F)")
+    col = "left:496px;width:462px"
+    logo = (f'<img class="a" src="{LOGO}" style="left:40px;top:36px;width:92px;height:92px;border-radius:50%;'
             f'box-shadow:0 0 0 5px #fff,0 8px 18px rgba(0,0,0,.35);z-index:4">')
-    dupla = (f'<img class="a pet" src="{pet("golden")}" style="left:24px;bottom:{1134 - 658}px;width:340px">'
-             f'<img class="a pet" src="{pet("gato")}" style="left:268px;bottom:{1134 - 658}px;width:250px;z-index:3">')
-    au = (f'<span style="color:#fff;-webkit-text-stroke:12px {C["red"]};paint-order:stroke fill;'
-          f'letter-spacing:2px;margin:0 4px">AU</span>')
-    tit = (f'<div class="a" style="{col};top:120px;text-align:center;line-height:1;z-index:3">'
-           f'<div class="script" style="font-size:72px;color:{C["red"]}">Feliz</div>'
-           f'<div class="serif" style="font-size:118px;color:{C["red"]};letter-spacing:1px;margin-top:-6px;white-space:nowrap">Nat{au}!</div></div>')
-    msg = (f'<div class="a" style="{col};top:402px;z-index:3;box-sizing:border-box;background:rgba(4,30,18,.62);'
-           f'border-radius:20px;padding:22px 26px;font-family:Fraunces,serif;font-style:italic;font-weight:600;'
-           f'font-size:30px;line-height:1.35;letter-spacing:.3px;color:#fff;text-align:center;text-wrap:balance">'
-           f'Muitos <span style="color:#FFE7A3">lambeijos</span>, ronrons e petiscos para o teu melhor amigo!</div>')
+    dupla = f'<img class="a pet" src="{pet("dupla")}" style="left:16px;bottom:{1134 - 660}px;width:448px;z-index:2">'
+    au = (f'<span style="color:#fff;-webkit-text-stroke:14px {C["red"]};paint-order:stroke fill;'
+          f'letter-spacing:3px;margin:0 6px 0 4px">AU</span>')
+    tit = (f'<div class="a" style="{col};top:70px;text-align:center;line-height:1;z-index:3">'
+           f'<div class="script" style="font-size:88px;color:{C["red"]}">Feliz</div>'
+           f'<div class="serif" style="font-size:128px;color:{C["red"]};letter-spacing:1px;margin-top:-4px;white-space:nowrap">Nat{au}!</div></div>')
+    msg = (f'<div class="a" style="{col};top:372px;z-index:3;box-sizing:border-box;background:#FBF4E6;'
+           f'border-radius:22px;padding:24px 28px;box-shadow:0 10px 24px rgba(0,0,0,.3);'
+           f'font-family:Fraunces,serif;font-style:italic;font-weight:600;font-size:31px;line-height:1.36;'
+           f'color:{C["verde_esc"]};text-align:center;text-wrap:balance">'
+           f'Que o teu Natal tenha <span style="color:{C["red"]}">lambeijos</span>, '
+           f'<span style="color:{C["red"]}">ronrons</span> e muito amor em cada cantinho!</div>')
     return (f'<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><style>{CSS}</style></head><body><div class="c">'
             f'<div class="topo" style="background:{fundo}"></div>{logo}{dupla}{tit}{msg}'
-            f'{borda(C["ouro"], "#fff")}<div class="meio" style="background:{PETISCO["listra_vermelha"]}"></div></div></body></html>')
+            f'{borda(C["red"], "#fff")}<div class="meio" style="background:{PETISCO["listra_vermelha"]}"></div></div></body></html>')
 
 
 CARTOES = [("cartao-natal-1-golden", v1), ("cartao-natal-2-gato", v2),

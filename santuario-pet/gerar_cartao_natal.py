@@ -174,7 +174,7 @@ def natau():
     col = "left:496px;width:462px"
     logo = (f'<img class="a" src="{LOGO}" style="left:40px;top:36px;width:92px;height:92px;border-radius:50%;'
             f'box-shadow:0 0 0 5px #fff,0 8px 18px rgba(0,0,0,.35);z-index:4">')
-    dupla = f'<img class="a pet" src="{pet("dupla")}" style="left:16px;bottom:{1134 - 660}px;width:448px;z-index:2">'
+    dupla = f'<img class="a pet" src="{pet("dupla")}" style="left:-8px;bottom:{1134 - 660}px;width:470px;z-index:2">'
     au = (f'<span style="color:#fff;-webkit-text-stroke:14px {C["red"]};paint-order:stroke fill;'
           f'letter-spacing:3px;margin:0 6px 0 4px">AU</span>')
     tit = (f'<div class="a" style="{col};top:70px;text-align:center;line-height:1;z-index:3">'

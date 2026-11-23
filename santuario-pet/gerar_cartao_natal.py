@@ -194,30 +194,34 @@ def natau():
 
 
 def aumiau():
-    fundo = (f"radial-gradient(circle,rgba(255,240,200,.5) 0 3px,transparent 4px) 0 0/44px 44px,"
-             f"radial-gradient(circle,rgba(255,255,255,.25) 0 2px,transparent 3px) 22px 22px/44px 44px,"
+    fundo = (f"radial-gradient(circle,rgba(255,240,200,.42) 0 3px,transparent 4px) 0 0/44px 44px,"
+             f"radial-gradient(circle,rgba(255,255,255,.2) 0 2px,transparent 3px) 22px 22px/44px 44px,"
              f"radial-gradient(700px 520px at 72% 22%,#13704A,#0A4A30 55%,#05301F)")
-    col = "left:34px;width:420px"
-    logo = (f'<img class="a" src="{LOGO}" style="right:40px;top:36px;width:92px;height:92px;border-radius:50%;'
-            f'box-shadow:0 0 0 5px #fff,0 8px 18px rgba(0,0,0,.35);z-index:4">')
+    # véu escuro atrás do texto: esconde os pontinhos e aumenta o contraste da frase
+    veu = ('<div class="a" style="left:0;top:0;width:640px;height:650px;z-index:1;'
+           'background:linear-gradient(90deg,rgba(6,44,28,.94) 0,rgba(6,44,28,.9) 62%,rgba(6,44,28,0) 100%)"></div>')
     dupla = f'<img class="a pet" src="{pet("dupla")}" style="right:-78px;bottom:{1134 - 660}px;width:600px;z-index:2;transform:scaleX(-1)">'
-    sombra = "text-shadow:0 6px 16px rgba(0,0,0,.35)"
+    sombra = "text-shadow:0 4px 12px rgba(0,0,0,.35)"
     tag = (f'display:inline-block;line-height:.9;color:#fff;background:{C["red"]};border-radius:14px;'
            f'padding:4px 14px 8px 12px;font-style:italic;box-shadow:0 8px 18px rgba(0,0,0,.35)')
-    linha = f'font-family:Fraunces,serif;font-weight:900;color:#fff;white-space:nowrap;letter-spacing:-.5px;{sombra}'
-    tit = (f'<div class="a" style="{col};top:58px;text-align:center;line-height:1;z-index:3">'
-           f'<div style="{linha};font-size:82px">Au, au!</div>'
-           f'<div style="{linha};font-size:82px;margin-top:14px"><span style="{tag};transform:rotate(-2deg)">Miau, miau!</span></div>'
-           f'<div style="font-family:Pacifico,cursive;font-size:68px;color:#FBF4E6;margin-top:14px;{sombra}">Feliz Natal!</div>'
-           f'<div style="width:90px;height:4px;border-radius:2px;background:{C["red"]};margin:22px auto 0"></div></div>')
-    msg = (f'<div class="a" style="{col};top:380px;z-index:3;text-align:center;font-family:Fraunces,serif;'
-           f'font-style:italic;font-weight:600;font-size:35px;line-height:1.28;color:#fff;text-wrap:balance;{sombra}">'
-           f'Um petisco especial para quem deixa todos os nossos dias mais felizes!</div>'
-           f'<div class="a" style="{col};top:532px;z-index:3;text-align:center;line-height:1;{sombra}">'
-           f'<div style="font-family:Pacifico,cursive;font-size:36px;color:#FBF4E6">Com carinho,</div>'
-           f'<div style="font-family:Quicksand,sans-serif;font-weight:700;font-size:38px;letter-spacing:3px;color:#fff;margin-top:8px;white-space:nowrap">SANTUÁRIO PET</div></div>')
+    linha = f'font-family:Fraunces,serif;font-weight:900;color:#fff;white-space:nowrap;letter-spacing:-.5px;line-height:1;{sombra}'
+    coluna = (f'<div class="a" style="left:34px;width:420px;top:0;height:650px;z-index:3;display:flex;flex-direction:column;'
+              f'align-items:center;justify-content:center;gap:30px;text-align:center">'
+              f'<div>'
+              f'<div style="{linha};font-size:80px">Au, au!</div>'
+              f'<div style="{linha};font-size:80px;margin-top:12px"><span style="{tag};transform:rotate(-2deg)">Miau, miau!</span></div>'
+              f'<div style="font-family:Pacifico,cursive;font-size:66px;line-height:1.15;color:#FBF4E6;margin-top:10px;{sombra}">Feliz Natal!</div>'
+              f'</div>'
+              f'<div style="width:90px;height:4px;border-radius:2px;background:{C["red"]}"></div>'
+              f'<div style="font-family:Fraunces,serif;font-style:italic;font-weight:600;font-size:34px;line-height:1.32;'
+              f'color:#fff;text-wrap:balance">Um petisco especial para quem deixa todos os nossos dias mais felizes!</div>'
+              f'<div style="line-height:1">'
+              f'<div style="font-family:Pacifico,cursive;font-size:34px;color:#FBF4E6">Com carinho,</div>'
+              f'<div style="font-family:Quicksand,sans-serif;font-weight:700;font-size:38px;letter-spacing:3px;color:#fff;'
+              f'margin-top:10px;white-space:nowrap">SANTUÁRIO PET</div></div>'
+              f'</div>')
     return (f'<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><style>{CSS}</style></head><body><div class="c">'
-            f'<div class="topo" style="background:{fundo}"></div>{dupla}{tit}{msg}'
+            f'<div class="topo" style="background:{fundo}"></div>{veu}{dupla}{coluna}'
             f'{borda(C["red"], "#fff")}<div class="meio" style="background:{PETISCO["listra_vermelha"]}"></div></div></body></html>')
 
 

@@ -19,6 +19,7 @@ def uri(p, mime):
 
 
 LOGO = uri(ROOT / "brand/logo-instagram-150px.jpg", "image/jpeg")
+LOGO_H = uri(ROOT / "brand/logo-horizontal-sem-fundo.png", "image/png")
 
 
 def pet(n):
@@ -206,19 +207,19 @@ def aumiau():
            f'padding:4px 14px 8px 12px;font-style:italic;box-shadow:0 8px 18px rgba(0,0,0,.35)')
     linha = f'font-family:Fraunces,serif;font-weight:900;color:#fff;white-space:nowrap;letter-spacing:-.5px;line-height:1;{sombra}'
     coluna = (f'<div class="a" style="left:34px;width:420px;top:0;height:650px;z-index:3;display:flex;flex-direction:column;'
-              f'align-items:center;justify-content:center;gap:30px;text-align:center">'
+              f'align-items:center;justify-content:center;gap:26px;text-align:center">'
               f'<div>'
-              f'<div style="{linha};font-size:80px">Au, au!</div>'
-              f'<div style="{linha};font-size:80px;margin-top:12px"><span style="{tag};transform:rotate(-2deg)">Miau, miau!</span></div>'
-              f'<div style="font-family:Pacifico,cursive;font-size:66px;line-height:1.15;color:#FBF4E6;margin-top:10px;{sombra}">Feliz Natal!</div>'
+              f'<div style="{linha};font-size:68px">Au, au!</div>'
+              f'<div style="{linha};font-size:64px;margin-top:12px"><span style="{tag};transform:rotate(-2deg)">Miau, miau!</span></div>'
+              f'<div style="font-family:Pacifico,cursive;font-size:58px;line-height:1.15;color:#FBF4E6;margin-top:10px;{sombra}">Feliz Natal!</div>'
               f'</div>'
               f'<div style="width:90px;height:4px;border-radius:2px;background:{C["red"]}"></div>'
               f'<div style="font-family:Fraunces,serif;font-style:italic;font-weight:600;font-size:34px;line-height:1.32;'
               f'color:#fff;text-wrap:balance">Um petisco especial para quem deixa todos os nossos dias mais felizes!</div>'
               f'<div style="line-height:1">'
               f'<div style="font-family:Pacifico,cursive;font-size:34px;color:#FBF4E6">Com carinho,</div>'
-              f'<div style="font-family:Quicksand,sans-serif;font-weight:700;font-size:38px;letter-spacing:3px;color:#fff;'
-              f'margin-top:10px;white-space:nowrap">SANTUÁRIO PET</div></div>'
+              f'<img src="{LOGO_H}" alt="Santuário Pet Center" style="display:block;width:340px;margin:16px auto 0;'
+              f'filter:drop-shadow(0 4px 10px rgba(0,0,0,.35))"></div>'
               f'</div>')
     return (f'<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><style>{CSS}</style></head><body><div class="c">'
             f'<div class="topo" style="background:{fundo}"></div>{veu}{dupla}{coluna}'

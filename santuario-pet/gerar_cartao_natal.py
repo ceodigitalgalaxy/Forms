@@ -185,7 +185,7 @@ def natau():
            f'<div style="width:90px;height:4px;border-radius:2px;background:{C["red"]};margin:26px auto 0"></div></div>')
     msg = (f'<div class="a" style="{col};top:368px;z-index:3;text-align:center;font-family:Fraunces,serif;'
            f'font-style:italic;font-weight:600;font-size:34px;line-height:1.34;color:#fff;text-wrap:balance;{sombra}">'
-           f'Que o teu Natal seja do tamanho do amor que eles te dão.</div>'
+           f'Um petisco especial para quem deixa todos os nossos dias mais felizes!</div>'
            f'<div class="a" style="{col};top:530px;z-index:3;text-align:center;font-family:Quicksand,sans-serif;'
            f'font-weight:700;font-size:21px;letter-spacing:4px;color:#FBF4E6;text-transform:uppercase">Com carinho, Santuário Pet</div>')
     return (f'<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><style>{CSS}</style></head><body><div class="c">'

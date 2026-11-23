@@ -50,26 +50,31 @@ PETISCO = {
 }
 
 CSS = """
-@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,900&family=Pacifico&family=Quicksand:wght@600;700&display=block');
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,900;1,9..144,600&family=Pacifico&family=Quicksand:wght@600;700&display=block');
 @page{size:100mm 150mm;margin:0}
 *{box-sizing:border-box;margin:0;padding:0}
 html,body{width:1181px;height:1772px;overflow:hidden;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .c{position:relative;width:1181px;height:1772px;overflow:hidden;background:#fff}
 .a{position:absolute}
-.topo{position:absolute;left:0;right:0;top:0;height:980px}
-.meio{position:absolute;left:0;right:0;top:1000px;height:540px}
-.borda{position:absolute;left:0;right:0;top:980px;height:20px;z-index:3}
-.rod{position:absolute;left:0;right:0;bottom:0;height:232px;display:flex;align-items:center;justify-content:space-between;
-  padding:0 70px;gap:30px;box-shadow:0 -10px 24px rgba(0,0,0,.12)}
-.rod .t{font-family:'Quicksand',sans-serif;font-weight:700;font-size:44px;line-height:1.2}
-.rod img{width:148px;height:148px;border-radius:50%;box-shadow:0 0 0 7px #fff;flex:none}
-.tit{line-height:1}
+.topo{position:absolute;left:0;right:0;top:0;height:1110px}
+.meio{position:absolute;left:0;right:0;top:1130px;bottom:0}
+.borda{position:absolute;left:0;right:0;top:1110px;height:20px;z-index:3}
+.tag{position:absolute;left:70px;right:70px;top:60px;height:200px;background:#fff;border-radius:28px;display:flex;align-items:center;
+  gap:34px;padding:0 40px;box-shadow:0 12px 30px rgba(0,0,0,.18);z-index:4}
+.tag img{width:140px;height:140px;border-radius:50%;flex:none}
+.tag .txt{flex:1;font-family:'Quicksand',sans-serif;font-weight:700;color:#14261C}
+.tag .para{display:flex;align-items:flex-end;gap:16px;font-size:40px}
+.tag .para i{flex:1;height:0;border-bottom:4px dotted #9AA89E;margin-bottom:10px}
+.tag .de{font-size:26px;letter-spacing:2px;text-transform:uppercase;margin-top:16px;color:#5C6B62}
+.tag .de b{color:#C8202E}
+.tag::before{content:"";position:absolute;right:-18px;top:50%;width:36px;height:36px;margin-top:-18px;border-radius:50%;background:inherit}
+.tit{line-height:1;z-index:3}
 .script{font-family:'Pacifico',cursive;
   text-shadow:4px 4px 0 #fff,-4px -4px 0 #fff,4px -4px 0 #fff,-4px 4px 0 #fff,0 6px 0 #fff,0 -6px 0 #fff,6px 0 0 #fff,-6px 0 0 #fff,0 12px 14px rgba(0,0,0,.25)}
 .serif{font-family:'Fraunces',serif;font-weight:900;letter-spacing:-2px;-webkit-text-stroke:20px #fff;paint-order:stroke fill;
   filter:drop-shadow(0 10px 12px rgba(0,0,0,.25))}
 .pet{z-index:2;filter:drop-shadow(9px 0 0 #fff) drop-shadow(-9px 0 0 #fff) drop-shadow(0 9px 0 #fff) drop-shadow(0 -9px 0 #fff) drop-shadow(0 16px 18px rgba(0,0,0,.3))}
-.handle{font-family:'Quicksand',sans-serif;font-weight:700;font-size:24px;letter-spacing:3px}
+.copy{position:absolute;font-family:'Fraunces',serif;font-style:italic;font-weight:600;font-size:46px;line-height:1.25;z-index:3;text-wrap:balance;text-shadow:0 2px 12px rgba(0,0,0,.18)}
 """
 
 
@@ -77,56 +82,63 @@ def borda(c1, c2):
     return f'<div class="borda" style="background:repeating-linear-gradient(90deg,{c1} 0 30px,{c2} 30px 60px)"></div>'
 
 
-def cartao(fundo, handle_cor, titulo, pet_html, petisco, borda_cores, rod_bg, rod_txt):
+def cartao(fundo, titulo, pet_html, copy_html, petisco, borda_cores):
     return (f'<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><style>{CSS}</style></head><body><div class="c">'
             f'<div class="topo" style="background:{FUNDOS[fundo]}"></div>'
-            f'<div class="a handle" style="left:0;right:0;top:56px;text-align:center;color:{handle_cor}">@SANTUARIOPET</div>'
-            f'{titulo}{pet_html}{borda(*borda_cores)}'
-            f'<div class="meio" style="background:{PETISCO[petisco]}"></div>'
-            f'<div class="rod" style="background:{rod_bg}"><div class="t" style="color:#fff">{rod_txt}</div>'
-            f'<img src="{LOGO}" alt="Santuário Pet Center"></div></div></body></html>')
+            f'<div class="tag"><img src="{LOGO}" alt="Santuário Pet Center"><div class="txt">'
+            f'<div class="para">Para:<i></i></div><div class="de">Com carinho, <b>Santuário Pet</b></div></div></div>'
+            f'{titulo}{pet_html}{copy_html}{borda(*borda_cores)}'
+            f'<div class="meio" style="background:{PETISCO[petisco]}"></div></div></body></html>')
 
 
-def pet_centro(n, w):
-    return f'<img class="a pet" src="{pet(n)}" style="left:50%;transform:translateX(-50%);bottom:{1772 - 990}px;width:{w}px">'
+def pet_esq(n, w):
+    return f'<img class="a pet" src="{pet(n)}" style="left:40px;bottom:{1772 - 1118}px;width:{w}px">'
 
 
 def pet_dir(n, w):
-    return f'<img class="a pet" src="{pet(n)}" style="right:50px;bottom:{1772 - 990}px;width:{w}px">'
+    return f'<img class="a pet" src="{pet(n)}" style="right:40px;bottom:{1772 - 1118}px;width:{w}px">'
 
 
-def v1():  # golden — topo creme, petisco xadrez verde claro, rodapé verde
-    t = (f'<div class="a tit" style="left:0;right:0;top:120px;text-align:center">'
-         f'<div class="script" style="font-size:120px;color:{C["red"]}">Feliz</div>'
-         f'<div class="serif" style="font-size:210px;color:{C["red"]};margin-top:-36px">Natal!</div></div>')
-    return cartao("creme_xadrez", C["verde"], t, pet_centro("golden", 500), "xadrez_verde", (C["red"], "#fff"),
-                  C["verde_esc"], f'Um mimo para o teu<br><span style="color:{C["lime"]}">melhor amigo!</span>')
+def copy(lado, cor, txt):
+    pos = "right:70px" if lado == "dir" else "left:70px"
+    al = "left"
+    return f'<div class="copy" style="{pos};top:640px;width:520px;color:{cor};text-align:{al}">{txt}</div>'
 
 
-def v2():  # gato — topo vermelho, petisco xadrez creme, rodapé verde
-    t = (f'<div class="a tit" style="left:70px;top:190px;width:600px">'
-         f'<div class="script" style="font-size:100px;color:{C["red"]}">um Natal de</div>'
-         f'<div class="serif" style="font-size:150px;color:#fff;-webkit-text-stroke:18px {C["red_esc"]};margin-top:-10px">muito</div>'
-         f'<div class="serif" style="font-size:150px;color:#fff;-webkit-text-stroke:18px {C["red_esc"]};margin-top:-14px">ronrom</div></div>')
-    return cartao("vermelho_neve", "#fff", t, pet_dir("gato", 480), "xadrez_creme", (C["verde"], "#fff"),
-                  C["verde_esc"], f'Um mimo para o teu<br><span style="color:{C["lime"]}">gatinho especial!</span>')
+def v1():  # golden — topo creme xadrez verde
+    t = (f'<div class="a tit" style="left:0;right:0;top:300px;text-align:center">'
+         f'<div class="script" style="font-size:110px;color:{C["red"]}">Feliz</div>'
+         f'<div class="serif" style="font-size:190px;color:{C["red"]};margin-top:-34px">Natal!</div></div>')
+    return cartao("creme_xadrez", t, pet_esq("golden", 470),
+                  copy("dir", C["verde_esc"], 'Que a tua casa tenha cheirinho de biscoito, <span style="color:#C8202E">rabinho abanando</span> e muito amor.'),
+                  "xadrez_verde", (C["red"], "#fff"))
 
 
-def v3():  # shih tzu — topo verde (título vermelho com contorno branco), petisco listra vermelha, rodapé vermelho
-    t = (f'<div class="a tit" style="left:0;right:0;top:100px;text-align:center">'
-         f'<div class="script" style="font-size:96px;color:{C["red"]}">um Natal cheio de</div>'
-         f'<div class="serif" style="font-size:170px;color:{C["red"]};margin-top:-22px">lambeijos</div></div>')
-    return cartao("verde_neve", "#fff", t, pet_centro("shihtzu", 460), "listra_vermelha", (C["verde_esc"], "#fff"),
-                  C["red"], 'Obrigado por fazer parte<br>da <span style="color:#FFE7A3">família Santuário!</span>')
+def v2():  # gato — topo vermelho
+    t = (f'<div class="a tit" style="left:0;right:0;top:300px;text-align:center">'
+         f'<div class="script" style="font-size:96px;color:{C["red"]}">um Natal de</div>'
+         f'<div class="serif" style="font-size:160px;color:#fff;-webkit-text-stroke:18px {C["red_esc"]};margin-top:-14px">muito ronrom</div></div>')
+    return cartao("vermelho_neve", t, pet_dir("gato", 450),
+                  copy("esq", "#fff", 'Quentinho como um colo e doce como uma <span style="color:#FFE7A3">soneca ao sol</span>.'),
+                  "xadrez_creme", (C["verde"], "#fff"))
 
 
-def v4():  # beagle — topo creme xadrez vermelho, petisco listra verde, rodapé vermelho
-    t = (f'<div class="a tit" style="left:70px;top:200px;width:620px">'
-         f'<div class="serif" style="font-size:150px;color:{C["verde"]}">Au, au,</div>'
-         f'<div class="serif" style="font-size:150px;color:{C["verde"]};margin-top:-6px">au!</div>'
-         f'<div class="script" style="font-size:96px;color:{C["red"]};margin-top:4px">Feliz Natal!</div></div>')
-    return cartao("creme_xadrez_red", C["red"], t, pet_dir("beagle", 450), "listra_verde", (C["red"], "#fff"),
-                  C["red"], 'Um petisco com carinho<br>para o teu <span style="color:#FFE7A3">melhor amigo!</span>')
+def v3():  # shih tzu — topo verde: título vermelho com contorno branco, copy branca
+    t = (f'<div class="a tit" style="left:0;right:0;top:300px;text-align:center">'
+         f'<div class="serif" style="font-size:176px;color:{C["red"]}">Lambeijos</div>'
+         f'<div class="script" style="font-size:100px;color:{C["red"]};margin-top:-6px">de Natal</div></div>')
+    return cartao("verde_neve", t, pet_esq("shihtzu", 400),
+                  copy("dir", "#fff", 'Um mimo para quem enche a tua vida de <span style="color:#FFE7A3">lambeijos</span>. Feliz Natal!'),
+                  "listra_vermelha", (C["verde_esc"], "#fff"))
+
+
+def v4():  # beagle — topo creme xadrez vermelho
+    t = (f'<div class="a tit" style="left:0;right:0;top:300px;text-align:center">'
+         f'<div class="serif" style="font-size:150px;color:{C["verde"]}">Au, au, au!</div>'
+         f'<div class="script" style="font-size:86px;color:{C["red"]};margin-top:-6px">Feliz Natal!</div></div>')
+    return cartao("creme_xadrez_red", t, pet_dir("beagle", 360),
+                  copy("esq", C["verde_esc"], 'O Papai Noel passou no Santuário e deixou <span style="color:#C8202E">este petisco</span> só para ti!'),
+                  "listra_verde", (C["red"], "#fff"))
 
 
 CARTOES = [("cartao-natal-1-golden", v1), ("cartao-natal-2-gato", v2),

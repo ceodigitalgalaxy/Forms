@@ -197,10 +197,10 @@ def aumiau():
     fundo = (f"radial-gradient(circle,rgba(255,240,200,.5) 0 3px,transparent 4px) 0 0/44px 44px,"
              f"radial-gradient(circle,rgba(255,255,255,.25) 0 2px,transparent 3px) 22px 22px/44px 44px,"
              f"radial-gradient(700px 520px at 72% 22%,#13704A,#0A4A30 55%,#05301F)")
-    col = "left:40px;width:450px"
+    col = "left:34px;width:420px"
     logo = (f'<img class="a" src="{LOGO}" style="right:40px;top:36px;width:92px;height:92px;border-radius:50%;'
             f'box-shadow:0 0 0 5px #fff,0 8px 18px rgba(0,0,0,.35);z-index:4">')
-    dupla = f'<img class="a pet" src="{pet("dupla")}" style="right:-14px;bottom:{1134 - 660}px;width:540px;z-index:2;transform:scaleX(-1)">'
+    dupla = f'<img class="a pet" src="{pet("dupla")}" style="right:-78px;bottom:{1134 - 660}px;width:600px;z-index:2;transform:scaleX(-1)">'
     sombra = "text-shadow:0 6px 16px rgba(0,0,0,.35)"
     tag = (f'display:inline-block;line-height:.9;color:#fff;background:{C["red"]};border-radius:14px;'
            f'padding:4px 14px 8px 12px;font-style:italic;box-shadow:0 8px 18px rgba(0,0,0,.35)')
@@ -211,10 +211,10 @@ def aumiau():
            f'<div style="font-family:Pacifico,cursive;font-size:68px;color:#FBF4E6;margin-top:14px;{sombra}">Feliz Natal!</div>'
            f'<div style="width:90px;height:4px;border-radius:2px;background:{C["red"]};margin:22px auto 0"></div></div>')
     msg = (f'<div class="a" style="{col};top:380px;z-index:3;text-align:center;font-family:Fraunces,serif;'
-           f'font-style:italic;font-weight:600;font-size:37px;line-height:1.28;color:#fff;text-wrap:balance;{sombra}">'
+           f'font-style:italic;font-weight:600;font-size:35px;line-height:1.28;color:#fff;text-wrap:balance;{sombra}">'
            f'Um petisco especial para quem deixa todos os nossos dias mais felizes!</div>'
            f'<div class="a" style="{col};top:568px;z-index:3;text-align:center;font-family:Quicksand,sans-serif;'
-           f'font-weight:700;font-size:25px;letter-spacing:1.5px;white-space:nowrap;color:#FBF4E6;text-transform:uppercase">Com carinho, Santuário Pet</div>')
+           f'font-weight:700;font-size:23px;letter-spacing:1.2px;white-space:nowrap;color:#FBF4E6;text-transform:uppercase">Com carinho, Santuário Pet</div>')
     return (f'<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><style>{CSS}</style></head><body><div class="c">'
             f'<div class="topo" style="background:{fundo}"></div>{dupla}{tit}{msg}'
             f'{borda(C["red"], "#fff")}<div class="meio" style="background:{PETISCO["listra_vermelha"]}"></div></div></body></html>')

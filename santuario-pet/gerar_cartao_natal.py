@@ -213,8 +213,9 @@ def aumiau():
     msg = (f'<div class="a" style="{col};top:380px;z-index:3;text-align:center;font-family:Fraunces,serif;'
            f'font-style:italic;font-weight:600;font-size:35px;line-height:1.28;color:#fff;text-wrap:balance;{sombra}">'
            f'Um petisco especial para quem deixa todos os nossos dias mais felizes!</div>'
-           f'<div class="a" style="{col};top:568px;z-index:3;text-align:center;font-family:Quicksand,sans-serif;'
-           f'font-weight:700;font-size:23px;letter-spacing:1.2px;white-space:nowrap;color:#FBF4E6;text-transform:uppercase">Com carinho, Santuário Pet</div>')
+           f'<div class="a" style="{col};top:532px;z-index:3;text-align:center;line-height:1;{sombra}">'
+           f'<div style="font-family:Pacifico,cursive;font-size:36px;color:#FBF4E6">Com carinho,</div>'
+           f'<div style="font-family:Quicksand,sans-serif;font-weight:700;font-size:38px;letter-spacing:3px;color:#fff;margin-top:8px;white-space:nowrap">SANTUÁRIO PET</div></div>')
     return (f'<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><style>{CSS}</style></head><body><div class="c">'
             f'<div class="topo" style="background:{fundo}"></div>{dupla}{tit}{msg}'
             f'{borda(C["red"], "#fff")}<div class="meio" style="background:{PETISCO["listra_vermelha"]}"></div></div></body></html>')

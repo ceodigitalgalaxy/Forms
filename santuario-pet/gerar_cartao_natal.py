@@ -193,8 +193,35 @@ def natau():
             f'{borda(C["red"], "#fff")}<div class="meio" style="background:{PETISCO["listra_vermelha"]}"></div></div></body></html>')
 
 
+def aumiau():
+    fundo = (f"radial-gradient(circle,rgba(255,240,200,.5) 0 3px,transparent 4px) 0 0/44px 44px,"
+             f"radial-gradient(circle,rgba(255,255,255,.25) 0 2px,transparent 3px) 22px 22px/44px 44px,"
+             f"radial-gradient(700px 520px at 72% 22%,#13704A,#0A4A30 55%,#05301F)")
+    col = "left:486px;width:476px"
+    logo = (f'<img class="a" src="{LOGO}" style="left:40px;top:36px;width:92px;height:92px;border-radius:50%;'
+            f'box-shadow:0 0 0 5px #fff,0 8px 18px rgba(0,0,0,.35);z-index:4">')
+    dupla = f'<img class="a pet" src="{pet("dupla")}" style="left:-8px;bottom:{1134 - 660}px;width:470px;z-index:2">'
+    sombra = "text-shadow:0 6px 16px rgba(0,0,0,.35)"
+    tag = (f'display:inline-block;line-height:.9;color:#fff;background:{C["red"]};border-radius:14px;'
+           f'padding:4px 14px 8px 12px;font-style:italic;box-shadow:0 8px 18px rgba(0,0,0,.35)')
+    linha = f'font-family:Fraunces,serif;font-weight:900;color:#fff;white-space:nowrap;letter-spacing:-.5px;{sombra}'
+    tit = (f'<div class="a" style="{col};top:58px;text-align:center;line-height:1;z-index:3">'
+           f'<div style="{linha};font-size:82px">Au, au!</div>'
+           f'<div style="{linha};font-size:82px;margin-top:14px"><span style="{tag};transform:rotate(-2deg)">Miau, miau!</span></div>'
+           f'<div style="font-family:Pacifico,cursive;font-size:68px;color:#FBF4E6;margin-top:14px;{sombra}">Feliz Natal!</div>'
+           f'<div style="width:90px;height:4px;border-radius:2px;background:{C["red"]};margin:22px auto 0"></div></div>')
+    msg = (f'<div class="a" style="{col};top:400px;z-index:3;text-align:center;font-family:Fraunces,serif;'
+           f'font-style:italic;font-weight:600;font-size:30px;line-height:1.32;color:#fff;text-wrap:balance;{sombra}">'
+           f'Um petisco especial para quem deixa todos os nossos dias mais felizes!</div>'
+           f'<div class="a" style="{col};top:540px;z-index:3;text-align:center;font-family:Quicksand,sans-serif;'
+           f'font-weight:700;font-size:21px;letter-spacing:4px;color:#FBF4E6;text-transform:uppercase">Com carinho, Santuário Pet</div>')
+    return (f'<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><style>{CSS}</style></head><body><div class="c">'
+            f'<div class="topo" style="background:{fundo}"></div>{logo}{dupla}{tit}{msg}'
+            f'{borda(C["red"], "#fff")}<div class="meio" style="background:{PETISCO["listra_vermelha"]}"></div></div></body></html>')
+
+
 CARTOES = [("cartao-natal-1-golden", v1), ("cartao-natal-2-gato", v2),
-           ("cartao-natal-3-shihtzu", v3), ("cartao-natal-4-beagle", v4)] + VARIACOES_GOLDEN + [("cartao-natal-5-natau", natau)]
+           ("cartao-natal-3-shihtzu", v3), ("cartao-natal-4-beagle", v4)] + VARIACOES_GOLDEN + [("cartao-natal-5-natau", natau), ("cartao-natal-6-au-miau", aumiau)]
 
 JS = """
 const { chromium } = require('playwright');

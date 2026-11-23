@@ -168,24 +168,26 @@ VARIACOES_GOLDEN = [
 ]
 
 def natau():
-    fundo = (f"radial-gradient(circle,rgba(255,240,200,.55) 0 3px,transparent 4px) 0 0/44px 44px,"
-             f"radial-gradient(circle,rgba(255,255,255,.28) 0 2px,transparent 3px) 22px 22px/44px 44px,"
-             f"radial-gradient(700px 520px at 70% 25%,#13704A,#0A4A30 55%,#05301F)")
-    col = "left:496px;width:462px"
+    fundo = (f"radial-gradient(circle,rgba(255,240,200,.5) 0 3px,transparent 4px) 0 0/44px 44px,"
+             f"radial-gradient(circle,rgba(255,255,255,.25) 0 2px,transparent 3px) 22px 22px/44px 44px,"
+             f"radial-gradient(700px 520px at 72% 22%,#13704A,#0A4A30 55%,#05301F)")
+    col = "left:486px;width:476px"
     logo = (f'<img class="a" src="{LOGO}" style="left:40px;top:36px;width:92px;height:92px;border-radius:50%;'
             f'box-shadow:0 0 0 5px #fff,0 8px 18px rgba(0,0,0,.35);z-index:4">')
     dupla = f'<img class="a pet" src="{pet("dupla")}" style="left:-8px;bottom:{1134 - 660}px;width:470px;z-index:2">'
-    au = (f'<span style="color:#fff;-webkit-text-stroke:14px {C["red"]};paint-order:stroke fill;'
-          f'letter-spacing:3px;margin:0 6px 0 4px">AU</span>')
-    tit = (f'<div class="a" style="{col};top:70px;text-align:center;line-height:1;z-index:3">'
-           f'<div class="script" style="font-size:88px;color:{C["red"]}">Feliz</div>'
-           f'<div class="serif" style="font-size:128px;color:{C["red"]};letter-spacing:1px;margin-top:-4px;white-space:nowrap">Nat{au}!</div></div>')
-    msg = (f'<div class="a" style="{col};top:372px;z-index:3;box-sizing:border-box;background:#FBF4E6;'
-           f'border-radius:22px;padding:24px 28px;box-shadow:0 10px 24px rgba(0,0,0,.3);'
-           f'font-family:Fraunces,serif;font-style:italic;font-weight:600;font-size:31px;line-height:1.36;'
-           f'color:{C["verde_esc"]};text-align:center;text-wrap:balance">'
-           f'Que o teu Natal tenha <span style="color:{C["red"]}">lambeijos</span>, '
-           f'<span style="color:{C["red"]}">ronrons</span> e muito amor em cada cantinho!</div>')
+    sombra = "text-shadow:0 6px 16px rgba(0,0,0,.35)"
+    tit = (f'<div class="a" style="{col};top:74px;text-align:center;line-height:1;z-index:3">'
+           f'<div style="font-family:Pacifico,cursive;font-size:76px;color:#FBF4E6;{sombra}">Feliz</div>'
+           f'<div style="font-family:Fraunces,serif;font-weight:900;font-size:124px;letter-spacing:-1px;color:#fff;'
+           f'margin-top:10px;white-space:nowrap;{sombra}">Nat<span style="display:inline-block;line-height:.86;color:#fff;'
+           f'background:{C["red"]};border-radius:16px;padding:6px 14px 10px 12px;margin:0 6px 0 8px;font-style:italic;'
+           f'transform:rotate(-3deg);box-shadow:0 8px 18px rgba(0,0,0,.35)">AU</span>!</div>'
+           f'<div style="width:90px;height:4px;border-radius:2px;background:{C["red"]};margin:26px auto 0"></div></div>')
+    msg = (f'<div class="a" style="{col};top:368px;z-index:3;text-align:center;font-family:Fraunces,serif;'
+           f'font-style:italic;font-weight:600;font-size:34px;line-height:1.34;color:#fff;text-wrap:balance;{sombra}">'
+           f'Que o teu Natal seja do tamanho do amor que eles te dão.</div>'
+           f'<div class="a" style="{col};top:530px;z-index:3;text-align:center;font-family:Quicksand,sans-serif;'
+           f'font-weight:700;font-size:21px;letter-spacing:4px;color:#FBF4E6;text-transform:uppercase">Com carinho, Santuário Pet</div>')
     return (f'<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><style>{CSS}</style></head><body><div class="c">'
             f'<div class="topo" style="background:{fundo}"></div>{logo}{dupla}{tit}{msg}'
             f'{borda(C["red"], "#fff")}<div class="meio" style="background:{PETISCO["listra_vermelha"]}"></div></div></body></html>')

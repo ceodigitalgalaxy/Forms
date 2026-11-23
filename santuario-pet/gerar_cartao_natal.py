@@ -40,7 +40,15 @@ FUNDOS = {
     "creme_xadrez_red": f"repeating-linear-gradient(0deg,rgba(200,32,46,.07) 0 26px,transparent 26px 52px),"
                         f"repeating-linear-gradient(90deg,rgba(200,32,46,.07) 0 26px,transparent 26px 52px),{C['creme']}",
 }
+FUNDOS["kraft"] = ("repeating-linear-gradient(0deg,rgba(120,80,30,.07) 0 26px,transparent 26px 52px),"
+                   "repeating-linear-gradient(90deg,rgba(120,80,30,.07) 0 26px,transparent 26px 52px),#E9D7B9")
+FUNDOS["verde_esc_neve"] = (f"radial-gradient(circle,rgba(255,255,255,.7) 0 3px,transparent 4px) 0 0/44px 44px,"
+                            f"radial-gradient(circle,rgba(255,255,255,.35) 0 2px,transparent 3px) 22px 22px/44px 44px,"
+                            f"radial-gradient(800px 600px at 50% 30%,#0E5A39,{C['verde_esc']} 60%,#062A1B)")
 PETISCO = {
+    "xadrez_kraft": "repeating-linear-gradient(0deg,rgba(158,22,34,.14) 0 28px,transparent 28px 56px),"
+                    "repeating-linear-gradient(90deg,rgba(158,22,34,.14) 0 28px,transparent 28px 56px),#F7EEDD",
+    "listra_dourada": f"repeating-linear-gradient(-45deg,{C['ouro']} 0 22px,#FFF8EA 22px 44px)",
     "xadrez_verde": f"repeating-linear-gradient(0deg,rgba(6,96,58,.16) 0 28px,transparent 28px 56px),"
                     f"repeating-linear-gradient(90deg,rgba(6,96,58,.16) 0 28px,transparent 28px 56px),#fff",
     "listra_vermelha": f"repeating-linear-gradient(-45deg,{C['red']} 0 22px,#fff 22px 44px)",
@@ -141,8 +149,26 @@ def v4():
                   "listra_verde", (C["red"], "#fff"))
 
 
+def v1_cores(fundo, tit_cor, tit_extra, copy_cor, destaque, petisco, borda_cores, feliz_cor=None, caixa=None):
+    t = titulo("dir", f'<div class="script" style="font-size:78px;color:{feliz_cor or tit_cor}">Feliz</div>'
+                      f'<div class="serif" style="font-size:132px;color:{tit_cor};margin-top:-24px;{tit_extra}">Natal!</div>')
+    c = copy("dir", copy_cor, f'Que a tua casa tenha cheirinho de biscoito, <span style="color:{destaque}">rabinho abanando</span> e muito amor.')
+    if caixa:
+        c = c.replace('top:430px;width:470px;', f'top:420px;width:470px;background:{caixa};border-radius:20px;padding:18px 22px;text-shadow:none;')
+    return cartao(fundo, t, pet_esq("golden", 400), c, petisco, borda_cores)
+
+
+VARIACOES_GOLDEN = [
+    ("cartao-natal-1b-golden-vermelho", lambda: v1_cores("vermelho_neve", "#fff", f"-webkit-text-stroke:12px {C['red_esc']}",
+                                                          "#fff", "#FFE7A3", "xadrez_creme", (C["verde"], "#fff"), feliz_cor=C["ouro"], caixa="rgba(120,10,20,.55)")),
+    ("cartao-natal-1c-golden-verde", lambda: v1_cores("verde_esc_neve", C["red"], "", "#fff", "#FFE7A3",
+                                                       "listra_vermelha", (C["ouro"], "#fff"), caixa="rgba(4,30,18,.6)")),
+    ("cartao-natal-1d-golden-kraft", lambda: v1_cores("kraft", C["red"], "", C["verde_esc"], C["red"],
+                                                       "listra_dourada", (C["red"], "#fff"))),
+]
+
 CARTOES = [("cartao-natal-1-golden", v1), ("cartao-natal-2-gato", v2),
-           ("cartao-natal-3-shihtzu", v3), ("cartao-natal-4-beagle", v4)]
+           ("cartao-natal-3-shihtzu", v3), ("cartao-natal-4-beagle", v4)] + VARIACOES_GOLDEN
 
 JS = """
 const { chromium } = require('playwright');

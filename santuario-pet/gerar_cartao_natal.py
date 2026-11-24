@@ -19,6 +19,8 @@ def uri(p, mime):
 
 
 LOGO = uri(ROOT / "brand/logo-instagram-150px.jpg", "image/jpeg")
+PREMIER = uri(ROOT / "brand/premierpet-laranja.svg", "image/svg+xml")
+LINHA = uri(ROOT / "brand/linha-laranja-premier.png", "image/png")
 LOGO_H = uri(ROOT / "brand/logo-horizontal-sem-fundo.png", "image/png")
 
 
@@ -223,7 +225,18 @@ def aumiau():
               f'</div>')
     return (f'<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><style>{CSS}</style></head><body><div class="c">'
             f'<div class="topo" style="background:{fundo}"></div>{veu}{dupla}{coluna}'
-            f'{borda(C["red"], "#fff")}<div class="meio" style="background:{PETISCO["listra_vermelha"]}"></div></div></body></html>')
+            f'{borda(C["red"], "#fff")}<div class="meio" style="background:{PETISCO["listra_vermelha"]}"></div>{selo_premier()}</div></body></html>')
+
+
+def selo_premier():
+    # selo do parceiro no rodapé da área do petisco (fica livre o centro para o saquinho)
+    return ('<div class="a" style="left:170px;right:170px;bottom:40px;z-index:4;background:#fff;border-radius:26px;'
+            'padding:22px 30px 24px;text-align:center;box-shadow:0 12px 28px rgba(0,0,0,.22)">'
+            f'<div style="font-family:Fraunces,serif;font-style:italic;font-weight:600;font-size:34px;line-height:1.1;color:{C["ink"]}">'
+            'Aproveite com um Cookie</div>'
+            f'<img src="{LINHA}" style="display:block;width:500px;margin:16px auto 18px">'
+            f'<img src="{PREMIER}" alt="PremieRpet" style="display:block;height:62px;margin:0 auto">'
+            '</div>')
 
 
 CARTOES = [("cartao-natal-1-golden", v1), ("cartao-natal-2-gato", v2),

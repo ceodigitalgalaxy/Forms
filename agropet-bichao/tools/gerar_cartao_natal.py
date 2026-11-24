@@ -21,6 +21,8 @@ def uri(p):
 
 
 LOGO = uri(ROOT / "brand/logo-horizontal.png")
+PREMIER = "data:image/svg+xml;base64," + base64.b64encode((ROOT / "brand/parceiros/premierpet-laranja.svg").read_bytes()).decode()
+LINHA = uri(ROOT / "brand/parceiros/linha-laranja-premier.png")
 DUPLA = uri(ROOT.parent / "santuario-pet/fotos/natal-dupla.png")
 
 AZUL, AZUL_ESC, LARANJA, AMARELO, VERDE = "#00238B", "#00175E", "#FFA800", "#FFD56F", "#A9CF45"
@@ -69,7 +71,18 @@ def cartao():
     petisco = f"repeating-linear-gradient(-45deg,{AZUL} 0 22px,#fff 22px 44px)"
     return (f'<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><style>{CSS}</style></head><body><div class="c">'
             f'<div class="topo" style="background:{fundo}"></div>{veu}{dupla}{coluna}{borda}'
-            f'<div class="meio" style="background:{petisco}"></div></div></body></html>')
+            f'<div class="meio" style="background:{petisco}"></div>{selo_premier()}</div></body></html>')
+
+
+def selo_premier():
+    # selo do parceiro no topo da área do petisco (o cookie fica embaixo)
+    return ('<div class="a" style="left:250px;right:250px;top:694px;z-index:4;background:#fff;border-radius:20px;'
+            'padding:14px 24px 16px;text-align:center;box-shadow:0 12px 28px rgba(0,0,0,.22)">'
+            f'<div style="font-family:Poppins,sans-serif;font-style:italic;font-weight:600;font-size:24px;line-height:1.1;color:{AZUL}">'
+            'Aproveite com um Cookie</div>'
+            f'<img src="{LINHA}" style="display:block;width:340px;margin:10px auto 12px">'
+            f'<img src="{PREMIER}" alt="PremieRpet" style="display:block;height:42px;margin:0 auto">'
+            '</div>')
 
 
 JS = """

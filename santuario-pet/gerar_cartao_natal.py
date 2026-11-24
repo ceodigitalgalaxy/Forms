@@ -230,12 +230,12 @@ def aumiau():
 
 def selo_premier():
     # selo do parceiro no rodapé da área do petisco (fica livre o centro para o saquinho)
-    return ('<div class="a" style="left:170px;right:170px;bottom:40px;z-index:4;background:#fff;border-radius:26px;'
-            'padding:22px 30px 24px;text-align:center;box-shadow:0 12px 28px rgba(0,0,0,.22)">'
-            f'<div style="font-family:Fraunces,serif;font-style:italic;font-weight:600;font-size:34px;line-height:1.1;color:{C["ink"]}">'
+    return ('<div class="a" style="left:250px;right:250px;top:694px;z-index:4;background:#fff;border-radius:20px;'
+            'padding:14px 24px 16px;text-align:center;box-shadow:0 12px 28px rgba(0,0,0,.22)">'
+            f'<div style="font-family:Fraunces,serif;font-style:italic;font-weight:600;font-size:25px;line-height:1.1;color:{C["ink"]}">'
             'Aproveite com um Cookie</div>'
-            f'<img src="{LINHA}" style="display:block;width:500px;margin:16px auto 18px">'
-            f'<img src="{PREMIER}" alt="PremieRpet" style="display:block;height:62px;margin:0 auto">'
+            f'<img src="{LINHA}" style="display:block;width:340px;margin:10px auto 12px">'
+            f'<img src="{PREMIER}" alt="PremieRpet" style="display:block;height:42px;margin:0 auto">'
             '</div>')
 
 

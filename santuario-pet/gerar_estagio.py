@@ -33,33 +33,33 @@ CSS = f"""
 html,body{{width:1080px;height:1920px;overflow:hidden}}
 .s{{position:relative;width:1080px;height:1920px;overflow:hidden;background:{OFF};font-family:'Nunito Sans',sans-serif;color:{INK}}}
 .a{{position:absolute}}
-.topo{{position:absolute;left:0;right:0;top:0;height:668px;
+.topo{{position:absolute;left:0;right:0;top:0;height:650px;
   background:radial-gradient(900px 600px at 85% 10%,#0D7449 0%,{V} 40%,{VE} 100%);border-radius:0 0 80px 80px}}
-.tag{{display:inline-flex;align-items:center;gap:12px;background:{LIME};color:{VE};font-weight:900;font-size:26px;letter-spacing:4px;
+.tag{{display:inline-flex;align-items:center;gap:12px;background:{LIME};color:{VE};font-weight:900;font-size:28px;letter-spacing:4px;
   text-transform:uppercase;padding:14px 28px;border-radius:999px}}
 .tag i{{width:12px;height:12px;border-radius:50%;background:{VE}}}
-h1{{font-family:'Fraunces',serif;font-weight:800;font-size:100px;line-height:.98;letter-spacing:-2px;color:#fff;margin-top:26px}}
+h1{{font-family:'Fraunces',serif;font-weight:800;font-size:104px;line-height:.96;letter-spacing:-2px;color:#fff;margin-top:26px}}
 h1 em{{font-style:italic;font-weight:600;color:{LIME_CL}}}
-.area{{display:inline-block;margin-top:30px;background:#fff;color:{VE};font-weight:800;font-size:36px;padding:16px 32px;border-radius:20px;
+.area{{display:inline-block;margin-top:30px;background:#fff;color:{VE};font-weight:800;font-size:40px;padding:16px 34px;border-radius:20px;
   box-shadow:0 14px 30px rgba(0,0,0,.25)}}
-.intro{{text-wrap:balance;font-size:32px;line-height:1.4;font-weight:600;color:{INK}}}
+.intro{{text-wrap:balance;font-size:37px;line-height:1.4;font-weight:600;color:{INK}}}
 .intro b{{font-weight:900;color:{V}}}
-.card{{background:#fff;border-radius:36px;padding:30px 44px 34px;box-shadow:0 18px 44px rgba(10,63,40,.12)}}
-.rot{{font-family:'Quicksand',sans-serif;font-weight:700;font-size:26px;letter-spacing:4px;text-transform:uppercase;color:{V};
+.card{{background:#fff;border-radius:36px;padding:28px 44px 30px;box-shadow:0 18px 44px rgba(10,63,40,.12)}}
+.rot{{font-family:'Quicksand',sans-serif;font-weight:700;font-size:30px;letter-spacing:4px;text-transform:uppercase;color:{V};
   display:flex;align-items:center;gap:14px}}
 .rot::after{{content:"";flex:1;height:3px;border-radius:2px;background:{LIME_CL}}}
-.req{{display:flex;gap:22px;align-items:flex-start;margin-top:18px;font-size:30px;line-height:1.35;font-weight:600}}
+.req{{display:flex;gap:22px;align-items:flex-start;margin-top:14px;font-size:35px;line-height:1.35;font-weight:600}}
 .req div:last-child{{text-wrap:pretty}}
 .req .ck{{flex:none;width:48px;height:48px;border-radius:50%;background:{V};display:flex;align-items:center;justify-content:center;margin-top:-1px}}
-.pref{{display:flex;gap:24px;align-items:center;background:{LIME_CL};border-radius:30px;padding:24px 36px}}
+.pref{{display:flex;gap:24px;align-items:center;background:{LIME_CL};border-radius:30px;padding:26px 44px}}
 .pref .ic{{flex:none;width:84px;height:84px;border-radius:24px;background:{VE};display:flex;align-items:center;justify-content:center}}
-.pref b{{display:block;font-family:'Quicksand',sans-serif;font-weight:700;font-size:24px;letter-spacing:4px;text-transform:uppercase;color:{VE}}}
-.pref span{{display:block;font-size:30px;line-height:1.3;font-weight:700;color:{INK};margin-top:6px;text-wrap:balance}}
-.cta{{background:{VE};border-radius:40px;padding:32px 44px;color:#fff}}
-.cta .t{{font-weight:800;font-size:28px;letter-spacing:3px;text-transform:uppercase;color:{LIME_CL}}}
-.ct{{display:flex;align-items:center;gap:20px;margin-top:16px;font-weight:800;font-size:34px;white-space:nowrap}}
-.ct .ic{{flex:none;width:68px;height:68px;border-radius:20px;background:{LIME};display:flex;align-items:center;justify-content:center}}
-.ct small{{display:block;font-weight:600;font-size:22px;letter-spacing:1px;color:rgba(255,255,255,.7);text-transform:uppercase}}
+.pref b{{display:block;font-family:'Quicksand',sans-serif;font-weight:700;font-size:28px;letter-spacing:4px;text-transform:uppercase;color:{VE}}}
+.pref span{{display:block;font-size:35px;line-height:1.3;font-weight:700;color:{INK};margin-top:8px;text-wrap:balance}}
+.cta{{background:{VE};border-radius:40px;padding:28px 44px 30px;color:#fff}}
+.cta .t{{font-weight:800;font-size:31px;letter-spacing:3px;text-transform:uppercase;color:{LIME_CL}}}
+.ct{{display:flex;align-items:center;gap:20px;margin-top:16px;font-weight:800;font-size:39px;white-space:nowrap}}
+.ct .ic{{flex:none;width:76px;height:76px;border-radius:22px;background:{LIME};display:flex;align-items:center;justify-content:center}}
+.ct small{{display:block;font-weight:600;font-size:24px;letter-spacing:1px;color:rgba(255,255,255,.7);text-transform:uppercase}}
 """
 
 
@@ -70,27 +70,25 @@ def story():
     lista = "".join(f'<div class="req"><div class="ck">{CHECK}</div><div>{r}</div></div>' for r in reqs)
     return f"""<!doctype html><html lang="pt-BR"><head><meta charset="utf-8"><style>{CSS}</style></head><body><div class="s">
 <div class="topo"></div>
-<div class="a" style="right:-40px;top:330px;opacity:.06;transform:rotate(-18deg)">{PATA.format(s=420, c='#fff')}</div>
-<div class="a" style="left:80px;top:112px"><img src="{LOGO}" style="width:360px;display:block" alt="Santuário Pet Center"></div>
-<div class="a" style="left:80px;right:80px;top:266px">
+<div class="a" style="left:80px;top:72px"><img src="{LOGO}" style="width:340px;display:block" alt="Santuário Pet Center"></div>
+<div class="a" style="left:80px;right:80px;top:206px">
   <span class="tag"><i></i>Estamos contratando</span>
   <h1>Oportunidade<br>de <em>estágio</em></h1>
   <span class="area">Medicina Veterinária</span>
 </div>
 
-<div class="a" style="left:64px;right:64px;top:712px;bottom:52px;display:flex;flex-direction:column;justify-content:space-between">
+<div class="a" style="left:64px;right:64px;top:690px;bottom:44px;display:flex;flex-direction:column;justify-content:space-between">
   <div class="intro" style="padding:0 16px">Vaga para estágio em Medicina Veterinária no <b>Hospital Veterinário Santuário Pet</b>.</div>
   <div class="card"><div class="rot">Requisitos</div>{lista}</div>
   <div class="pref">
-    <div class="ic">{PATA.format(s=50, c=LIME)}</div>
     <div><b>Preferência</b><span>Experiência prévia no setor de internação de cães e gatos.</span></div>
   </div>
   <div class="cta">
     <div class="t">Envie seu currículo</div>
-    <div class="ct"><div class="ic">{MAIL}</div><div><small>E-mail</small>marianabrino@yahoo.com.br</div></div>
-    <div class="ct"><div class="ic">{ZAP}</div><div><small>WhatsApp</small>(51) 99377-2655</div></div>
-    <div style="margin-top:24px;padding-top:20px;border-top:2px solid rgba(255,255,255,.14);font-family:Fraunces,serif;
-      font-weight:600;font-size:36px;color:#fff">Venha fazer parte da nossa equipe!</div>
+    <div class="ct"><div class="ic">{MAIL}</div><div>marianabrino@yahoo.com.br</div></div>
+    <div class="ct"><div class="ic">{ZAP}</div><div>(51) 99377-2655</div></div>
+    <div style="margin-top:20px;padding-top:16px;border-top:2px solid rgba(255,255,255,.14);font-family:Fraunces,serif;
+      font-weight:600;font-size:42px;color:#fff">Venha fazer parte da nossa equipe!</div>
   </div>
 </div>
 </div></body></html>"""
